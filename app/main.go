@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/swaggo/gin-swagger/example/basic/docs"
 )
 
 func main() {
