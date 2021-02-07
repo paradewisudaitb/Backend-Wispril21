@@ -10,4 +10,5 @@ func main() {
 	fmt.Println("Starting server...")
 	r := gin.Default()
 	r.Run()
+
 }
