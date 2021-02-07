@@ -17,10 +17,14 @@ go run app
 The code above fetches the `README-default.md` file from this repository and
 renames it to `README.md`.
 
-## References
+## Libraries
 
-Here's a list of other related projects where you can find inspiration for
-creating the best possible README for your own project:
+- [Gin-Gonic: Gin](https://github.com/gin-gonic/gin)
+- [Swaggo: Gin-Swagger](https://github.com/swaggo/gin-swagger)
+- Open API
+- [Gorm](https://gorm.io/index.html)
+
+## References
 
 - [Clean Architecture: GORM](https://hackernoon.com/creating-clean-architecture-using-golang-9h5i3wgr)
 - [Clean Architecture: Small Project w/ Echo](https://github.com/bxcodec/go-clean-arch)
