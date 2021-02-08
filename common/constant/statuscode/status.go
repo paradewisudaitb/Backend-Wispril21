@@ -1,4 +1,4 @@
-package stcode
+package statuscode
 
 type StatusCode int
 
