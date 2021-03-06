@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/paradewisudaitb/Backend/common/domain"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/paradewisudaitb/Backend/common/domain"
+)
+
 
 type Example struct {
 	domain.EntityBase
@@ -17,5 +21,5 @@ type ExampleRepository interface {
 }
 
 type ExampleController interface {
-	UpdateExample(echo.Context) error
+	UpdateExample(gin.Context) error
 }
