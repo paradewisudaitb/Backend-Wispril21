@@ -1,6 +1,3 @@
-# Repository Example
-
-```go
 package repository
 
 import "github.com/jinzhu/gorm"
@@ -19,4 +16,3 @@ func (repo *ExampleRepository) something(...) (*entity, error){
 
 }
 */
-```

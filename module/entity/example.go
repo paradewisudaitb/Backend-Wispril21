@@ -1,9 +1,6 @@
-# Example of Entity File
+package domain
 
-```go
-package example
-
-import "github.com/paradewisudaitb/Backend/domain"
+import "github.com/paradewisudaitb/Backend/common/domain"
 
 type Example struct {
 	domain.EntityBase
@@ -16,10 +13,9 @@ type ExampleUsecase interface {
 }
 
 type ExampleRepository interface {
-    UpdateExample(exampleId string, example Example) error
+	UpdateExample(exampleId string, example Example) error
 }
 
 type ExampleController interface {
-    UpdateExample(echo.Context) error
+	UpdateExample(echo.Context) error
 }
-```
