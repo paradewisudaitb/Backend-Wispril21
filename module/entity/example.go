@@ -1,10 +1,9 @@
-package domain
+package entity
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/domain"
 )
-
 
 type Example struct {
 	domain.EntityBase
