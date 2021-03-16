@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
-
-var database *gorm.DB
 
 // PostgresConnect is function to make connection
 func PostgresConnect() *gorm.DB {
@@ -20,9 +19,9 @@ func PostgresConnect() *gorm.DB {
 		user := os.Getenv("PG_USERNAME")
 		password := os.Getenv("PG_PASSWORD")
 		psqlLoginInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-			"password=%s dbname=%s sslmode=disable",
+			"password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta",
 			host, port, user, password, dbname)
-		dTemp, err := gorm.Open("postgres", psqlLoginInfo)
+		dTemp, err := gorm.Open(postgres.Open(psqlLoginInfo), &gorm.Config{})
 		database = dTemp
 		if err != nil {
 			panic(err)
