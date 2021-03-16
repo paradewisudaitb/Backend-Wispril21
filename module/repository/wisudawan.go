@@ -42,7 +42,9 @@ func (repo *WisudawanRepository) UpdateOne(id_wisudawan string, nim *uint32, ang
 		wisudawan_update["judul_ta"] = *judul_ta
 	}
 	if jurusan != nil {
-		wisudawan_update["jurusan"] = *jurusan
+		j := entity.Jurusan{}
+		repo.db.First(&j, "id = ?", *jurusan)
+		wisudawan_update["jurusan"] = j
 	}
 	if instagram != nil {
 		wisudawan_update["instagram"] = *instagram

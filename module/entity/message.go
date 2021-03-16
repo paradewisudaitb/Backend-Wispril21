@@ -7,9 +7,9 @@ import (
 
 type Message struct {
 	domain.EntityBase
-	//ID Wisudawan
-	message string
-	sender  string
+	receiver Wisudawan
+	message  string
+	sender   string
 }
 
 type CreateMessageSerializer struct {
