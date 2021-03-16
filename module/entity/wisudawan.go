@@ -9,12 +9,12 @@ import (
 
 type Wisudawan struct {
 	domain.EntityBase
-	Nim          int
+	Nim          uint32
 	Nama         string `gorm:"type:VARCHAR(255);not null"`
 	Panggilan    string `gorm:"type:VARCHAR(255);not null"`
 	JudulTA      string `gorm:"type:VARCHAR(255);not null"`
-	Angkatan     int
-	Jurusan      string
+	Angkatan     uint16 `gorm:"type:SMALLINT;not null"`
+	Jurusan      Jurusan
 	Instagram    string `gorm:"type:VARCHAR(255)"`
 	Linkedin     string `gorm:"type:VARCHAR(255)"`
 	Twitter      string `gorm:"type:VARCHAR(255)"`
@@ -24,7 +24,7 @@ type Wisudawan struct {
 }
 
 type LiteWisudawanSerializer struct {
-	Nim  string
+	Nim  uint32
 	Nama string
 }
 
@@ -34,11 +34,11 @@ type FullWisudawanSerializer struct {
 }
 
 type CreateWisudawanSerializer struct {
-	Nim          int        `json:"nim"`
+	Nim          uint32     `json:"nim"`
 	Nama         string     `json:"nama"`
 	Panggilan    string     `json:"nama_panggilan"`
 	JudulTA      string     `json:"judul_ta"`
-	Angkatan     int        `json:"angkatan"`
+	Angkatan     uint16     `json:"angkatan"`
 	Jurusan      string     `json:"jurusan"`
 	Instagram    *string    `json:"instagram,omitempty"`
 	Linkedin     *string    `json:"linkedin,omitempty"`
@@ -50,11 +50,11 @@ type CreateWisudawanSerializer struct {
 
 type UpdateWisudawanSerializer struct {
 	IdWisudawan  string     `json:"id_wisudawan"`
-	NIM          *int       `json:"nim,omitempty"`
+	NIM          *uint32    `json:"nim,omitempty"`
 	Nama         *string    `json:"nama,omitempty"`
 	Panggilan    *string    `json:"nama_panggilan,omitempty"`
 	JudulTA      *string    `json:"judul_ta,omitempty"`
-	Angkatan     *int       `json:"angkatan,omitempty"`
+	Angkatan     *uint16    `json:"angkatan,omitempty"`
 	Jurusan      *string    `json:"jurusan,omitempty"`
 	Instagram    *string    `json:"instagram,omitempty"`
 	Linkedin     *string    `json:"linkedin,omitempty"`
@@ -86,7 +86,7 @@ type WisudawanUsecase interface {
 type WisudawanRepository interface {
 	GetOne()
 	GetAll()
-	AddOne(nim, angkatan int, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo string, tanggal_lahir time.Time)
-	UpdateOne(id_wisudawan string, nim, angkatan *int, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo *string, tanggal_lahir *time.Time)
+	AddOne(nim uint32, angkatan uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo string, tanggal_lahir time.Time)
+	UpdateOne(id_wisudawan string, nim *uint32, angkatan *uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo *string, tanggal_lahir *time.Time)
 	DeleteOne(id_wisudawan string)
 }
