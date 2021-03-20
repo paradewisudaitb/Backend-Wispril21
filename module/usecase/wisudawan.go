@@ -9,11 +9,11 @@ type WisudawanUseCase struct {
 	wisudawanrepo repository.WisudawanRepository
 }
 
-func NewWisudawanUsecase(a repository.WisudawanRepository) entity.WisudawanUsecase {
-	return &WisudawanUseCase{
-		wisudawanrepo: a,
-	}
-}
+// func NewWisudawanUsecase(a repository.WisudawanRepository) entity.WisudawanUsecase {
+// 	// return &WisudawanUseCase{
+// 	// 	wisudawanrepo: a,
+// 	// }
+// }
 
 func (a *WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer) error
 func (a *WisudawanUseCase) DeleteWisudawan(item entity.DeleteWisudawanSerializer) error

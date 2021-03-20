@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/jinzhu/gorm"
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
@@ -14,12 +16,21 @@ func NewJurusanRepository(db *gorm.DB) JurusanRepository {
 	return JurusanRepository{db: db}
 }
 
-func (repo *JurusanRepository) AddOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) {
-	jurusans := entity.Jurusan{IdJurusan: id_jurusan, Jurusan: jurusan, Fakultas: fakultas, FakultasShort: fakultas_short, JurusanShort: jurusan_short}
+func (repo *JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
+	var jurusan entity.Jurusan
+	repo.db.First(&jurusan, "id = ?", id)
+	if jurusan.ID == "" {
+		return jurusan, errors.New("Item not found")
+	}
+	return jurusan, nil
+}
+
+func (repo *JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) {
+	jurusans := entity.Jurusan{Jurusan: jurusan, Fakultas: fakultas, FakultasShort: fakultas_short, JurusanShort: jurusan_short}
 	repo.db.Create(&jurusans)
 }
 
-func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) {
+func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
 	var jurusans entity.Jurusan
 	jurusan_update := map[string]interface{}{}
 	if jurusan != nil {
@@ -34,12 +45,20 @@ func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas
 	if fakultas_short != nil {
 		jurusan_update["fakultas_short"] = *fakultas_short
 	}
+	if jurusans.ID == "" {
+		return errors.New("Item not found")
+	}
 	repo.db.First(&jurusans, "id = ?", id_jurusan)
 	repo.db.Model(&jurusans).Update(jurusan_update)
+	return nil
 }
 
-func (repo *JurusanRepository) DeleteOne(id_jurusan uuid.UUID) {
+func (repo *JurusanRepository) DeleteOne(id_jurusan uuid.UUID) error {
 	var jurusans entity.Jurusan
-	repo.db.First(&jurusans, "IdJurusan = ?", id_jurusan)
+	repo.db.First(&jurusans, "id = ?", id_jurusan)
+	if jurusans.ID == "" {
+		return errors.New("Item not found")
+	}
 	repo.db.Delete(&jurusans)
+	return nil
 }

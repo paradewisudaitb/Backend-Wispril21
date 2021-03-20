@@ -8,19 +8,17 @@ import (
 
 type Jurusan struct {
 	domain.EntityBase
-	IdJurusan     uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Jurusan       string    `gorm:"type:VARCHAR(50);not null"`
-	Fakultas      string    `gorm:"type:VARCHAR(50);not null"`
-	FakultasShort string    `gorm:"type:VARCHAR(5);not null"`
-	JurusanShort  string    `gorm:"type:VARCHAR(5);not null"`
+	Jurusan       string `gorm:"type:VARCHAR(50);not null"`
+	Fakultas      string `gorm:"type:VARCHAR(50);not null"`
+	FakultasShort string `gorm:"type:VARCHAR(5);not null"`
+	JurusanShort  string `gorm:"type:VARCHAR(5);not null"`
 }
 
 type CreateJurusanSerializer struct {
-	IdJurusan     uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Jurusan       string    `json:"jurusan"`
-	Fakultas      string    `json:"fakultas"`
-	FakultasShort string    `json:"fakultas_short"`
-	JurusanShort  string    `json:"jurusan_short"`
+	Jurusan       *string `json:"jurusan"`
+	Fakultas      *string `json:"fakultas"`
+	FakultasShort *string `json:"fakultas_short"`
+	JurusanShort  *string `json:"jurusan_short"`
 }
 
 type UpdateJurusanSerializer struct {
@@ -42,18 +40,16 @@ type JurusanController interface {
 	GetJurusan(gin.Context) error
 }
 
-type JurusanUsecase interface {
+type JurusanUseCase interface {
 	CreateJurusan(item CreateJurusanSerializer) error
 	DeleteJurusan(item DeleteJurusanSerializer) error
 	UpdateJurusan(item UpdateJurusanSerializer) error
-	GetJurusan(IdJurusan string) error
-	GetAllJurusan(Jurusan string) error
+	GetJurusan(IdJurusan uuid.UUID) (Jurusan, error)
 }
 
 type JurusanRepository interface {
-	GetOne()
-	GetAll()
-	AddOne(id_jurusan, jurusan, fakultas, fakultas_short, jurusan_short string)
-	UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string)
-	DeleteOne(id_jurusan uuid.UUID)
+	GetOne(id_jurusan uuid.UUID) (Jurusan, error)
+	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string)
+	UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error
+	DeleteOne(id_jurusan uuid.UUID) error
 }
