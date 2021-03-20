@@ -20,7 +20,7 @@ func (repo *JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	var jurusan entity.Jurusan
 	repo.db.First(&jurusan, "id = ?", id)
 	if jurusan.ID == "" {
-		return jurusan, errors.New("Item not found")
+		return jurusan, errors.New("Id jurusan not found")
 	}
 	return jurusan, nil
 }
@@ -46,7 +46,7 @@ func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas
 		jurusan_update["fakultas_short"] = *fakultas_short
 	}
 	if jurusans.ID == "" {
-		return errors.New("Item not found")
+		return errors.New("Id jurusan not found")
 	}
 	repo.db.First(&jurusans, "id = ?", id_jurusan)
 	repo.db.Model(&jurusans).Update(jurusan_update)
@@ -57,7 +57,7 @@ func (repo *JurusanRepository) DeleteOne(id_jurusan uuid.UUID) error {
 	var jurusans entity.Jurusan
 	repo.db.First(&jurusans, "id = ?", id_jurusan)
 	if jurusans.ID == "" {
-		return errors.New("Item not found")
+		return errors.New("Id jurusan not found")
 	}
 	repo.db.Delete(&jurusans)
 	return nil

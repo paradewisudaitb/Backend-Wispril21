@@ -16,30 +16,30 @@ func NewJurusanUsecase(j repository.JurusanRepository) entity.JurusanUseCase {
 	}
 }
 
-func (a *JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
-	a.jurusanrepo.AddOne(*item.Jurusan, *item.Fakultas, *item.FakultasShort, *item.JurusanShort)
+func (j *JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
+	j.jurusanrepo.AddOne(*item.Jurusan, *item.Fakultas, *item.FakultasShort, *item.JurusanShort)
 	return nil
 }
 
-func (a *JurusanUseCase) DeleteJurusan(item entity.DeleteJurusanSerializer) error {
-	err := a.jurusanrepo.DeleteOne(item.IdJurusan)
+func (j *JurusanUseCase) DeleteJurusan(item entity.DeleteJurusanSerializer) error {
+	err := j.jurusanrepo.DeleteOne(item.IdJurusan)
 	if err == nil {
 		return nil
 	}
 	return err
 }
 
-func (a *JurusanUseCase) UpdateJurusan(item entity.UpdateJurusanSerializer) error {
-	err := a.jurusanrepo.UpdateOne(item.IdJurusan, item.Jurusan, item.Fakultas, item.FakultasShort, item.JurusanShort)
+func (j *JurusanUseCase) UpdateJurusan(item entity.UpdateJurusanSerializer) error {
+	err := j.jurusanrepo.UpdateOne(item.IdJurusan, item.Jurusan, item.Fakultas, item.FakultasShort, item.JurusanShort)
 	if err == nil {
 		return nil
 	}
 	return err
 }
-func (a *JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) {
-	jurusan, err := a.jurusanrepo.GetOne(IdJurusan)
+func (j *JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) {
+	jurusans, err := j.jurusanrepo.GetOne(IdJurusan)
 	if err != nil {
-		return jurusan, err
+		return jurusans, err
 	}
-	return jurusan, nil
+	return jurusans, nil
 }
