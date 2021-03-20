@@ -8,19 +8,17 @@ import (
 
 type Jurusan struct {
 	domain.EntityBase
-	IdJurusan     uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Jurusan       string    `gorm:"type:VARCHAR(50);not null"`
-	Fakultas      string    `gorm:"type:VARCHAR(50);not null"`
-	FakultasShort string    `gorm:"type:VARCHAR(5);not null"`
-	JurusanShort  string    `gorm:"type:VARCHAR(5);not null"`
+	Jurusan       string `gorm:"type:VARCHAR(50);not null"`
+	Fakultas      string `gorm:"type:VARCHAR(50);not null"`
+	FakultasShort string `gorm:"type:VARCHAR(5);not null"`
+	JurusanShort  string `gorm:"type:VARCHAR(5);not null"`
 }
 
 type CreateJurusanSerializer struct {
-	IdJurusan     uuid.UUID `json:"id_jurusan"`
-	Jurusan       string    `json:"jurusan"`
-	Fakultas      string    `json:"fakultas"`
-	FakultasShort string    `json:"fakultas_short"`
-	JurusanShort  string    `json:"jurusan_short"`
+	Jurusan       string `json:"jurusan"`
+	Fakultas      string `json:"fakultas"`
+	FakultasShort string `json:"fakultas_short"`
+	JurusanShort  string `json:"jurusan_short"`
 }
 
 type UpdateJurusanSerializer struct {
