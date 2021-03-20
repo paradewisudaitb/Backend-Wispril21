@@ -73,3 +73,9 @@ func (repo *WisudawanRepository) DeleteOne(id_wisudawan string) {
 	repo.db.First(&wisudawan, "IdWisudawan = ?", id_wisudawan)
 	repo.db.Delete(&wisudawan)
 }
+
+func (repo *WisudawanRepository) Filter(jurusan string) []entity.Wisudawan {
+	var wisudawans []entity.Wisudawan
+	repo.db.Where("jurusan = ?", jurusan).Find(&wisudawans)
+	return wisudawans
+}

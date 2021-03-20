@@ -81,6 +81,7 @@ type WisudawanUsecase interface {
 	UpdateWisudawan(item UpdateWisudawanSerializer) error
 	GetWisudawan(idWisudawan string) error
 	GetAllWisudawan(Wisudawan string) error //
+	FilterWisudawan(jurusan string) error
 }
 
 type WisudawanRepository interface {
@@ -89,4 +90,5 @@ type WisudawanRepository interface {
 	AddOne(nim uint32, angkatan uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo string, tanggal_lahir time.Time)
 	UpdateOne(id_wisudawan string, nim *uint32, angkatan *uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo *string, tanggal_lahir *time.Time)
 	DeleteOne(id_wisudawan string)
+	Filter(jurusan string) ([]Wisudawan, error)
 }
