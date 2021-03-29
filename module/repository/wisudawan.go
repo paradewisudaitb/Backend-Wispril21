@@ -5,6 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
 )
 
 type WisudawanRepository struct {
@@ -14,68 +15,105 @@ type WisudawanRepository struct {
 func NewWisudawanRepository(db *gorm.DB) WisudawanRepository {
 	return WisudawanRepository{db: db}
 }
-
-func (repo *WisudawanRepository) AddOne(nim uint32, angkatan uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo string, tanggal_lahir time.Time) {
-	wisudawan := entity.Wisudawan{Nim: nim, Angkatan: angkatan, Nama: nama, Panggilan: panggilan, JudulTA: judul_ta, Instagram: instagram, Linkedin: linkedin, Twitter: twitter, TempatLahir: tempat_lahir, Photo: photo, TanggalLahir: tanggal_lahir}
-	j := entity.Jurusan{}
-	repo.db.First(&j, "id = ?", jurusan)
-	wisudawan.Jurusan = j
-	repo.db.Create(&wisudawan)
+func (repo WisudawanRepository) GetOne(wisudawanID uuid.UUID) (entity.Wisudawan, error) {
+	var result entity.Wisudawan
+	if err := repo.db.First(&result, "id = ?", wisudawanID).Error; err != nil {
+		return entity.Wisudawan{}, err
+	}
+	return result, nil
 }
 
-func (repo *WisudawanRepository) UpdateOne(id_wisudawan string, nim *uint32, angkatan *uint16, nama, panggilan, judul_ta, jurusan, instagram, linkedin, twitter, tempat_lahir, photo *string, tanggal_lahir *time.Time) {
+func (repo WisudawanRepository) GetAll() ([]entity.Wisudawan, error) {
+	var allResults []entity.Wisudawan
+
+	if err := repo.db.Find(&allResults).Error; err != nil {
+		return make([]entity.Wisudawan, 0), err
+	}
+	return allResults, nil
+}
+func (repo WisudawanRepository) AddOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
+	wisudawan := entity.Wisudawan{
+		Nim:          nim,
+		Angkatan:     angkatan,
+		Nama:         nama,
+		Panggilan:    panggilan,
+		JudulTA:      judulTA,
+		Instagram:    instagram,
+		Linkedin:     linkedin,
+		Twitter:      twitter,
+		TempatLahir:  tempatLahir,
+		Photo:        photo,
+		TanggalLahir: tanggalLahir,
+		JurusanID:    jurusanID,
+	}
+	if err := repo.db.Create(&wisudawan).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo WisudawanRepository) UpdateOne(WisudawanID uuid.UUID, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
 	var wisudawan entity.Wisudawan
 	wisudawan_update := map[string]interface{}{}
-	if nim != nil {
-		wisudawan_update["nim"] = *nim
+	if nim != 0 {
+		wisudawan_update["nim"] = nim
 	}
-	if angkatan != nil {
-		wisudawan_update["angkatan"] = *angkatan
+	if angkatan != 0 {
+		wisudawan_update["angkatan"] = angkatan
 	}
-	if nama != nil {
-		wisudawan_update["nama"] = *nama
+	if nama != "" {
+		wisudawan_update["nama"] = nama
 	}
-	if panggilan != nil {
-		wisudawan_update["panggilan"] = *panggilan
+	if panggilan != "" {
+		wisudawan_update["panggilan"] = panggilan
 	}
-	if judul_ta != nil {
-		wisudawan_update["judul_ta"] = *judul_ta
+	if judulTA != "" {
+		wisudawan_update["judul_ta"] = judulTA
 	}
-	if jurusan != nil {
-		j := entity.Jurusan{}
-		repo.db.First(&j, "id = ?", *jurusan)
-		wisudawan_update["jurusan"] = j
+	if instagram != "" {
+		wisudawan_update["instagram"] = instagram
 	}
-	if instagram != nil {
-		wisudawan_update["instagram"] = *instagram
+	if linkedin != "" {
+		wisudawan_update["linkedin"] = linkedin
 	}
-	if linkedin != nil {
-		wisudawan_update["linkedin"] = *linkedin
+	if twitter != "" {
+		wisudawan_update["twitter"] = twitter
 	}
-	if twitter != nil {
-		wisudawan_update["twitter"] = *twitter
+	if tempatLahir != "" {
+		wisudawan_update["tempat_lahir"] = tempatLahir
 	}
-	if tempat_lahir != nil {
-		wisudawan_update["tempat_lahir"] = *tempat_lahir
+	if photo != "" {
+		wisudawan_update["photo"] = photo
 	}
-	if photo != nil {
-		wisudawan_update["photo"] = *photo
+	if !tanggalLahir.IsZero() {
+		wisudawan_update["tanggal_lahir"] = tanggalLahir
 	}
-	if tanggal_lahir != nil {
-		wisudawan_update["tanggal_lahir"] = *tanggal_lahir
+	if jurusanID != "" {
+		wisudawan_update["jurusan_id"] = jurusanID
 	}
-	repo.db.First(&wisudawan, "id = ?", id_wisudawan)
-	repo.db.Model(&wisudawan).Update(wisudawan_update)
+	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", WisudawanID.String()).Error; err != nil {
+		return err
+	}
+	if err := repo.db.Model(&wisudawan).Where("id = ?", WisudawanID.String()).Updates(wisudawan_update).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
-func (repo *WisudawanRepository) DeleteOne(id_wisudawan string) {
-	var wisudawan entity.Wisudawan
-	repo.db.First(&wisudawan, "IdWisudawan = ?", id_wisudawan)
-	repo.db.Delete(&wisudawan)
+func (repo WisudawanRepository) DeleteOne(wisudawanID uuid.UUID) error {
+	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", wisudawanID.String()).Error; err != nil {
+		return err
+	}
+	if err := repo.db.Where("id = ?", wisudawanID.String()).Delete(&entity.Wisudawan{}).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
-func (repo *WisudawanRepository) Filter(jurusan string) []entity.Wisudawan {
-	var wisudawans []entity.Wisudawan
-	repo.db.Where("jurusan = ?", jurusan).Find(&wisudawans)
-	return wisudawans
+func (repo WisudawanRepository) Filter(jurusan string) []entity.Wisudawan {
+	var result []entity.Wisudawan
+	if err := repo.db.Where("jurusan_id = ?", jurusan).Find(&result).Error; err != nil {
+		return nil
+	}
+	return result
 }

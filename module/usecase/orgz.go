@@ -2,44 +2,57 @@ package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
-	"github.com/paradewisudaitb/Backend/module/repository"
 )
 
 type OrgzUseCase struct {
-	orgzrepo repository.OrgzRepository
+	orgzrepo entity.OrgzRepository
 }
 
-func NewOrgzUsecase(a repository.OrgzRepository) entity.OrgzUseCase {
-	return &OrgzUseCase{
+func NewOrgzUsecase(a entity.OrgzRepository) entity.OrgzUseCase {
+	return OrgzUseCase{
 		orgzrepo: a,
 	}
 }
 
-// gak tau mau handling error kalau apa
-func (a *OrgzUseCase) CreateOrgz(item entity.CreateOrgzSerializer) error {
-	a.orgzrepo.AddOne(item.Name, item.Category, item.Logo, *item.ApresiasiPoster, *item.ApresiasiTulisan, *item.ApresiasiVideo)
-	return nil
-}
-
-func (a *OrgzUseCase) DeleteOrgz(item entity.DeleteOrgzSerializer) error {
-	err := a.orgzrepo.DeleteOne(item.IdOrgz)
-	if err != nil {
+func (uc OrgzUseCase) CreateOrgz(item entity.CreateOrgzSerializer) error {
+	if err := uc.orgzrepo.AddOne(
+		item.Name,
+		item.Category,
+		item.Logo,
+		item.ApresiasiPoster,
+		item.ApresiasiTulisan,
+		item.ApresiasiVideo); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
-	err := a.orgzrepo.UpdateOne(item.IdOrgz, item.Name, item.Category, item.Logo, item.ApresiasiPoster, item.ApresiasiTulisan, item.ApresiasiVideo)
+func (uc OrgzUseCase) DeleteOrgz(idOrgz string) error {
+	err := uc.orgzrepo.DeleteOne(idOrgz)
+	if err == nil {
+		return nil
+	}
+	return err
+}
+
+func (uc OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
+	err := uc.orgzrepo.UpdateOne(
+		item.IdOrgz,
+		item.Name,
+		item.Category,
+		item.Logo,
+		item.ApresiasiPoster,
+		item.ApresiasiTulisan,
+		item.ApresiasiVideo)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (a *OrgzUseCase) GetOrgz(idOrgz string) (entity.Orgz, error) {
-	orgz, err := a.orgzrepo.GetOne(idOrgz)
+func (uc OrgzUseCase) GetOrgz(idOrgz string) (entity.Orgz, error) {
+	result, err := uc.orgzrepo.GetOne(idOrgz)
 	if err != nil {
-		return orgz, err
+		return result, err
 	}
-	return orgz, nil
+	return result, nil
 }

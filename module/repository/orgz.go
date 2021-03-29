@@ -1,11 +1,8 @@
 package repository
 
 import (
-	"errors"
-	"reflect"
-
-	"github.com/jinzhu/gorm"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"gorm.io/gorm"
 )
 
 type OrgzRepository struct {
@@ -16,49 +13,68 @@ func NewOrgzRepository(db *gorm.DB) OrgzRepository {
 	return OrgzRepository{db: db}
 }
 
-func (repo *OrgzRepository) GetOne(id string) (entity.Orgz, error) {
-	var orgz entity.Orgz
-	repo.db.First(&orgz, "id = ?", id)
-	if orgz.ID == "" {
-		return orgz, errors.New("Item not found")
+func (repo OrgzRepository) GetOne(idOrgz string) (entity.Orgz, error) {
+	var result entity.Orgz
+	if err := repo.db.First(&result, "id = ?", idOrgz).Error; err != nil {
+		return result, err
 	}
-	return orgz, nil
+	return result, nil
 }
 
-func (repo *OrgzRepository) AddOne(name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) {
-	orgz := entity.Orgz{Name: name, Category: category, ApresiasiPoster: apresiasi_poster, ApresiasiTulisan: apresiasi_tulisan, ApresiasiVideo: apresiasi_video}
-	repo.db.Create(&orgz)
-}
-
-// Kurang handling error buat kalau inputnya gak sesuai
-func (repo *OrgzRepository) UpdateOne(id_organization string, name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video *string) error {
-	orgz := entity.Orgz{Name: *name, Category: *category, ApresiasiPoster: *apresiasi_poster, ApresiasiTulisan: *apresiasi_tulisan, ApresiasiVideo: *apresiasi_video}
-	orgz_update := map[string]interface{}{}
-	orgz_type := reflect.TypeOf(orgz)
-	orgz_value := reflect.ValueOf(orgz)
-	for i := 0; i < orgz_value.NumField(); i++ {
-		field_name := orgz_type.Field(i).Name
-		field_value := orgz_value.Field(i).Interface()
-		if field_value == "" {
-			continue
-		}
-		orgz_update[field_name] = field_value
+func (repo OrgzRepository) AddOne(name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+	create := entity.Orgz{
+		Name:             name,
+		Category:         category,
+		Logo:             logo,
+		ApresiasiPoster:  apresiasi_poster,
+		ApresiasiTulisan: apresiasi_tulisan,
+		ApresiasiVideo:   apresiasi_video,
 	}
-	var new_orgz entity.Orgz
-	if orgz.ID == "" {
-		return errors.New("Item not found")
+	if err := repo.db.Create(&create).Error; err != nil {
+		return err
 	}
-	repo.db.First(&new_orgz, "id = ?", id_organization)
-	repo.db.Model(&new_orgz).Update(orgz_update)
 	return nil
 }
 
-func (repo *OrgzRepository) DeleteOne(id_organization string) error {
-	var orgz entity.Orgz
-	repo.db.First(&orgz, "id = ?", id_organization)
-	if orgz.ID == "" {
-		return errors.New("Item not found")
+func (repo OrgzRepository) UpdateOne(idOrgz, name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+	var target entity.Jurusan
+	update := map[string]interface{}{}
+	if idOrgz != "" {
+		update["id"] = idOrgz
 	}
-	repo.db.Delete(&orgz)
+	if name != "" {
+		update["name"] = name
+	}
+	if category != "" {
+		update["category"] = category
+	}
+	if logo != "" {
+		update["logo"] = logo
+	}
+	if apresiasi_poster != "" {
+		update["apresiasi_poster"] = apresiasi_poster
+	}
+	if apresiasi_tulisan != "" {
+		update["apresiasi_tulisan"] = apresiasi_tulisan
+	}
+	if apresiasi_video != "" {
+		update["apresiasi_video"] = apresiasi_video
+	}
+	if err := repo.db.First(&entity.Orgz{}, "id = ?", idOrgz).Error; err != nil {
+		return err
+	}
+	if err := repo.db.Model(&target).Where("id = ?", idOrgz).Updates(update).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo OrgzRepository) DeleteOne(idOrgz string) error {
+	if err := repo.db.First(&entity.Orgz{}, "id = ?", idOrgz).Error; err != nil {
+		return err
+	}
+	if err := repo.db.Where("id = ?", idOrgz).Delete(&entity.Orgz{}).Error; err != nil {
+		return err
+	}
 	return nil
 }

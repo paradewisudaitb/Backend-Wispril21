@@ -2,28 +2,27 @@ package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
-	"github.com/paradewisudaitb/Backend/module/repository"
 	uuid "github.com/satori/go.uuid"
 )
 
 type JurusanUseCase struct {
-	jurusanrepo repository.JurusanRepository
+	jurusanrepo entity.JurusanRepository
 }
 
-func NewJurusanUsecase(j repository.JurusanRepository) entity.JurusanUseCase {
-	return &JurusanUseCase{
+func NewJurusanUsecase(j entity.JurusanRepository) entity.JurusanUseCase {
+	return JurusanUseCase{
 		jurusanrepo: j,
 	}
 }
 
-func (j *JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
+func (j JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
 	if err := j.jurusanrepo.AddOne((item.Jurusan), (item.Fakultas), (item.FakultasShort), (item.JurusanShort)); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *JurusanUseCase) DeleteJurusan(IdJurusan uuid.UUID) error {
+func (j JurusanUseCase) DeleteJurusan(IdJurusan uuid.UUID) error {
 	err := j.jurusanrepo.DeleteOne(IdJurusan)
 	if err == nil {
 		return nil
@@ -31,14 +30,14 @@ func (j *JurusanUseCase) DeleteJurusan(IdJurusan uuid.UUID) error {
 	return err
 }
 
-func (j *JurusanUseCase) UpdateJurusan(item entity.UpdateJurusanSerializer) error {
+func (j JurusanUseCase) UpdateJurusan(item entity.UpdateJurusanSerializer) error {
 	err := j.jurusanrepo.UpdateOne(item.IdJurusan, item.Jurusan, item.Fakultas, item.FakultasShort, item.JurusanShort)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (j *JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) {
+func (j JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) {
 	result, err := j.jurusanrepo.GetOne(IdJurusan)
 	if err != nil {
 		return result, err

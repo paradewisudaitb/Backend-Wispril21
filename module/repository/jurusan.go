@@ -11,11 +11,11 @@ type JurusanRepository struct {
 	db *gorm.DB
 }
 
-func NewJurusanRepository(db *gorm.DB) JurusanRepository {
-	return JurusanRepository{db: db}
+func NewJurusanRepository(db *gorm.DB) entity.JurusanRepository {
+	return &JurusanRepository{db: db}
 }
 
-func (repo JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
+func (repo *JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	var jurusan entity.Jurusan
 	if err := repo.db.First(&jurusan, "id = ?", id).Error; err != nil {
 		return jurusan, err
@@ -23,7 +23,7 @@ func (repo JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	return jurusan, nil
 }
 
-func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error {
+func (repo *JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error {
 	jurusans := entity.Jurusan{Jurusan: jurusan, Fakultas: fakultas, FakultasShort: fakultas_short, JurusanShort: jurusan_short}
 	if err := repo.db.Create(&jurusans).Error; err != nil {
 		return err
@@ -31,7 +31,7 @@ func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_
 	return nil
 }
 
-func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error {
+func (repo *JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error {
 	var target entity.Jurusan
 	jurusan_update := map[string]interface{}{}
 	if jurusan != "" {
@@ -55,7 +55,7 @@ func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakulta
 	return nil
 }
 
-func (repo JurusanRepository) DeleteOne(id uuid.UUID) error {
+func (repo *JurusanRepository) DeleteOne(id uuid.UUID) error {
 	if err := repo.db.First(&entity.Jurusan{}, "id = ?", id).Error; err != nil {
 		return err
 	}

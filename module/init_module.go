@@ -22,6 +22,7 @@ func NewJurusanModule(g *gin.Engine) JurusanModule {
 	jurusanController := controller.NewJurusanController(g, jurusanUsecase)
 	if db != nil {
 		db.AutoMigrate(&entity.Jurusan{})
+		db.AutoMigrate(&entity.Wisudawan{})
 	}
 
 	return JurusanModule{
