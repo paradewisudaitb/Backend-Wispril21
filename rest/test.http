@@ -1,0 +1,22 @@
+POST http://localhost:80/jurusan/ 
+Content-Type: "application/json"
+
+{
+    "JuRusan": "lalala",
+    "Fakultas": "shgshshjs",
+    "Fakultas_short": "shh",
+    "jUrUsAn_sHort": "sss"
+}
+	
+###
+GET http://localhost:80/jurusan/5763f267-9e32-4c2a-9497-9eb9d14ca419
+
+###
+PUT http://localhost:80/jurusan/ 
+Content-Type: "application/json"
+
+{
+    "id_jurusan": "5763f267-9e32-4c2a-9497-9eb9d14ca419",
+    "JuRusan_short": "123",
+    "fakultas_short": "cdf111111111111111111"
+}

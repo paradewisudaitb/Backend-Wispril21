@@ -36,6 +36,13 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 		})
 		return
 	}
+	if err := serializer.IsValid(j); err != nil {
+		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
+			Code:    http.StatusBadRequest,
+			Message: statuscode.UncompatibleJSON.String(),
+		})
+		return
+	}
 
 	if err := a.usecase.CreateJurusan(j); err != nil {
 		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{

@@ -15,18 +15,18 @@ type Jurusan struct {
 }
 
 type CreateJurusanSerializer struct {
-	Jurusan       *string `json:"jurusan"`
-	Fakultas      *string `json:"fakultas"`
-	FakultasShort *string `json:"fakultas_short"`
-	JurusanShort  *string `json:"jurusan_short"`
+	Jurusan       string `json:"jurusan" wispril:"required"`
+	Fakultas      string `json:"fakultas" wispril:"required"`
+	FakultasShort string `json:"fakultas_short" wispril:"required"`
+	JurusanShort  string `json:"jurusan_short" wispril:"required"`
 }
 
 type UpdateJurusanSerializer struct {
-	IdJurusan     uuid.UUID `json:"id_jurusan"`
-	Jurusan       *string   `json:"jurusan"`
-	Fakultas      *string   `json:"fakultas"`
-	FakultasShort *string   `json:"fakultas_short"`
-	JurusanShort  *string   `json:"jurusan_short"`
+	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required"`
+	Jurusan       string    `json:"jurusan"`
+	Fakultas      string    `json:"fakultas"`
+	FakultasShort string    `json:"fakultas_short"`
+	JurusanShort  string    `json:"jurusan_short"`
 }
 
 type JurusanController interface {
@@ -46,6 +46,6 @@ type JurusanUseCase interface {
 type JurusanRepository interface {
 	GetOne(id uuid.UUID) (Jurusan, error)
 	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string)
-	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error
+	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error
 	DeleteOne(id uuid.UUID) error
 }

@@ -31,25 +31,25 @@ func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_
 	repo.db.Create(&jurusans)
 }
 
-func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
+func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error {
 	var jurusans entity.Jurusan
 	jurusan_update := map[string]interface{}{}
-	if jurusan != nil {
-		jurusan_update["jurusan"] = *jurusan
+	if jurusan != "" {
+		jurusan_update["jurusan"] = jurusan
 	}
-	if fakultas != nil {
-		jurusan_update["fakultas"] = *fakultas
+	if fakultas != "" {
+		jurusan_update["fakultas"] = fakultas
 	}
-	if jurusan_short != nil {
-		jurusan_update["jurusan_short"] = *jurusan_short
+	if jurusan_short != "" {
+		jurusan_update["jurusan_short"] = jurusan_short
 	}
-	if fakultas_short != nil {
-		jurusan_update["fakultas_short"] = *fakultas_short
+	if fakultas_short != "" {
+		jurusan_update["fakultas_short"] = fakultas_short
 	}
-	if jurusans.ID == "" {
-		return errors.New("Id jurusan not found")
+	repo.db.First(&jurusans, "id = ?", id.String())
+	if (jurusans == entity.Jurusan{}) {
+		return errors.New("Jurusan not found.")
 	}
-	repo.db.First(&jurusans, "id = ?", id)
 	repo.db.Model(&jurusans).Updates(jurusan_update)
 	return nil
 }
