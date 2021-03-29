@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
 )
 
 type WisudawanUseCase struct {
@@ -12,6 +13,7 @@ func NewWisudawanUsecase(a entity.WisudawanRepository) entity.WisudawanUsecase {
 	return WisudawanUseCase{
 		wisudawanrepo: a,
 	}
+
 }
 
 func (a WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer) error {
@@ -33,8 +35,8 @@ func (a WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer)
 	}
 	return nil
 }
-func (a WisudawanUseCase) DeleteWisudawan(item entity.DeleteWisudawanSerializer) error {
-	if err := a.wisudawanrepo.DeleteOne(item.IdWisudawan); err != nil {
+func (a WisudawanUseCase) DeleteWisudawan(idWisudawan uuid.UUID) error {
+	if err := a.wisudawanrepo.DeleteOne(idWisudawan); err != nil {
 		return err
 	}
 	return nil
@@ -61,26 +63,18 @@ func (a WisudawanUseCase) UpdateWisudawan(item entity.UpdateWisudawanSerializer)
 	return nil
 }
 
-// type WisudawanRepository interface {
-// 	GetOne(wisudawanID uuid.UUID) (Wisudawan, error)
-// 	GetAll() ([]Wisudawan, error)
-// 	AddOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusan, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
-// 	UpdateOne(WisudawanID uuid.UUID, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
-// 	DeleteOne(WisudawanID uuid.UUID) error
-// 	// Filter(jurusan string) ([]Wisudawan, error)
-// }
-func (a WisudawanUseCase) GetWisudawan(idWisudawan string) (entity.Wisudawan, error) {
+func (a WisudawanUseCase) GetWisudawan(idWisudawan uuid.UUID) (entity.Wisudawan, error) {
 	var result entity.Wisudawan
 	if result, err := a.wisudawanrepo.GetOne(idWisudawan); err != nil {
-		return entity.Wisudawan{}, err
+		return result, err
 	}
 	return result, nil
 }
 
-func (a WisudawanUseCase) GetAllWisudawan(wisudawan string) ([]entity.Wisudawan, error) {
+func (a WisudawanUseCase) GetAllWisudawan() ([]entity.Wisudawan, error) {
 	var result []entity.Wisudawan
-	if result, err := a.wisudawanrepo.GetOne(idWisudawan); err != nil {
-		return entity.Wisudawan{}, err
+	if result, err := a.wisudawanrepo.GetAll(); err != nil {
+		return result, err
 	}
 	return result, nil
 }

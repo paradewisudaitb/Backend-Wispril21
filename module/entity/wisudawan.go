@@ -10,20 +10,19 @@ import (
 
 type Wisudawan struct {
 	domain.EntityBase
-	Nim           uint32
-	Nama          string `gorm:"type:VARCHAR(255);not null"`
-	Panggilan     string `gorm:"type:VARCHAR(255);not null"`
-	JudulTA       string `gorm:"type:VARCHAR(255);not null"`
-	Angkatan      uint16 `gorm:"type:SMALLINT;not null"`
-	JurusanID     string
-	Jurusan       Jurusan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Instagram     string  `gorm:"type:VARCHAR(255)"`
-	Linkedin      string  `gorm:"type:VARCHAR(255)"`
-	Twitter       string  `gorm:"type:VARCHAR(255)"`
-	TempatLahir   string  `gorm:"type:VARCHAR(255)"`
-	TanggalLahir  time.Time
-	Photo         string  `gorm:"type:VARCHAR(255)"`
-	Organizations []*Orgz `gorm:"many2many:wisudawan_orgz;"`
+	Nim          uint32
+	Nama         string `gorm:"type:VARCHAR(255);not null"`
+	Panggilan    string `gorm:"type:VARCHAR(255);not null"`
+	JudulTA      string `gorm:"type:VARCHAR(255);not null"`
+	Angkatan     uint16 `gorm:"type:SMALLINT;not null"`
+	JurusanID    string
+	Jurusan      Jurusan   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Instagram    string    `gorm:"type:VARCHAR(255)"`
+	Linkedin     string    `gorm:"type:VARCHAR(255)"`
+	Twitter      string    `gorm:"type:VARCHAR(255)"`
+	TempatLahir  string    `gorm:"type:VARCHAR(255)"`
+	TanggalLahir time.Time `gorm:"type:DATE"`
+	Photo        string    `gorm:"type:VARCHAR(255)"`
 }
 
 func (Wisudawan) TableName() string {
@@ -36,53 +35,49 @@ type SimpleWisudawanSerializer struct {
 }
 
 type CreateWisudawanSerializer struct {
-	Nim          uint32    `json:"nim"`
-	Nama         string    `json:"nama"`
-	Panggilan    string    `json:"nama_panggilan"`
-	JudulTA      string    `json:"judul_ta"`
-	Angkatan     uint16    `json:"angkatan"`
-	Jurusan      string    `json:"jurusan"`
-	Instagram    string    `json:"instagram"`
-	Linkedin     string    `json:"linkedin"`
-	Twitter      string    `json:"twitter"`
-	TempatLahir  string    `json:"tempat_lahir"`
+	Nim          uint32    `json:"nim" wispril:"required"`
+	Nama         string    `json:"nama" wispril:"required" binding:"lte=255"`
+	Panggilan    string    `json:"nama_panggilan" wispril:"required" binding:"lte=255"`
+	JudulTA      string    `json:"judul_ta" wispril:"required" binding:"lte=255"`
+	Angkatan     uint16    `json:"angkatan" wispril:"required" binding:"lte=25"`
+	Jurusan      string    `json:"jurusan_id"`
+	Instagram    string    `json:"instagram" binding:"lte=255"`
+	Linkedin     string    `json:"linkedin" binding:"lte=255"`
+	Twitter      string    `json:"twitter" binding:"lte=255"`
+	TempatLahir  string    `json:"tempat_lahir" binding:"lte=255"`
 	TanggalLahir time.Time `json:"tanggal_lahir"`
-	Photo        string    `json:"photo"`
+	Photo        string    `json:"photo" binding:"lte=255"`
 }
 
 type UpdateWisudawanSerializer struct {
-	IdWisudawan  string    `json:"id_wisudawan"`
-	NIM          uint32    `json:"nim"`
-	Nama         string    `json:"nama"`
-	Panggilan    string    `json:"nama_panggilan"`
-	JudulTA      string    `json:"judul_ta"`
-	Angkatan     uint16    `json:"angkatan"`
-	Jurusan      string    `json:"jurusan"`
-	Instagram    string    `json:"instagram"`
-	Linkedin     string    `json:"linkedin"`
-	Twitter      string    `json:"twitter"`
-	TempatLahir  string    `json:"tempat_lahir"`
+	IdWisudawan  uuid.UUID `json:"id_wisudawan"`
+	NIM          uint32    `json:"nim" wispril:"required"`
+	Nama         string    `json:"nama" binding:"lte=255"`
+	Panggilan    string    `json:"nama_panggilan" binding:"lte=255"`
+	JudulTA      string    `json:"judul_ta" binding:"lte=255"`
+	Angkatan     uint16    `json:"angkatan" binding:"lte=25"`
+	Jurusan      string    `json:"jurusan_id"`
+	Instagram    string    `json:"instagram" binding:"lte=255"`
+	Linkedin     string    `json:"linkedin" binding:"lte=255"`
+	Twitter      string    `json:"twitter" binding:"lte=255"`
+	TempatLahir  string    `json:"tempat_lahir"  binding:"lte=255"`
 	TanggalLahir time.Time `json:"tanggal_lahir"`
-	Photo        string    `json:"photo"`
-}
-
-type DeleteWisudawanSerializer struct {
-	IdWisudawan string `json:"id_wisudawan"`
+	Photo        string    `json:"photo"  binding:"lte=255"`
 }
 
 type WisudawanController interface {
-	CreateWisudawan(gin.Context) error
-	UpdateWisudawan(gin.Context) error
-	DeleteWisudawan(gin.Context) error
-	GetWisudawan(gin.Context) error
+	CreateWisudawan(ctx *gin.Context)
+	UpdateWisudawan(ctx *gin.Context)
+	DeleteWisudawan(ctx *gin.Context)
+	GetWisudawan(ctx *gin.Context)
 }
 
 type WisudawanUsecase interface {
 	CreateWisudawan(item CreateWisudawanSerializer) error
-	DeleteWisudawan(item DeleteWisudawanSerializer) error
+	DeleteWisudawan(idWisudawan uuid.UUID) error
 	UpdateWisudawan(item UpdateWisudawanSerializer) error
-	GetWisudawan(idWisudawan string) (Wisudawan, error)
-	GetAllWisudawan(wisudawan string) ([]Wisudawan, error)
+	GetWisudawan(idWisudawan uuid.UUID) (Wisudawan, error)
+	GetAllWisudawan() ([]Wisudawan, error)
 	FilterWisudawan(jurusan string) ([]Wisudawan, error)
 }
 

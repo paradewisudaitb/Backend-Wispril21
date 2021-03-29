@@ -7,20 +7,16 @@ import (
 
 type Message struct {
 	domain.EntityBase
-	receiver Wisudawan
-	message  string
-	sender   string
+	ReceiverID string
+	Receiver   Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Message    string    `gorm:"type:text;"`
+	Sender     string    `gorm:"type:VARCHAR(255);not null"`
 }
 
 type CreateMessageSerializer struct {
-	IdWisudawan string `json:"id_wisudawan"`
-	Message     string `json:"message"`
-	Sender      string `json:"sender"`
-}
-
-type DeleteMessageSerializer struct {
-	IdWisudawan string `json:"id_wisudawan"`
-	IdMessage   string `json:"id_message"`
+	IdWisudawan string `json:"id_wisudawan" binding:"required"`
+	Message     string `json:"message" binding:"required"`
+	Sender      string `json:"sender" binding:"required;lte=255"`
 }
 
 type MessageController interface {
@@ -30,10 +26,10 @@ type MessageController interface {
 
 type MessageUsecase interface {
 	CreateMessage(item CreateMessageSerializer) error
-	DeleteMessage(item DeleteMessageSerializer) error
+	DeleteMessage(idMessage string) error
 }
 
 type MessageRepository interface {
 	AddOne(message, sender, idWisudawan string) error
-	DeleteOne(idMessage, idWisudawan string) error
+	DeleteOne(idMessage string) error
 }

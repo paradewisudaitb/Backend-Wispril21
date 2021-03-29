@@ -49,6 +49,7 @@ func (uc OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
 	}
 	return nil
 }
+
 func (uc OrgzUseCase) GetOrgz(idOrgz string) (entity.Orgz, error) {
 	result, err := uc.orgzrepo.GetOne(idOrgz)
 	if err != nil {

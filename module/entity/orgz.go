@@ -1,18 +1,18 @@
 package entity
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/domain"
 )
 
 type Orgz struct {
 	domain.EntityBase
-	Name             string       `gorm:"type:VARCHAR(255);not null"`
-	Category         string       `gorm:"type:VARCHAR(64);not null"`
-	Logo             string       `gorm:"type:VARCHAR(255);not null"`
-	ApresiasiPoster  string       `gorm:"type:VARCHAR(255);"`
-	ApresiasiTulisan string       `gorm:"type:text;"`
-	ApresiasiVideo   string       `gorm:"type:VARCHAR(255);"`
-	Wisudawan        []*Wisudawan `gorm:"many2many:wisudawan_orgz;"`
+	Name             string `gorm:"type:VARCHAR(255);not null"`
+	Category         string `gorm:"type:VARCHAR(64);not null"`
+	Logo             string `gorm:"type:VARCHAR(255);not null"`
+	ApresiasiPoster  string `gorm:"type:VARCHAR(255);"`
+	ApresiasiTulisan string `gorm:"type:text;"`
+	ApresiasiVideo   string `gorm:"type:VARCHAR(255);"`
 }
 
 type CreateOrgzSerializer struct {
@@ -32,6 +32,13 @@ type UpdateOrgzSerializer struct {
 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
 	ApresiasiTulisan string `json:"apresiasi_tulisan"`
 	ApresiasiVideo   string `json:"apresiasi_video" binding:"lte=255"`
+}
+
+type OrgzController interface {
+	CreateOrgz(ctx *gin.Context)
+	UpdateOrgz(ctx *gin.Context)
+	DeleteOrgz(ctx *gin.Context)
+	GetOrgz(ctx *gin.Context)
 }
 
 type OrgzUseCase interface {
