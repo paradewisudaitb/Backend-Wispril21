@@ -1,4 +1,4 @@
-package content
+package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"

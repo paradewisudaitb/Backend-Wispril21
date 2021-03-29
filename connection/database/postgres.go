@@ -11,7 +11,7 @@ import (
 
 // PostgresConnect is function to make connection
 func PostgresConnect() *gorm.DB {
-	if database == nil {
+	if dbConnection == nil {
 		godotenv.Load()
 		host := os.Getenv("PG_HOST")
 		port := os.Getenv("PG_PORT")
@@ -22,10 +22,10 @@ func PostgresConnect() *gorm.DB {
 			"password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta",
 			host, port, user, password, dbname)
 		dTemp, err := gorm.Open(postgres.Open(psqlLoginInfo), &gorm.Config{})
-		database = dTemp
+		dbConnection = dTemp
 		if err != nil {
 			panic(err)
 		}
 	}
-	return database
+	return dbConnection
 }

@@ -29,27 +29,23 @@ type UpdateJurusanSerializer struct {
 	JurusanShort  *string   `json:"jurusan_short"`
 }
 
-type DeleteJurusanSerializer struct {
-	IdJurusan uuid.UUID `json:"id_jurusan"`
-}
-
 type JurusanController interface {
-	CreateJurusan(gin.Context) error
-	UpdateJurusan(gin.Context) error
-	DeleteJurusan(gin.Context) error
-	GetJurusan(gin.Context) error
+	CreateJurusan(ctx *gin.Context)
+	UpdateJurusan(ctx *gin.Context)
+	DeleteJurusan(ctx *gin.Context)
+	GetJurusan(ctx *gin.Context)
 }
 
 type JurusanUseCase interface {
 	CreateJurusan(item CreateJurusanSerializer) error
-	DeleteJurusan(item DeleteJurusanSerializer) error
+	DeleteJurusan(IdJurusan uuid.UUID) error
 	UpdateJurusan(item UpdateJurusanSerializer) error
 	GetJurusan(IdJurusan uuid.UUID) (Jurusan, error)
 }
 
 type JurusanRepository interface {
-	GetOne(id_jurusan uuid.UUID) (Jurusan, error)
+	GetOne(id uuid.UUID) (Jurusan, error)
 	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string)
-	UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error
-	DeleteOne(id_jurusan uuid.UUID) error
+	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error
+	DeleteOne(id uuid.UUID) error
 }

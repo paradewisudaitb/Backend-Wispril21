@@ -4,9 +4,12 @@ type StatusCode int
 
 const (
 	UnknownError StatusCode = iota
-	Other
+	UncompatibleJSON
+	OK
+	EmptyParam
+	UnknownUUID
 )
 
 func (s StatusCode) String() string {
-	return [...]string{"unknowerror", "other"}[s]
+	return [...]string{"unknowerror", "uncompatible_json", "ok", "empty_param", "unknown_uuid"}[s]
 }

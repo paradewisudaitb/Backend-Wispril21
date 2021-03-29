@@ -3,7 +3,8 @@ package repository
 import (
 	"errors"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
+
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
 )
@@ -30,7 +31,7 @@ func (repo *JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan
 	repo.db.Create(&jurusans)
 }
 
-func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
+func (repo *JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
 	var jurusans entity.Jurusan
 	jurusan_update := map[string]interface{}{}
 	if jurusan != nil {
@@ -48,14 +49,14 @@ func (repo *JurusanRepository) UpdateOne(id_jurusan uuid.UUID, jurusan, fakultas
 	if jurusans.ID == "" {
 		return errors.New("Id jurusan not found")
 	}
-	repo.db.First(&jurusans, "id = ?", id_jurusan)
-	repo.db.Model(&jurusans).Update(jurusan_update)
+	repo.db.First(&jurusans, "id = ?", id)
+	repo.db.Model(&jurusans).Updates(jurusan_update)
 	return nil
 }
 
-func (repo *JurusanRepository) DeleteOne(id_jurusan uuid.UUID) error {
+func (repo *JurusanRepository) DeleteOne(id uuid.UUID) error {
 	var jurusans entity.Jurusan
-	repo.db.First(&jurusans, "id = ?", id_jurusan)
+	repo.db.First(&jurusans, "id = ?", id)
 	if jurusans.ID == "" {
 		return errors.New("Id jurusan not found")
 	}

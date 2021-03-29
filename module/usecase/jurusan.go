@@ -1,4 +1,4 @@
-package content
+package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
@@ -17,12 +17,12 @@ func NewJurusanUsecase(j repository.JurusanRepository) entity.JurusanUseCase {
 }
 
 func (j *JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
-	j.jurusanrepo.AddOne(*item.Jurusan, *item.Fakultas, *item.FakultasShort, *item.JurusanShort)
+	j.jurusanrepo.AddOne(*(item.Jurusan), *(item.Fakultas), *(item.FakultasShort), *(item.JurusanShort))
 	return nil
 }
 
-func (j *JurusanUseCase) DeleteJurusan(item entity.DeleteJurusanSerializer) error {
-	err := j.jurusanrepo.DeleteOne(item.IdJurusan)
+func (j *JurusanUseCase) DeleteJurusan(IdJurusan uuid.UUID) error {
+	err := j.jurusanrepo.DeleteOne(IdJurusan)
 	if err == nil {
 		return nil
 	}

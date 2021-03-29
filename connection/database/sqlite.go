@@ -6,12 +6,12 @@ import (
 )
 
 func SQLiteConnect() *gorm.DB {
-	if database == nil {
+	if dbConnection == nil {
 		dTemp, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
-		database = dTemp
+		dbConnection = dTemp
 		if err != nil {
 			panic(err)
 		}
 	}
-	return database
+	return dbConnection
 }

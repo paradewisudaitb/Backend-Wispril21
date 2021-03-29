@@ -1,4 +1,4 @@
-package content
+package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
@@ -14,7 +14,6 @@ type WisudawanUseCase struct {
 // 	// 	wisudawanrepo: a,
 // 	// }
 // }
-
 func (a *WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer) error
 func (a *WisudawanUseCase) DeleteWisudawan(item entity.DeleteWisudawanSerializer) error
 func (a *WisudawanUseCase) UpdateWisudawan(item entity.UpdateWisudawanSerializer) error
