@@ -14,6 +14,10 @@ type Jurusan struct {
 	JurusanShort  string `gorm:"type:VARCHAR(5);not null"`
 }
 
+func (Jurusan) TableName() string {
+	return "jurusan"
+}
+
 type CreateJurusanSerializer struct {
 	Jurusan       string `json:"jurusan" wispril:"required"`
 	Fakultas      string `json:"fakultas" wispril:"required"`
@@ -22,7 +26,7 @@ type CreateJurusanSerializer struct {
 }
 
 type UpdateJurusanSerializer struct {
-	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required" binding:"uuid"`
+	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required"`
 	Jurusan       string    `json:"jurusan"`
 	Fakultas      string    `json:"fakultas"`
 	FakultasShort string    `json:"fakultas_short" binding:"lte=5"`
@@ -45,7 +49,7 @@ type JurusanUseCase interface {
 
 type JurusanRepository interface {
 	GetOne(id uuid.UUID) (Jurusan, error)
-	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string)
+	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error
 	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error
 	DeleteOne(id uuid.UUID) error
 }

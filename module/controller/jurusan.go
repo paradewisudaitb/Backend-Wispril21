@@ -37,7 +37,7 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.CreateJurusan(j); err != nil {
-		panic(statuscode.UnknownError.String())
+		panic(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -47,11 +47,11 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 func (a JurusanController) UpdateJurusan(ctx *gin.Context) {
 	var j entity.UpdateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
-		panic(statuscode.UncompatibleJSON.String())
+		panic(err.Error())
 	}
 
 	if err := a.usecase.UpdateJurusan(j); err != nil {
-		panic(statuscode.UnknownError.String())
+		panic(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -70,7 +70,7 @@ func (a JurusanController) DeleteJurusan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.DeleteJurusan(idToUuid); err != nil {
-		panic(statuscode.UnknownError.String())
+		panic(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -90,7 +90,7 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 
 	result, err := a.usecase.GetJurusan(idToUuid)
 	if err != nil {
-		panic(statuscode.UnknownError.String())
+		panic(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{

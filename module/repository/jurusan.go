@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"errors"
-
 	"gorm.io/gorm"
 
 	"github.com/paradewisudaitb/Backend/module/entity"
@@ -19,20 +17,22 @@ func NewJurusanRepository(db *gorm.DB) JurusanRepository {
 
 func (repo JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	var jurusan entity.Jurusan
-	repo.db.First(&jurusan, "id = ?", id)
-	if jurusan.ID == "" {
-		return jurusan, nil
+	if err := repo.db.First(&jurusan, "id = ?", id).Error; err != nil {
+		return jurusan, err
 	}
 	return jurusan, nil
 }
 
-func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) {
+func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error {
 	jurusans := entity.Jurusan{Jurusan: jurusan, Fakultas: fakultas, FakultasShort: fakultas_short, JurusanShort: jurusan_short}
-	repo.db.Create(&jurusans)
+	if err := repo.db.Create(&jurusans).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error {
-	var jurusans entity.Jurusan
+	var target entity.Jurusan
 	jurusan_update := map[string]interface{}{}
 	if jurusan != "" {
 		jurusan_update["jurusan"] = jurusan
@@ -46,20 +46,21 @@ func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakulta
 	if fakultas_short != "" {
 		jurusan_update["fakultas_short"] = fakultas_short
 	}
-	repo.db.First(&jurusans, "id = ?", id.String())
-	if (jurusans == entity.Jurusan{}) {
-		return errors.New("Jurusan not found.")
+	if err := repo.db.First(&entity.Jurusan{}, "id = ?", id).Error; err != nil {
+		return err
 	}
-	repo.db.Model(&jurusans).Updates(jurusan_update)
+	if err := repo.db.Model(&target).Where("id = ?", id.String()).Updates(jurusan_update).Error; err != nil {
+		return err
+	}
 	return nil
 }
 
 func (repo JurusanRepository) DeleteOne(id uuid.UUID) error {
-	var jurusans entity.Jurusan
-	repo.db.First(&jurusans, "id = ?", id)
-	if jurusans.ID == "" {
-		return errors.New("Id jurusan not found")
+	if err := repo.db.First(&entity.Jurusan{}, "id = ?", id).Error; err != nil {
+		return err
 	}
-	repo.db.Delete(&jurusans)
+	if err := repo.db.Where("id = ?", id.String()).Delete(&entity.Jurusan{}).Error; err != nil {
+		return err
+	}
 	return nil
 }

@@ -17,7 +17,9 @@ func NewJurusanUsecase(j repository.JurusanRepository) entity.JurusanUseCase {
 }
 
 func (j *JurusanUseCase) CreateJurusan(item entity.CreateJurusanSerializer) error {
-	j.jurusanrepo.AddOne((item.Jurusan), (item.Fakultas), (item.FakultasShort), (item.JurusanShort))
+	if err := j.jurusanrepo.AddOne((item.Jurusan), (item.Fakultas), (item.FakultasShort), (item.JurusanShort)); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -37,9 +39,9 @@ func (j *JurusanUseCase) UpdateJurusan(item entity.UpdateJurusanSerializer) erro
 	return nil
 }
 func (j *JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) {
-	jurusans, err := j.jurusanrepo.GetOne(IdJurusan)
+	result, err := j.jurusanrepo.GetOne(IdJurusan)
 	if err != nil {
-		return jurusans, err
+		return result, err
 	}
-	return jurusans, nil
+	return result, nil
 }

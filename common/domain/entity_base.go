@@ -8,10 +8,9 @@ import (
 )
 
 type EntityBase struct {
-	ID        string     `gorm:"primary_key;" json:"id"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
-	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
+	ID        string    `gorm:"primaryKey;" json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (e *EntityBase) BeforeCreate(scope *gorm.DB) error {

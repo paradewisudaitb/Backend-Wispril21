@@ -2,23 +2,23 @@ POST http://localhost:80/jurusan/
 Content-Type: "application/json"
 
 {
-    "JuRusan": "lalala",
-    "Fakultas": "shgshshjs",
-    "Fakultas_short": "blublublublu",
-    "jUrUsAn_sHort": "blublublublu"
+    "JuRusan": "ziizza",
+    "Fakultas": "gagas",
+    "Fakultas_short": "1aa",
+    "jUrUsAn_sHort": "sds"
 }
 ###
-GET http://localhost:80/jurusan/dfd0b035-14ad-4478-aff3-3034e1490d4b
+GET http://localhost:80/jurusan/1dde1bf8-ac86-44a6-97c2-0cd4393c44fb
 	
 ###
-DELETE http://localhost:80/jurusan/b8f8f7cb-29f6-425b-a6e9-a093dce96278
+DELETE http://localhost:80/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
 
 ###
 PUT http://localhost:80/jurusan/ 
 Content-Type: "application/json"
 
 {
-    "id_jurusan": "5763f267-9e32-4c2a-9497-9eb9d14ca419",
-    "JuRusan_short": "123232222",
-    "fakultas_short": "cdf111111111111111111"
+    "id_jurusan": "1dde1bf8-ac86-44a6-97c2-0cd4393c44fb",
+    "fakultas_short": "nyam",
+    "jurusan": "123"
 }
