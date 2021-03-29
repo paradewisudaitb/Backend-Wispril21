@@ -30,121 +30,67 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 	var j entity.CreateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		// Error dari post
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UncompatibleJSON.String(),
-		})
-		return
+		panic(statuscode.UncompatibleJSON.String())
 	}
 	if err := serializer.IsValid(j); err != nil {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UncompatibleJSON.String(),
-		})
-		return
+		panic(statuscode.UncompatibleJSON.String())
 	}
 
 	if err := a.usecase.CreateJurusan(j); err != nil {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownError.String(),
-		})
-		return
+		panic(statuscode.UnknownError.String())
 	}
 
-	ctx.JSON(http.StatusOK, serializer.ResponseBase{
-		Code:    http.StatusOK,
-		Message: statuscode.OK.String(),
-	})
+	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
 	return
 }
 
 func (a JurusanController) UpdateJurusan(ctx *gin.Context) {
 	var j entity.UpdateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
-		// Error dari post
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UncompatibleJSON.String(),
-		})
-		return
+		panic(statuscode.UncompatibleJSON.String())
 	}
 
 	if err := a.usecase.UpdateJurusan(j); err != nil {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownError.String(),
-		})
-		return
+		panic(statuscode.UnknownError.String())
 	}
 
-	ctx.JSON(http.StatusOK, serializer.ResponseBase{
-		Code:    http.StatusOK,
-		Message: statuscode.OK.String(),
-	})
+	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
 	return
 }
 
 func (a JurusanController) DeleteJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.EmptyParam.String(),
-		})
-		return
+		panic(statuscode.EmptyParam.String())
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownUUID.String(),
-		})
-		return
+		panic(statuscode.UnknownUUID.String())
 	}
 
 	if err := a.usecase.DeleteJurusan(idToUuid); err != nil {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownError.String(),
-		})
-		return
+		panic(statuscode.UnknownError.String())
 	}
 
-	ctx.JSON(http.StatusOK, serializer.ResponseBase{
-		Code:    http.StatusOK,
-		Message: statuscode.OK.String(),
-	})
+	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
 	return
 }
 
 func (a JurusanController) GetJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.EmptyParam.String(),
-		})
-		return
+		panic(statuscode.EmptyParam.String())
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownUUID.String(),
-		})
-		return
+		panic(statuscode.UnknownUUID.String())
 	}
 
 	result, err := a.usecase.GetJurusan(idToUuid)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
-			Code:    http.StatusBadRequest,
-			Message: statuscode.UnknownError.String(),
-		})
-		return
+		panic(statuscode.UnknownError.String())
 	}
 
 	ctx.JSON(http.StatusOK, result)

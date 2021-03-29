@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/paradewisudaitb/Backend/module"
+	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 
 	fmt.Println("Starting server...")
 	r := gin.Default()
+	middleware.InitErrorHandler(r)
 	module.NewJurusanModule(r)
 	r.Run()
 
