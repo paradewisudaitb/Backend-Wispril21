@@ -17,16 +17,16 @@ type Jurusan struct {
 type CreateJurusanSerializer struct {
 	Jurusan       string `json:"jurusan" wispril:"required"`
 	Fakultas      string `json:"fakultas" wispril:"required"`
-	FakultasShort string `json:"fakultas_short" wispril:"required"`
-	JurusanShort  string `json:"jurusan_short" wispril:"required"`
+	FakultasShort string `json:"fakultas_short" wispril:"required" binding:"lte=5"`
+	JurusanShort  string `json:"jurusan_short" wispril:"required" binding:"lte=5"`
 }
 
 type UpdateJurusanSerializer struct {
-	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required"`
+	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required" binding:"uuid"`
 	Jurusan       string    `json:"jurusan"`
 	Fakultas      string    `json:"fakultas"`
-	FakultasShort string    `json:"fakultas_short"`
-	JurusanShort  string    `json:"jurusan_short"`
+	FakultasShort string    `json:"fakultas_short" binding:"lte=5"`
+	JurusanShort  string    `json:"jurusan_short" binding:"lte=5"`
 }
 
 type JurusanController interface {

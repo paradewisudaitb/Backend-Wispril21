@@ -93,6 +93,8 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 		panic(statuscode.UnknownError.String())
 	}
 
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         result})
 	return
 }

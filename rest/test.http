@@ -7,9 +7,11 @@ Content-Type: "application/json"
     "Fakultas_short": "blublublublu",
     "jUrUsAn_sHort": "blublublublu"
 }
+###
+GET http://localhost:80/jurusan/dfd0b035-14ad-4478-aff3-3034e1490d4b
 	
 ###
-GET http://localhost:80/jurusan/5763f267-9e32-4c2a-9497-9eb9d14ca419
+DELETE http://localhost:80/jurusan/b8f8f7cb-29f6-425b-a6e9-a093dce96278
 
 ###
 PUT http://localhost:80/jurusan/ 
@@ -17,6 +19,6 @@ Content-Type: "application/json"
 
 {
     "id_jurusan": "5763f267-9e32-4c2a-9497-9eb9d14ca419",
-    "JuRusan_short": "123",
+    "JuRusan_short": "123232222",
     "fakultas_short": "cdf111111111111111111"
 }

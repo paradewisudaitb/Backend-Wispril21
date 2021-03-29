@@ -11,5 +11,5 @@ const (
 )
 
 func (s StatusCode) String() string {
-	return [...]string{"unknowerror", "uncompatible_json", "ok", "empty_param", "unknown_uuid"}[s]
+	return [...]string{"unknown_error", "uncompatible_json", "ok", "empty_param", "unknown_uuid"}[s]
 }

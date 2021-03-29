@@ -21,7 +21,7 @@ func (repo JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	var jurusan entity.Jurusan
 	repo.db.First(&jurusan, "id = ?", id)
 	if jurusan.ID == "" {
-		return jurusan, errors.New("Id jurusan not found")
+		return jurusan, nil
 	}
 	return jurusan, nil
 }
