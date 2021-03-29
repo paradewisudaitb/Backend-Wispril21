@@ -3,8 +3,8 @@ package domain
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type EntityBase struct {
@@ -14,8 +14,7 @@ type EntityBase struct {
 	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
 }
 
-func (EntityBase) BeforeCreate(scope *gorm.Scope) error {
-	uuid := uuid.NewV4().String()
-	scope.SetColumn("id", uuid)
+func (e *EntityBase) BeforeCreate(scope *gorm.DB) error {
+	e.ID = uuid.NewV4().String()
 	return nil
 }

@@ -17,7 +17,7 @@ func NewJurusanRepository(db *gorm.DB) JurusanRepository {
 	return JurusanRepository{db: db}
 }
 
-func (repo *JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
+func (repo JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	var jurusan entity.Jurusan
 	repo.db.First(&jurusan, "id = ?", id)
 	if jurusan.ID == "" {
@@ -26,12 +26,12 @@ func (repo *JurusanRepository) GetOne(id uuid.UUID) (entity.Jurusan, error) {
 	return jurusan, nil
 }
 
-func (repo *JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) {
+func (repo JurusanRepository) AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) {
 	jurusans := entity.Jurusan{Jurusan: jurusan, Fakultas: fakultas, FakultasShort: fakultas_short, JurusanShort: jurusan_short}
 	repo.db.Create(&jurusans)
 }
 
-func (repo *JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
+func (repo JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short *string) error {
 	var jurusans entity.Jurusan
 	jurusan_update := map[string]interface{}{}
 	if jurusan != nil {
@@ -54,7 +54,7 @@ func (repo *JurusanRepository) UpdateOne(id uuid.UUID, jurusan, fakultas, fakult
 	return nil
 }
 
-func (repo *JurusanRepository) DeleteOne(id uuid.UUID) error {
+func (repo JurusanRepository) DeleteOne(id uuid.UUID) error {
 	var jurusans entity.Jurusan
 	repo.db.First(&jurusans, "id = ?", id)
 	if jurusans.ID == "" {

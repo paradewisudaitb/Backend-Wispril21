@@ -25,7 +25,8 @@ func NewJurusanController(router *gin.Engine, ju entity.JurusanUseCase) JurusanC
 	}
 	return cont
 }
-func (a *JurusanController) CreateJurusan(ctx *gin.Context) {
+
+func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 	var j entity.CreateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		// Error dari post
@@ -41,15 +42,17 @@ func (a *JurusanController) CreateJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownError.String(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseBase{
 		Code:    http.StatusOK,
 		Message: statuscode.OK.String(),
 	})
+	return
 }
 
-func (a *JurusanController) UpdateJurusan(ctx *gin.Context) {
+func (a JurusanController) UpdateJurusan(ctx *gin.Context) {
 	var j entity.UpdateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		// Error dari post
@@ -65,21 +68,24 @@ func (a *JurusanController) UpdateJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownError.String(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseBase{
 		Code:    http.StatusOK,
 		Message: statuscode.OK.String(),
 	})
+	return
 }
 
-func (a *JurusanController) DeleteJurusan(ctx *gin.Context) {
+func (a JurusanController) DeleteJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
 			Code:    http.StatusBadRequest,
 			Message: statuscode.EmptyParam.String(),
 		})
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
@@ -88,6 +94,7 @@ func (a *JurusanController) DeleteJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownUUID.String(),
 		})
+		return
 	}
 
 	if err := a.usecase.DeleteJurusan(idToUuid); err != nil {
@@ -95,21 +102,24 @@ func (a *JurusanController) DeleteJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownError.String(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseBase{
 		Code:    http.StatusOK,
 		Message: statuscode.OK.String(),
 	})
+	return
 }
 
-func (a *JurusanController) GetJurusan(ctx *gin.Context) {
+func (a JurusanController) GetJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, serializer.ResponseBase{
 			Code:    http.StatusBadRequest,
 			Message: statuscode.EmptyParam.String(),
 		})
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
@@ -118,6 +128,7 @@ func (a *JurusanController) GetJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownUUID.String(),
 		})
+		return
 	}
 
 	result, err := a.usecase.GetJurusan(idToUuid)
@@ -126,7 +137,9 @@ func (a *JurusanController) GetJurusan(ctx *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: statuscode.UnknownError.String(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, result)
+	return
 }
