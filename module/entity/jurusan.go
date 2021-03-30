@@ -8,10 +8,10 @@ import (
 
 type Jurusan struct {
 	domain.EntityBase
-	Jurusan       string `gorm:"type:VARCHAR(50);not null"`
-	Fakultas      string `gorm:"type:VARCHAR(50);not null"`
-	FakultasShort string `gorm:"type:VARCHAR(5);not null"`
-	JurusanShort  string `gorm:"type:VARCHAR(5);not null"`
+	Jurusan       string `gorm:"type:VARCHAR(50);not null" json:"jurusan"`
+	Fakultas      string `gorm:"type:VARCHAR(50);not null" json:"fakultas"`
+	FakultasShort string `gorm:"type:VARCHAR(5);not null" json:"fakultas_short"`
+	JurusanShort  string `gorm:"type:VARCHAR(5);not null" json:"jurusan_short"`
 }
 
 func (Jurusan) TableName() string {

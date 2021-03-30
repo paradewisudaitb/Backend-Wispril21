@@ -10,19 +10,19 @@ import (
 
 type Wisudawan struct {
 	domain.EntityBase
-	Nim          uint32
-	Nama         string    `gorm:"type:VARCHAR(255);not null"`
-	Panggilan    string    `gorm:"type:VARCHAR(255);not null"`
-	JudulTA      string    `gorm:"type:VARCHAR(255);not null"`
-	Angkatan     uint16    `gorm:"type:SMALLINT;not null"`
-	JurusanID    string    `gorm:"type:VARCHAR(50)"`
+	Nim          uint32    `json:"nim"`
+	Nama         string    `json:"nama" gorm:"type:VARCHAR(255);not null"`
+	Panggilan    string    `json:"nama_panggilan" gorm:"type:VARCHAR(255);not null"`
+	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(255);not null"`
+	Angkatan     uint16    `json:"angkatan" gorm:"type:SMALLINT;not null"`
+	JurusanID    string    `json:"jurusan_id" gorm:"type:VARCHAR(50)"`
 	Jurusan      Jurusan   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Instagram    string    `gorm:"type:VARCHAR(255)"`
-	Linkedin     string    `gorm:"type:VARCHAR(255)"`
-	Twitter      string    `gorm:"type:VARCHAR(255)"`
-	TempatLahir  string    `gorm:"type:VARCHAR(255)"`
-	TanggalLahir time.Time `gorm:"type:DATE"`
-	Photo        string    `gorm:"type:VARCHAR(255)"`
+	Instagram    string    `json:"instagram" gorm:"type:VARCHAR(255)"`
+	Linkedin     string    `json:"linkedin" gorm:"type:VARCHAR(255)"`
+	Twitter      string    `json:"twitter" gorm:"type:VARCHAR(255)"`
+	TempatLahir  string    `json:"tempat_lahir" gorm:"type:VARCHAR(255)"`
+	TanggalLahir time.Time `json:"tanggal_lahir" gorm:"type:DATE"`
+	Photo        string    `json:"photo" gorm:"type:VARCHAR(255)"`
 }
 
 func (Wisudawan) TableName() string {

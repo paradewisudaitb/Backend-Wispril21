@@ -8,10 +8,10 @@ import (
 
 type Message struct {
 	domain.EntityBase
-	ReceiverID string    `gorm:"type:VARCHAR(50)"`
+	ReceiverID string    `gorm:"type:VARCHAR(50)" json:"id_wisudawan"`
 	Receiver   Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Message    string    `gorm:"type:TEXT;"`
-	Sender     string    `gorm:"type:VARCHAR(255);not null"`
+	Message    string    `gorm:"type:TEXT;" json:"message"`
+	Sender     string    `gorm:"type:VARCHAR(255);not null" json:"sender"`
 }
 
 type CreateMessageSerializer struct {

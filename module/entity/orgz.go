@@ -7,12 +7,12 @@ import (
 
 type Orgz struct {
 	domain.EntityBase
-	Name             string `gorm:"type:VARCHAR(255);not null"`
-	Category         string `gorm:"type:VARCHAR(64);not null"`
-	Logo             string `gorm:"type:VARCHAR(255);not null"`
-	ApresiasiPoster  string `gorm:"type:VARCHAR(255);"`
-	ApresiasiTulisan string `gorm:"type:text;"`
-	ApresiasiVideo   string `gorm:"type:VARCHAR(255);"`
+	Name             string `gorm:"type:VARCHAR(255);not null" json:"name"`
+	Category         string `gorm:"type:VARCHAR(64);not null" json:"category"`
+	Logo             string `gorm:"type:VARCHAR(255);not null" json:"logo"`
+	ApresiasiPoster  string `gorm:"type:VARCHAR(255);" json:"apresiasi_poster"`
+	ApresiasiTulisan string `gorm:"type:text;" json:"apresiasi_tulisan"`
+	ApresiasiVideo   string `gorm:"type:VARCHAR(255);" json:"apresiasi_video"`
 }
 
 type CreateOrgzSerializer struct {

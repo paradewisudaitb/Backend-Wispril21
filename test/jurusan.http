@@ -1,0 +1,45 @@
+POST http://localhost/jurusan/ 
+Content-Type: "application/json"
+
+{
+    "Jurusan": "Informatika",
+    "Fakultas": "Sekolah Teknik Elektro dan Informatika",
+    "Fakultas_short": "STEI",
+    "jurusan_SHORT": "IF"
+}
+###
+POST http://localhost/jurusan/ 
+Content-Type: "application/json"
+
+{
+    "Jurusan": "Sistem Teknologi Informasi",
+    "Fakultas": "Sekolah Teknik Elektro dan Informatika",
+    "Fakultas_short": "STEI",
+    "jurusan_SHORT": "STI"
+}
+###
+POST http://localhost/jurusan/ 
+Content-Type: "application/json"
+
+{
+    "Jurusan": "Teknik Lingkungan",
+    "Fakultas": "Fakultas Teknik Sipil dan Lingkungan",
+    "Fakultas_short": "FTSL",
+    "jurusan_SHORT": "TL"
+}
+###
+
+GET http://localhost/jurusan/67a29f9b-a456-40bd-b433-ee6dc2981014
+	
+###
+DELETE http://localhost/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
+
+###
+PUT http://localhost/jurusan/
+Content-Type: "application/json"
+
+{
+    "id_jurusan": "67a29f9b-a456-40bd-b433-ee6dc2981014",
+    "fakultas_short": "TL",
+    "jurusan": "Teknik Lingkungan"
+}
