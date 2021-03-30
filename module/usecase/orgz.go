@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
 )
 
 type OrgzUseCase struct {
@@ -27,8 +28,8 @@ func (uc OrgzUseCase) CreateOrgz(item entity.CreateOrgzSerializer) error {
 	return nil
 }
 
-func (uc OrgzUseCase) DeleteOrgz(idOrgz string) error {
-	err := uc.orgzrepo.DeleteOne(idOrgz)
+func (uc OrgzUseCase) DeleteOrgz(idOrgz uuid.UUID) error {
+	err := uc.orgzrepo.DeleteOne(idOrgz.String())
 	if err == nil {
 		return nil
 	}
@@ -50,8 +51,8 @@ func (uc OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
 	return nil
 }
 
-func (uc OrgzUseCase) GetOrgz(idOrgz string) (entity.Orgz, error) {
-	result, err := uc.orgzrepo.GetOne(idOrgz)
+func (uc OrgzUseCase) GetOrgz(idOrgz uuid.UUID) (entity.Orgz, error) {
+	result, err := uc.orgzrepo.GetOne(idOrgz.String())
 	if err != nil {
 		return result, err
 	}

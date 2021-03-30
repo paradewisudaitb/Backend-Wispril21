@@ -37,6 +37,7 @@ DELETE http://localhost/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
 ###
 PUT http://localhost/jurusan/
 Content-Type: "application/json"
+Authorization: iniadalahtoken
 
 {
     "id_jurusan": "67a29f9b-a456-40bd-b433-ee6dc2981014",

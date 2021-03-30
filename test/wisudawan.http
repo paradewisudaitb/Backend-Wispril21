@@ -1,0 +1,18 @@
+POST http://localhost/wisudawan/ 
+Content-Type: "application/json"
+
+{
+    "nim": 13519000,
+    "nama": "Siapa kek",
+    "nama_panggilan": "Siapapun",
+    "judul_ta": "How to ...?",
+    "angkatan": 16,
+    "jurusan_id": "caaef34c-33e0-47d1-ba25-3dc37e16bb26",
+    "instagram": "",
+    "linkedin": "",
+    "twitter": "",
+    "tempat_lahir": "",
+    "tanggal_lahir": "",
+    "photo": ""
+}
+###

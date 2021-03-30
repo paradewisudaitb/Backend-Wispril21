@@ -3,6 +3,7 @@ package entity
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/domain"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Orgz struct {
@@ -47,9 +48,9 @@ type OrgzController interface {
 
 type OrgzUseCase interface {
 	CreateOrgz(item CreateOrgzSerializer) error
-	DeleteOrgz(idOrgz string) error
+	DeleteOrgz(idOrgz uuid.UUID) error
 	UpdateOrgz(item UpdateOrgzSerializer) error
-	GetOrgz(idOrgz string) (Orgz, error)
+	GetOrgz(idOrgz uuid.UUID) (Orgz, error)
 }
 
 type OrgzRepository interface {

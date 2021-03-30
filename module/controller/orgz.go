@@ -8,6 +8,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
@@ -30,19 +31,18 @@ func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzCon
 func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 	var j entity.CreateOrgzSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
-		// Error dari post
-		panic(statuscode.UncompatibleJSON.String())
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 	}
 	if err := serializer.IsValid(j); err != nil {
-		panic(statuscode.UncompatibleJSON.String())
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 	}
 
 	if err := o.usecase.CreateOrgz(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
-			return
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
 		}
-		panic(err.Error())
+
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -50,13 +50,65 @@ func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 }
 
 func (o OrgzController) DeleteOrgz(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+	}
 
+	idToUuid := uuid.FromStringOrNil(id)
+	if uuid.Equal(idToUuid, uuid.Nil) {
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownUUID.String())
+	}
+
+	if err := o.usecase.DeleteOrgz(idToUuid); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+	}
+
+	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
 }
 
 func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
+	var j entity.UpdateOrgzSerializer
+	if err := ctx.ShouldBindJSON(&j); err != nil {
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+	}
+
+	if err := o.usecase.UpdateOrgz(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+	}
+	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
 
 }
 
 func (o OrgzController) GetOrgz(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+	}
 
+	idToUuid := uuid.FromStringOrNil(id)
+	if uuid.Equal(idToUuid, uuid.Nil) {
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownUUID.String())
+	}
+
+	result, err := o.usecase.GetOrgz(idToUuid)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+	}
+
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         result})
+	return
 }

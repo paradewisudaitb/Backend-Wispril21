@@ -11,7 +11,7 @@ var RESPONSE_OK = ResponseBase{
 	Message: statuscode.OK.String(),
 }
 
-var RESPONSE_NOT_FOUND = ResponseBase{
-	Code:    http.StatusNotFound,
-	Message: statuscode.NotFound.String(),
+var RESPONSE_FORBIDDEN = ResponseBase{
+	Code:    http.StatusForbidden,
+	Message: statuscode.NoAccess.String(),
 }
