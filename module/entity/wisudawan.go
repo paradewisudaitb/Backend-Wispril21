@@ -11,11 +11,11 @@ import (
 type Wisudawan struct {
 	domain.EntityBase
 	Nim          uint32
-	Nama         string `gorm:"type:VARCHAR(255);not null"`
-	Panggilan    string `gorm:"type:VARCHAR(255);not null"`
-	JudulTA      string `gorm:"type:VARCHAR(255);not null"`
-	Angkatan     uint16 `gorm:"type:SMALLINT;not null"`
-	JurusanID    string
+	Nama         string    `gorm:"type:VARCHAR(255);not null"`
+	Panggilan    string    `gorm:"type:VARCHAR(255);not null"`
+	JudulTA      string    `gorm:"type:VARCHAR(255);not null"`
+	Angkatan     uint16    `gorm:"type:SMALLINT;not null"`
+	JurusanID    string    `gorm:"type:VARCHAR(50)"`
 	Jurusan      Jurusan   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Instagram    string    `gorm:"type:VARCHAR(255)"`
 	Linkedin     string    `gorm:"type:VARCHAR(255)"`

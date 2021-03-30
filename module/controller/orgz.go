@@ -1,11 +1,19 @@
 package controller
 
-import "github.com/paradewisudaitb/Backend/module/entity"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
+	"github.com/paradewisudaitb/Backend/common/serializer"
+	"github.com/paradewisudaitb/Backend/module/entity"
+)
 
 type OrgzController struct {
 	usecase entity.OrgzUseCase
 }
-func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase entity.OrgzController {
+
+func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzController {
 	cont := OrgzController{usecase: ou}
 	orgzGroup := router.Group("/orgz")
 	{
@@ -27,10 +35,22 @@ func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 		panic(statuscode.UncompatibleJSON.String())
 	}
 
-	if err := a.usecase.CreateOrgz(j); err != nil {
+	if err := o.usecase.CreateOrgz(j); err != nil {
 		panic(err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
-	return
+
+}
+
+func (o OrgzController) DeleteOrgz(ctx *gin.Context) {
+
+}
+
+func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
+
+}
+
+func (o OrgzController) GetOrgz(ctx *gin.Context) {
+
 }

@@ -19,6 +19,7 @@ func main() {
 	r := gin.Default()
 	middleware.InitErrorHandler(r)
 	module.NewJurusanModule(r)
+	module.NewMessageModule(r)
 	r.Run()
 
 }

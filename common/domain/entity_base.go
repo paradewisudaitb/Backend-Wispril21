@@ -8,7 +8,7 @@ import (
 )
 
 type EntityBase struct {
-	ID        string    `gorm:"primaryKey;" json:"id"`
+	ID        string    `gorm:"primaryKey;type:VARCHAR(50)" json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -15,19 +15,46 @@ type JurusanModule struct {
 	repo       entity.JurusanRepository
 }
 
+type MessageModule struct {
+	usecase    entity.MessageUsecase
+	controller entity.MessageController
+	repo       entity.MessageRepository
+}
+
 func NewJurusanModule(g *gin.Engine) JurusanModule {
-	db := database.PostgresConnect()
+	db := database.MysqlConnect()
 	jurusanRepository := repository.NewJurusanRepository(db)
 	jurusanUsecase := usecase.NewJurusanUsecase(jurusanRepository)
 	jurusanController := controller.NewJurusanController(g, jurusanUsecase)
+
 	if db != nil {
 		db.AutoMigrate(&entity.Jurusan{})
 		db.AutoMigrate(&entity.Wisudawan{})
+		db.AutoMigrate(&entity.Message{})
 	}
 
 	return JurusanModule{
 		controller: jurusanController,
 		usecase:    jurusanUsecase,
 		repo:       jurusanRepository,
+	}
+}
+
+func NewMessageModule(g *gin.Engine) MessageModule {
+	db := database.MysqlConnect()
+
+	messageRepository := repository.NewMessageRepository(db)
+	messageUsecase := usecase.NewMessageUsecase(messageRepository)
+	messageController := controller.NewMessageController(g, messageUsecase)
+	if db != nil {
+		db.AutoMigrate(&entity.Jurusan{})
+		db.AutoMigrate(&entity.Wisudawan{})
+		db.AutoMigrate(&entity.Message{})
+	}
+
+	return MessageModule{
+		controller: messageController,
+		usecase:    messageUsecase,
+		repo:       messageRepository,
 	}
 }

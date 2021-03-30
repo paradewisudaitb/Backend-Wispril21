@@ -1,4 +1,4 @@
-POST http://localhost:80/jurusan/ 
+POST http://localhost:5000/jurusan/ 
 Content-Type: "application/json"
 
 {
@@ -8,17 +8,30 @@ Content-Type: "application/json"
     "jUrUsAn_sHort": "sds"
 }
 ###
-GET http://localhost:80/jurusan/1dde1bf8-ac86-44a6-97c2-0cd4393c44fb
+GET http://localhost:5000/jurusan/e2b5700e-c566-4cb0-b808-84ed0e0240b2
 	
 ###
-DELETE http://localhost:80/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
+DELETE http://localhost:5000/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
 
 ###
-PUT http://localhost:80/jurusan/ 
+PUT http://localhost:5000/jurusan/ 
 Content-Type: "application/json"
 
 {
     "id_jurusan": "1dde1bf8-ac86-44a6-97c2-0cd4393c44fb",
     "fakultas_short": "nyam",
     "jurusan": "123"
+}
+
+###
+GET http://localhost:5000/message/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
+
+###
+POST http://localhost:5000/message
+Content-Type: "application/json"
+
+{
+    "id_wisudawan": "asdfasdf",
+    "message": "test",
+    "sender": "asdfasdf"
 }
