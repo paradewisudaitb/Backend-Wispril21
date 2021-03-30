@@ -15,6 +15,10 @@ type Orgz struct {
 	ApresiasiVideo   string `gorm:"type:VARCHAR(255);" json:"apresiasi_video"`
 }
 
+func (Orgz) TableName() string {
+	return "organization"
+}
+
 type CreateOrgzSerializer struct {
 	Name             string `json:"name" wispril:"required" binding:"lte=255"`
 	Category         string `json:"category" wispril:"required" binding:"lte=64"`

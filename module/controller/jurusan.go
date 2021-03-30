@@ -1,7 +1,10 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
+
+	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
@@ -37,6 +40,10 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.CreateJurusan(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -51,6 +58,10 @@ func (a JurusanController) UpdateJurusan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.UpdateJurusan(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -70,6 +81,10 @@ func (a JurusanController) DeleteJurusan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.DeleteJurusan(idToUuid); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -90,6 +105,10 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 
 	result, err := a.usecase.GetJurusan(idToUuid)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 

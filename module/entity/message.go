@@ -14,6 +14,10 @@ type Message struct {
 	Sender     string    `gorm:"type:VARCHAR(255);not null" json:"sender"`
 }
 
+func (Message) TableName() string {
+	return "message"
+}
+
 type CreateMessageSerializer struct {
 	IdWisudawan string `json:"id_wisudawan" binding:"required"`
 	Message     string `json:"message" binding:"required"`

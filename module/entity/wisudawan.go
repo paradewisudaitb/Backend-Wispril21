@@ -15,7 +15,7 @@ type Wisudawan struct {
 	Panggilan    string    `json:"nama_panggilan" gorm:"type:VARCHAR(255);not null"`
 	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(255);not null"`
 	Angkatan     uint16    `json:"angkatan" gorm:"type:SMALLINT;not null"`
-	JurusanID    string    `json:"jurusan_id" gorm:"type:VARCHAR(50)"`
+	JurusanID    string    `json:"id_jurusan" gorm:"type:VARCHAR(50)"`
 	Jurusan      Jurusan   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Instagram    string    `json:"instagram" gorm:"type:VARCHAR(255)"`
 	Linkedin     string    `json:"linkedin" gorm:"type:VARCHAR(255)"`
@@ -40,7 +40,7 @@ type CreateWisudawanSerializer struct {
 	Panggilan    string    `json:"nama_panggilan" wispril:"required" binding:"lte=255"`
 	JudulTA      string    `json:"judul_ta" wispril:"required" binding:"lte=255"`
 	Angkatan     uint16    `json:"angkatan" wispril:"required" binding:"lte=25"`
-	Jurusan      string    `json:"jurusan_id"`
+	Jurusan      string    `json:"id_jurusan"`
 	Instagram    string    `json:"instagram" binding:"lte=255"`
 	Linkedin     string    `json:"linkedin" binding:"lte=255"`
 	Twitter      string    `json:"twitter" binding:"lte=255"`
@@ -56,7 +56,7 @@ type UpdateWisudawanSerializer struct {
 	Panggilan    string    `json:"nama_panggilan" binding:"lte=255"`
 	JudulTA      string    `json:"judul_ta" binding:"lte=255"`
 	Angkatan     uint16    `json:"angkatan" binding:"lte=25"`
-	Jurusan      string    `json:"jurusan_id"`
+	Jurusan      string    `json:"id_jurusan"`
 	Instagram    string    `json:"instagram" binding:"lte=255"`
 	Linkedin     string    `json:"linkedin" binding:"lte=255"`
 	Twitter      string    `json:"twitter" binding:"lte=255"`
