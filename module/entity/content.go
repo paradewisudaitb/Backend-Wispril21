@@ -1,7 +1,9 @@
 package entity
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/domain"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Content struct {
@@ -11,7 +13,7 @@ type Content struct {
 	OrganizationID string    `json:"id_organization" gorm:"type:VARCHAR(50)"`
 	Organization   Orgz      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Type           string    `gorm:"type:VARCHAR(16);not null" json:"content_type"`
-	Headings       string    `gorm:"type:TEXT;not null" json:"headings"`
+	Headings       string    `gorm:"type:VARCHAR(255);not null" json:"headings"`
 	Details        string    `gorm:"type:TEXT" json:"details"`
 	Image          string    `gorm:"type:VARCHAR(255)" json:"image"`
 }
@@ -20,38 +22,43 @@ func (Content) TableName() string {
 	return "contents"
 }
 
-// type CreateJurusanSerializer struct {
-// 	Jurusan       string `json:"jurusan" wispril:"required"`
-// 	Fakultas      string `json:"fakultas" wispril:"required"`
-// 	FakultasShort string `json:"fakultas_short" wispril:"required" binding:"lte=5"`
-// 	JurusanShort  string `json:"jurusan_short" wispril:"required" binding:"lte=5"`
-// }
+type CreateContentSerializer struct {
+	Wisudawan    string `json:"id_wisudawan" wispril:"required"`
+	Organization string `json:"id_organization"`
+	ContentType  string `json:"content_type" wispril:"required" binding:"lte=16"`
+	Headings     string `json:"headings" wispril:"required" binding:"lte=255"`
+	Details      string `json:"details"`
+	Image        string `json:"image" binding:"lte=255"`
+}
 
-// type UpdateJurusanSerializer struct {
-// 	IdJurusan     uuid.UUID `json:"id_jurusan" wispril:"required"`
-// 	Jurusan       string    `json:"jurusan"`
-// 	Fakultas      string    `json:"fakultas"`
-// 	FakultasShort string    `json:"fakultas_short" binding:"lte=5"`
-// 	JurusanShort  string    `json:"jurusan_short" binding:"lte=5"`
-// }
+type UpdateContentSerializer struct {
+	Content      string `json:"id_content" wispril:"required"`
+	Wisudawan    string `json:"id_wisudawan"`
+	Organization string `json:"id_organization"`
+	ContentType  string `json:"content_type" binding:"lte=16"`
+	Headings     string `json:"headings" binding:"lte=255"`
+	Details      string `json:"details"`
+	Image        string `json:"image" binding:"lte=255"`
+}
 
-// type JurusanController interface {
-// 	CreateJurusan(ctx *gin.Context)
-// 	UpdateJurusan(ctx *gin.Context)
-// 	DeleteJurusan(ctx *gin.Context)
-// 	GetJurusan(ctx *gin.Context)
-// }
+type ContentController interface {
+	CreateContent(ctx *gin.Context)
+	UpdateContent(ctx *gin.Context)
+	DeleteContent(ctx *gin.Context)
+	GetContent(ctx *gin.Context)
+}
 
-// type JurusanUseCase interface {
-// 	CreateJurusan(item CreateJurusanSerializer) error
-// 	DeleteJurusan(IdJurusan uuid.UUID) error
-// 	UpdateJurusan(item UpdateJurusanSerializer) error
-// 	GetJurusan(IdJurusan uuid.UUID) (Jurusan, error)
-// }
+type ControllerUseCase interface {
+	CreateContent(item CreateContentSerializer) error
+	DeleteContent(IdContent uuid.UUID) error
+	UpdateContent(item UpdateContentSerializer) error
+	GetContent(IdContent uuid.UUID) (Content, error)
+}
 
-// type JurusanRepository interface {
-// 	GetOne(id uuid.UUID) (Jurusan, error)
-// 	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error
-// 	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error
-// 	DeleteOne(id uuid.UUID) error
-// }
+type ContentRepository interface {
+	GetOne(id uuid.UUID) (Content, error)
+	GetOneByWisudawan(idWisudawan uuid.UUID) ([]Content, error)
+	AddOne(idWisudawan, idOrgz, contenttype, headings, details, image string) error
+	UpdateOne(idContent uuid.UUID, idWisudawan, idOrgz, content, fakultas, fakultas_short, content_short string) error
+	DeleteOne(idContent uuid.UUID) error
+}
