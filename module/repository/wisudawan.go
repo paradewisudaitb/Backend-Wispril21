@@ -3,7 +3,8 @@ package repository
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
+
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
 )
