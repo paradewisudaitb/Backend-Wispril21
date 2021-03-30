@@ -9,7 +9,7 @@ import (
 type Message struct {
 	domain.EntityBase
 	ReceiverID string    `gorm:"type:VARCHAR(50);not null" json:"id_wisudawan"`
-	Receiver   Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Receiver   Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 	Message    string    `gorm:"type:TEXT;not null" json:"message"`
 	Sender     string    `gorm:"type:VARCHAR(255);not null" json:"sender"`
 }

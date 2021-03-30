@@ -29,3 +29,9 @@ func NewMessageModule(db *gorm.DB, g *gin.Engine) MessageModule {
 		repo:       messageRepository,
 	}
 }
+
+func ResetMessage(db *gorm.DB) {
+	if db != nil {
+		db.Migrator().DropTable(&entity.Message{})
+	}
+}

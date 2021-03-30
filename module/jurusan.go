@@ -30,3 +30,9 @@ func NewJurusanModule(db *gorm.DB, g *gin.Engine) JurusanModule {
 		repo:       jurusanRepository,
 	}
 }
+
+func ResetJurusan(db *gorm.DB) {
+	if db != nil {
+		db.Migrator().DropTable(&entity.Jurusan{})
+	}
+}

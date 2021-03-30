@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/paradewisudaitb/Backend/module/entity"
@@ -20,7 +19,7 @@ func NewWisudawanUsecase(a entity.WisudawanRepository) entity.WisudawanUsecase {
 }
 
 func (a WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer) error {
-	tglLahir, timeErr := time.Parse("01-12-2006", item.TanggalLahir)
+	tglLahir, timeErr := time.Parse("01-02-2006", item.TanggalLahir)
 	if timeErr != nil {
 		tglLahir = time.Time{}
 	}
@@ -50,11 +49,10 @@ func (a WisudawanUseCase) DeleteWisudawan(idWisudawan uuid.UUID) error {
 }
 
 func (a WisudawanUseCase) UpdateWisudawan(item entity.UpdateWisudawanSerializer) error {
-	tglLahir, timeErr := time.Parse("01-12-2006", item.TanggalLahir)
+	tglLahir, timeErr := time.Parse("01-02-2006", item.TanggalLahir)
 	if timeErr != nil {
 		tglLahir = time.Time{}
 	}
-	fmt.Println(tglLahir)
 	if err := a.wisudawanrepo.UpdateOne(
 		item.IdWisudawan.String(),
 		item.NIM,

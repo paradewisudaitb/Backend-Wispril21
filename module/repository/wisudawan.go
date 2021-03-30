@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/paradewisudaitb/Backend/module/entity"
 )
@@ -17,7 +18,7 @@ func NewWisudawanRepository(db *gorm.DB) WisudawanRepository {
 }
 func (repo WisudawanRepository) GetOne(wisudawanID string) (entity.Wisudawan, error) {
 	var result entity.Wisudawan
-	if err := repo.db.First(&result, "id = ?", wisudawanID).Error; err != nil {
+	if err := repo.db.Preload(clause.Associations).Where("id = ?", wisudawanID).First(&result).Error; err != nil {
 		return entity.Wisudawan{}, err
 	}
 	return result, nil

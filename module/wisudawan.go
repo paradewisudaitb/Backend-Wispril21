@@ -29,3 +29,9 @@ func NewWisudawanModule(db *gorm.DB, g *gin.Engine) WisudawanModule {
 		repo:       wisudawanRepository,
 	}
 }
+
+func ResetWisudawan(db *gorm.DB) {
+	if db != nil {
+		db.Migrator().DropTable(&entity.Wisudawan{})
+	}
+}

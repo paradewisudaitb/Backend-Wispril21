@@ -29,8 +29,8 @@ func (j MessageUsecase) DeleteMessage(idMessage uuid.UUID) error {
 }
 
 func (j MessageUsecase) GetMessage(idWisudawan uuid.UUID) ([]entity.Message, error) {
-	var result []entity.Message
-	if result, err := j.messagerepo.GetMessage(idWisudawan.String()); err != nil {
+	result, err := j.messagerepo.GetMessage(idWisudawan.String())
+	if err != nil {
 		return result, err
 	}
 	return result, nil

@@ -14,7 +14,7 @@ func NewContentRepository(db *gorm.DB) entity.ContentRepository {
 }
 func (repo ContentRepository) GetOne(id string) (entity.Content, error) {
 	var result entity.Content
-	if err := repo.db.First(&result, "id = ?", id).Error; err != nil {
+	if err := repo.db.Model(&entity.Content{}).Where("id = ?", id).First(&result).Error; err != nil {
 		return entity.Content{}, err
 	}
 	return result, nil
@@ -22,7 +22,7 @@ func (repo ContentRepository) GetOne(id string) (entity.Content, error) {
 
 func (repo ContentRepository) GetByWisudawan(idWisudawan string) ([]entity.Content, error) {
 	var result []entity.Content
-	if err := repo.db.Find(&result, "wisudawan_id = ?", idWisudawan).Error; err != nil {
+	if err := repo.db.Model(&entity.Content{}).Where("id = ?", idWisudawan).Find(&result).Error; err != nil {
 		return make([]entity.Content, 0), err
 	}
 	return result, nil

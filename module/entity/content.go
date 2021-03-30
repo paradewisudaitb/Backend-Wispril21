@@ -9,9 +9,9 @@ import (
 type Content struct {
 	domain.EntityBase
 	WisudawanID    string    `json:"id_wisudawan" gorm:"type:VARCHAR(50);not null"`
-	Wisudawan      Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Wisudawan      Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 	OrganizationID string    `json:"id_organization" gorm:"type:VARCHAR(50)"`
-	Organization   Orgz      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Organization   Orgz      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 	Type           string    `gorm:"type:VARCHAR(16);not null" json:"content_type"`
 	Headings       string    `gorm:"type:VARCHAR(255);not null" json:"headings"`
 	Details        string    `gorm:"type:TEXT" json:"details"`
@@ -46,6 +46,7 @@ type ContentController interface {
 	UpdateContent(ctx *gin.Context)
 	DeleteContent(ctx *gin.Context)
 	GetContent(ctx *gin.Context)
+	GetContentByWisudawan(ctx *gin.Context)
 }
 
 type ContentUseCase interface {
