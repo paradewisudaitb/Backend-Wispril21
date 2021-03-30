@@ -6,7 +6,7 @@ import (
 
 type Content struct {
 	domain.EntityBase
-	WisudawanID    string    `json:"id_wisudawan" gorm:"type:VARCHAR(50)"`
+	WisudawanID    string    `json:"id_wisudawan" gorm:"type:VARCHAR(50);not null"`
 	Wisudawan      Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	OrganizationID string    `json:"id_organization" gorm:"type:VARCHAR(50)"`
 	Organization   Orgz      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`

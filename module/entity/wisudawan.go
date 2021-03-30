@@ -15,7 +15,7 @@ type Wisudawan struct {
 	Panggilan    string    `json:"nama_panggilan" gorm:"type:VARCHAR(255);not null"`
 	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(255);not null"`
 	Angkatan     uint16    `json:"angkatan" gorm:"type:SMALLINT;not null"`
-	JurusanID    string    `json:"id_jurusan" gorm:"type:VARCHAR(50)"`
+	JurusanID    string    `json:"id_jurusan" gorm:"type:VARCHAR(50);not null"`
 	Jurusan      Jurusan   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Instagram    string    `json:"instagram" gorm:"type:VARCHAR(255)"`
 	Linkedin     string    `json:"linkedin" gorm:"type:VARCHAR(255)"`
