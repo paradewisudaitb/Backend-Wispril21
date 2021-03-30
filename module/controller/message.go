@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type MessageController struct {
@@ -41,6 +43,10 @@ func (a MessageController) CreateMessage(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.CreateMessage(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -60,6 +66,10 @@ func (a MessageController) DeleteMessage(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.DeleteMessage(idToUuid); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -81,6 +91,10 @@ func (a MessageController) GetMessage(ctx *gin.Context) {
 
 	result, err := a.usecase.GetMessage(idToUuid)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 	if len(result) == 0 {
