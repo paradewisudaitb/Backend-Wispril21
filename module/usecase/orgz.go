@@ -18,6 +18,7 @@ func NewOrgzUsecase(a entity.OrgzRepository) entity.OrgzUseCase {
 func (uc OrgzUseCase) CreateOrgz(item entity.CreateOrgzSerializer) error {
 	if err := uc.orgzrepo.AddOne(
 		item.Name,
+		item.Slug,
 		item.Category,
 		item.Logo,
 		item.ApresiasiPoster,
@@ -40,11 +41,13 @@ func (uc OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
 	err := uc.orgzrepo.UpdateOne(
 		item.IdOrgz,
 		item.Name,
+		item.Slug,
 		item.Category,
 		item.Logo,
 		item.ApresiasiPoster,
 		item.ApresiasiTulisan,
-		item.ApresiasiVideo)
+		item.ApresiasiVideo,
+	)
 	if err != nil {
 		return err
 	}

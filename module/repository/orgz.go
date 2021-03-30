@@ -21,9 +21,10 @@ func (repo OrgzRepository) GetOne(idOrgz string) (entity.Orgz, error) {
 	return result, nil
 }
 
-func (repo OrgzRepository) AddOne(name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
 	create := entity.Orgz{
 		Name:             name,
+		Slug:             slug,
 		Category:         category,
 		Logo:             logo,
 		ApresiasiPoster:  apresiasi_poster,
@@ -36,11 +37,14 @@ func (repo OrgzRepository) AddOne(name, category, logo, apresiasi_poster, apresi
 	return nil
 }
 
-func (repo OrgzRepository) UpdateOne(idOrgz, name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+func (repo OrgzRepository) UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
 	var target entity.Jurusan
 	update := map[string]interface{}{}
 	if idOrgz != "" {
 		update["id"] = idOrgz
+	}
+	if slug != "" {
+		update["slug"] = slug
 	}
 	if name != "" {
 		update["name"] = name

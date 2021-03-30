@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +9,6 @@ import (
 
 func Auth(c *gin.Context) {
 	if values := c.Request.Header.Get("Authorization"); len(values) > 0 {
-		fmt.Println(values)
 		// Cek token
 		if values == "iniadalahtoken" {
 			c.Next()

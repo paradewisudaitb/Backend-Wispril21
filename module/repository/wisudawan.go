@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/paradewisudaitb/Backend/module/entity"
-	uuid "github.com/satori/go.uuid"
 )
 
 type WisudawanRepository struct {
@@ -16,7 +15,7 @@ type WisudawanRepository struct {
 func NewWisudawanRepository(db *gorm.DB) WisudawanRepository {
 	return WisudawanRepository{db: db}
 }
-func (repo WisudawanRepository) GetOne(wisudawanID uuid.UUID) (entity.Wisudawan, error) {
+func (repo WisudawanRepository) GetOne(wisudawanID string) (entity.Wisudawan, error) {
 	var result entity.Wisudawan
 	if err := repo.db.First(&result, "id = ?", wisudawanID).Error; err != nil {
 		return entity.Wisudawan{}, err
@@ -34,18 +33,21 @@ func (repo WisudawanRepository) GetAll() ([]entity.Wisudawan, error) {
 }
 func (repo WisudawanRepository) AddOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
 	wisudawan := entity.Wisudawan{
-		Nim:          nim,
-		Angkatan:     angkatan,
-		Nama:         nama,
-		Panggilan:    panggilan,
-		JudulTA:      judulTA,
-		Instagram:    instagram,
-		Linkedin:     linkedin,
-		Twitter:      twitter,
-		TempatLahir:  tempatLahir,
-		Photo:        photo,
-		TanggalLahir: tanggalLahir,
-		JurusanID:    jurusanID,
+		Nim:         nim,
+		Angkatan:    angkatan,
+		Nama:        nama,
+		Panggilan:   panggilan,
+		JudulTA:     judulTA,
+		Instagram:   instagram,
+		Linkedin:    linkedin,
+		Twitter:     twitter,
+		TempatLahir: tempatLahir,
+		Photo:       photo,
+		JurusanID:   jurusanID,
+	}
+
+	if !tanggalLahir.IsZero() {
+		wisudawan.TanggalLahir = tanggalLahir
 	}
 	if err := repo.db.Create(&wisudawan).Error; err != nil {
 		return err
@@ -53,7 +55,7 @@ func (repo WisudawanRepository) AddOne(nim uint32, angkatan uint16, nama, panggi
 	return nil
 }
 
-func (repo WisudawanRepository) UpdateOne(WisudawanID uuid.UUID, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
+func (repo WisudawanRepository) UpdateOne(WisudawanID string, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
 	var wisudawan entity.Wisudawan
 	wisudawan_update := map[string]interface{}{}
 	if nim != 0 {
@@ -92,29 +94,30 @@ func (repo WisudawanRepository) UpdateOne(WisudawanID uuid.UUID, nim uint32, ang
 	if jurusanID != "" {
 		wisudawan_update["jurusan_id"] = jurusanID
 	}
-	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", WisudawanID.String()).Error; err != nil {
+	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", WisudawanID).Error; err != nil {
 		return err
 	}
-	if err := repo.db.Model(&wisudawan).Where("id = ?", WisudawanID.String()).Updates(wisudawan_update).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
-func (repo WisudawanRepository) DeleteOne(wisudawanID uuid.UUID) error {
-	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", wisudawanID.String()).Error; err != nil {
-		return err
-	}
-	if err := repo.db.Where("id = ?", wisudawanID.String()).Delete(&entity.Wisudawan{}).Error; err != nil {
+	if err := repo.db.Model(&wisudawan).Where("id = ?", WisudawanID).Updates(wisudawan_update).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (repo WisudawanRepository) Filter(jurusan string) []entity.Wisudawan {
+func (repo WisudawanRepository) DeleteOne(wisudawanID string) error {
+	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", wisudawanID).Error; err != nil {
+		return err
+	}
+	if err := repo.db.Where("id = ?", wisudawanID).Delete(&entity.Wisudawan{}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo WisudawanRepository) Filter(organizationSlug string) []entity.Wisudawan {
 	var result []entity.Wisudawan
-	if err := repo.db.Where("jurusan_id = ?", jurusan).Find(&result).Error; err != nil {
-		return nil
-	}
+	// harus join
+	// if err := repo.db.Where("slug = ?", organizationSlug).Find(&result).Error; err != nil {
+	// 	return nil
+	// }
 	return result
 }

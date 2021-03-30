@@ -19,9 +19,9 @@ func (Message) TableName() string {
 }
 
 type CreateMessageSerializer struct {
-	IdWisudawan string `json:"id_wisudawan" binding:"required"`
-	Message     string `json:"message" binding:"required"`
-	Sender      string `json:"sender" binding:"required,lte=255"`
+	IdWisudawan string `json:"id_wisudawan" wispril:"required"`
+	Message     string `json:"message" wispril:"required"`
+	Sender      string `json:"sender" wispril:"required" binding:"lte=255"`
 }
 
 type MessageController interface {

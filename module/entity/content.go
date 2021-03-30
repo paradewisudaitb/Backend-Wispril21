@@ -48,17 +48,18 @@ type ContentController interface {
 	GetContent(ctx *gin.Context)
 }
 
-type ControllerUseCase interface {
+type ContentUseCase interface {
 	CreateContent(item CreateContentSerializer) error
 	DeleteContent(IdContent uuid.UUID) error
 	UpdateContent(item UpdateContentSerializer) error
 	GetContent(IdContent uuid.UUID) (Content, error)
+	GetByWisudawan(IdWisudawan uuid.UUID) ([]Content, error)
 }
 
 type ContentRepository interface {
-	GetOne(id uuid.UUID) (Content, error)
-	GetOneByWisudawan(idWisudawan uuid.UUID) ([]Content, error)
+	GetOne(id string) (Content, error)
+	GetByWisudawan(idWisudawan string) ([]Content, error)
 	AddOne(idWisudawan, idOrgz, contenttype, headings, details, image string) error
-	UpdateOne(idContent uuid.UUID, idWisudawan, idOrgz, content, fakultas, fakultas_short, content_short string) error
-	DeleteOne(idContent uuid.UUID) error
+	UpdateOne(idContent string, idWisudawan, idOrgz, contenttype, headings, details, image string) error
+	DeleteOne(idContent string) error
 }

@@ -41,6 +41,5 @@ func (repo *MessageRepository) GetMessage(idWisudawan string) ([]entity.Message,
 	if err := repo.db.Find(&results, "receiver_id = ?", idWisudawan).Error; err != nil {
 		return make([]entity.Message, 0), err
 	}
-
 	return results, nil
 }

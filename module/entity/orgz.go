@@ -9,6 +9,7 @@ import (
 type Orgz struct {
 	domain.EntityBase
 	Name             string `gorm:"type:VARCHAR(255);not null" json:"name"`
+	Slug             string `gorm:"type:VARCHAR(255);not null" json:"slug"`
 	Category         string `gorm:"type:VARCHAR(64);not null" json:"category"`
 	Logo             string `gorm:"type:VARCHAR(255);not null" json:"logo"`
 	ApresiasiPoster  string `gorm:"type:VARCHAR(255);" json:"apresiasi_poster"`
@@ -22,6 +23,7 @@ func (Orgz) TableName() string {
 
 type CreateOrgzSerializer struct {
 	Name             string `json:"name" wispril:"required" binding:"lte=255"`
+	Slug             string `json:"slug" wispril:"required" binding:"lte=255"`
 	Category         string `json:"category" wispril:"required" binding:"lte=64"`
 	Logo             string `json:"logo" wispril:"required" binding:"lte=255"`
 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
@@ -31,6 +33,7 @@ type CreateOrgzSerializer struct {
 
 type UpdateOrgzSerializer struct {
 	IdOrgz           string `json:"id_organization" wispril:"required"`
+	Slug             string `json:"slug" binding:"lte=255"`
 	Name             string `json:"name" binding:"lte=255"`
 	Category         string `json:"category" binding:"lte=64"`
 	Logo             string `json:"logo" binding:"lte=255"`
@@ -55,7 +58,7 @@ type OrgzUseCase interface {
 
 type OrgzRepository interface {
 	GetOne(idOrgz string) (Orgz, error)
-	AddOne(name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
-	UpdateOne(idOrgz string, name, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
+	AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
+	UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
 	DeleteOne(idOrgz string) error
 }

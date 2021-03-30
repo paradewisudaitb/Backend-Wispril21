@@ -33,10 +33,12 @@ func (a WisudawanController) CreateWisudawan(ctx *gin.Context) {
 	var j entity.CreateWisudawanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 
 	}
 	if err := serializer.IsValid(j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := a.usecase.CreateWisudawan(j); err != nil {
@@ -45,6 +47,7 @@ func (a WisudawanController) CreateWisudawan(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -55,6 +58,7 @@ func (a WisudawanController) UpdateWisudawan(ctx *gin.Context) {
 	var j entity.UpdateWisudawanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := a.usecase.UpdateWisudawan(j); err != nil {
@@ -63,6 +67,7 @@ func (a WisudawanController) UpdateWisudawan(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -73,11 +78,13 @@ func (a WisudawanController) DeleteWisudawan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	if err := a.usecase.DeleteWisudawan(idToUuid); err != nil {
@@ -86,6 +93,7 @@ func (a WisudawanController) DeleteWisudawan(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -96,11 +104,13 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
-		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+		return
 	}
 
 	result, err := a.usecase.GetWisudawan(idToUuid)
@@ -110,6 +120,7 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{

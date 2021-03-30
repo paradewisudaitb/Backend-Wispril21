@@ -33,19 +33,24 @@ func (a MessageController) CreateMessage(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		// Error dari post
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 	if err := serializer.IsValid(j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := a.usecase.CreateMessage(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
+	return
 }
 
 func (a MessageController) DeleteMessage(ctx *gin.Context) {
@@ -53,21 +58,26 @@ func (a MessageController) DeleteMessage(ctx *gin.Context) {
 
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	if err := a.usecase.DeleteMessage(idToUuid); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
+	return
 
 }
 
@@ -76,19 +86,23 @@ func (a MessageController) GetMessage(ctx *gin.Context) {
 
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	result, err := a.usecase.GetMessage(idToUuid)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 	if len(result) == 0 {
 		result = make([]entity.Message, 0)
@@ -97,5 +111,6 @@ func (a MessageController) GetMessage(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
 		Data:         result})
+	return
 
 }

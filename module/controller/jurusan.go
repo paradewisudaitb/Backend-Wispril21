@@ -34,16 +34,20 @@ func (a JurusanController) CreateJurusan(ctx *gin.Context) {
 	var j entity.CreateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 	if err := serializer.IsValid(j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := a.usecase.CreateJurusan(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -53,13 +57,16 @@ func (a JurusanController) UpdateJurusan(ctx *gin.Context) {
 	var j entity.UpdateJurusanSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := a.usecase.UpdateJurusan(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -69,18 +76,22 @@ func (a JurusanController) DeleteJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	if err := a.usecase.DeleteJurusan(idToUuid); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -90,19 +101,23 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	result, err := a.usecase.GetJurusan(idToUuid)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK,

@@ -32,17 +32,21 @@ func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 	var j entity.CreateOrgzSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 	if err := serializer.IsValid(j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := o.usecase.CreateOrgz(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
@@ -53,27 +57,33 @@ func (o OrgzController) DeleteOrgz(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownUUID.String())
+		return
 	}
 
 	if err := o.usecase.DeleteOrgz(idToUuid); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
+	return
 }
 
 func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
 	var j entity.UpdateOrgzSerializer
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
+		return
 	}
 
 	if err := o.usecase.UpdateOrgz(j); err != nil {
@@ -82,8 +92,10 @@ func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 	ctx.JSON(http.StatusOK, serializer.RESPONSE_OK)
+	return
 
 }
 
@@ -91,11 +103,13 @@ func (o OrgzController) GetOrgz(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
 	}
 
 	idToUuid := uuid.FromStringOrNil(id)
 	if uuid.Equal(idToUuid, uuid.Nil) {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownUUID.String())
+		return
 	}
 
 	result, err := o.usecase.GetOrgz(idToUuid)
@@ -105,6 +119,7 @@ func (o OrgzController) GetOrgz(ctx *gin.Context) {
 			return
 		}
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
