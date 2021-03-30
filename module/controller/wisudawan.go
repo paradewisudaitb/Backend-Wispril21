@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type WisudawanController struct {
@@ -37,6 +39,10 @@ func (a WisudawanController) CreateWisudawan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.CreateWisudawan(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -51,6 +57,10 @@ func (a WisudawanController) UpdateWisudawan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.UpdateWisudawan(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -70,6 +80,10 @@ func (a WisudawanController) DeleteWisudawan(ctx *gin.Context) {
 	}
 
 	if err := a.usecase.DeleteWisudawan(idToUuid); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
@@ -90,6 +104,10 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 
 	result, err := a.usecase.GetWisudawan(idToUuid)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 

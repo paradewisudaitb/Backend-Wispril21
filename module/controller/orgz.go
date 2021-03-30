@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"gorm.io/gorm"
 )
 
 type OrgzController struct {
@@ -36,6 +38,10 @@ func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 	}
 
 	if err := o.usecase.CreateOrgz(j); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, serializer.RESPONSE_NOT_FOUND)
+			return
+		}
 		panic(err.Error())
 	}
 
