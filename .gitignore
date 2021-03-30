@@ -1,4 +1,5 @@
 .env
+mysql.env
 *.exe
 test
 vendor

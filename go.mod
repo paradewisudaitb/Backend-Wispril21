@@ -8,7 +8,6 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
-	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/golang/protobuf v1.5.1 // indirect
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/jinzhu/gorm v1.9.16
@@ -30,6 +29,7 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gorm.io/driver/mysql v1.0.5
 	gorm.io/driver/postgres v1.0.8
-	gorm.io/gorm v1.21.3
+	gorm.io/gorm v1.21.6
 )
