@@ -9,6 +9,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"github.com/paradewisudaitb/Backend/module/usecase"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
@@ -23,7 +24,7 @@ func NewMessageController(router *gin.Engine, mu entity.MessageUsecase) MessageC
 	{
 		messageGroup.POST("/", cont.CreateMessage)
 		messageGroup.DELETE("/:id", middleware.Auth, cont.DeleteMessage)
-		messageGroup.GET("/:id", cont.GetMessage)
+		messageGroup.GET("/wisudawan/:id", cont.GetMessage)
 	}
 	return cont
 }
@@ -104,13 +105,19 @@ func (a MessageController) GetMessage(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+	var parsedResult []entity.GetMessageSerializer
 	if len(result) == 0 {
-		result = make([]entity.Message, 0)
+		parsedResult = make([]entity.GetMessageSerializer, 0)
+	} else {
+		parsedResult = make([]entity.GetMessageSerializer, len(result))
+		for i, x := range result {
+			parsedResult[i] = usecase.ConvertEntityMessageToSerializer(x)
+		}
 	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
-		Data:         result})
+		Data:         parsedResult})
 	return
 
 }

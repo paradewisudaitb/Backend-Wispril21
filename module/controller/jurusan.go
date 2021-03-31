@@ -11,6 +11,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"github.com/paradewisudaitb/Backend/module/usecase"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -119,11 +120,11 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
-
+	parsedResult := usecase.ConvertEntityJurusanToSerializer(result)
 	ctx.JSON(http.StatusOK,
 		serializer.ResponseData{
 			ResponseBase: serializer.RESPONSE_OK,
-			Data:         result,
+			Data:         parsedResult,
 		},
 	)
 }

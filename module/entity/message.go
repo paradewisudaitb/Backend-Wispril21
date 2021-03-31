@@ -13,6 +13,12 @@ type Message struct {
 	Message    string    `gorm:"type:TEXT;not null" json:"message"`
 	Sender     string    `gorm:"type:VARCHAR(255);not null" json:"sender"`
 }
+type GetMessageSerializer struct {
+	ID      string `json:"id_message"`
+	Sent    string `json:"sent"`
+	Sender  string `json:"sender"`
+	Message string `json:"message"`
+}
 
 func (Message) TableName() string {
 	return "message"

@@ -11,6 +11,39 @@ type WisudawanUseCase struct {
 	wisudawanrepo entity.WisudawanRepository
 }
 
+func ConvertEntityWisudawanToSerializer(x entity.Wisudawan) entity.GetWisudawanSerializer {
+	return entity.GetWisudawanSerializer{
+		ID:            x.ID,
+		Nim:           x.Nim,
+		Nama:          x.Nama,
+		Panggilan:     x.Panggilan,
+		JudulTA:       x.JudulTA,
+		Angkatan:      x.Angkatan,
+		Jurusan:       x.Jurusan.Jurusan,
+		JurusanShort:  x.Jurusan.JurusanShort,
+		Fakultas:      x.Jurusan.Fakultas,
+		FakultasShort: x.Jurusan.FakultasShort,
+		Instagram:     x.Instagram,
+		Linkedin:      x.Linkedin,
+		Twitter:       x.Twitter,
+		TempatLahir:   x.TempatLahir,
+		TanggalLahir:  x.TanggalLahir.Format("02-01-2006"),
+		Photo:         x.Photo,
+	}
+}
+func ConvertEntityWisudawanToSimpleSerializer(x entity.Wisudawan) entity.GetSimpleWisudawanSerializer {
+	return entity.GetSimpleWisudawanSerializer{
+		ID:            x.ID,
+		Nim:           x.Nim,
+		Nama:          x.Nama,
+		JudulTA:       x.JudulTA,
+		Jurusan:       x.Jurusan.Jurusan,
+		JurusanShort:  x.Jurusan.JurusanShort,
+		Fakultas:      x.Jurusan.Fakultas,
+		FakultasShort: x.Jurusan.FakultasShort,
+	}
+}
+
 func NewWisudawanUsecase(a entity.WisudawanRepository) entity.WisudawanUsecase {
 	return WisudawanUseCase{
 		wisudawanrepo: a,

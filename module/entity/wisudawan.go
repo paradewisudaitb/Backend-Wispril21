@@ -29,9 +29,34 @@ func (Wisudawan) TableName() string {
 	return "wisudawan"
 }
 
-type SimpleWisudawanSerializer struct {
-	Nim  uint32
-	Nama string
+type GetWisudawanSerializer struct {
+	ID            string `json:"id_wisudawan"`
+	Nim           uint32 `json:"nim"`
+	Nama          string `json:"nama"`
+	Panggilan     string `json:"nama_panggilan"`
+	JudulTA       string `json:"judul_ta"`
+	Angkatan      uint16 `json:"angkatan"`
+	Jurusan       string `json:"jurusan"`
+	JurusanShort  string `json:"jurusan_short"`
+	Fakultas      string `json:"fakultas"`
+	FakultasShort string `json:"fakultas_short"`
+	Instagram     string `json:"instagram"`
+	Linkedin      string `json:"linkedin"`
+	Twitter       string `json:"twitter"`
+	TempatLahir   string `json:"tempat_lahir"`
+	TanggalLahir  string `json:"tanggal_lahir"`
+	Photo         string `json:"photo"`
+}
+
+type GetSimpleWisudawanSerializer struct {
+	ID            string `json:"id_wisudawan"`
+	Nim           uint32 `json:"nim"`
+	Nama          string `json:"nama"`
+	JudulTA       string `json:"judul_ta"`
+	Jurusan       string `json:"jurusan"`
+	JurusanShort  string `json:"jurusan_short"`
+	Fakultas      string `json:"fakultas"`
+	FakultasShort string `json:"fakultas_short"`
 }
 
 type CreateWisudawanSerializer struct {

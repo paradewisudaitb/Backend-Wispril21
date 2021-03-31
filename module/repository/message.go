@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 
 	"github.com/paradewisudaitb/Backend/module/entity"
@@ -41,9 +39,7 @@ func (repo *MessageRepository) DeleteOne(idMessage string) error {
 func (repo *MessageRepository) GetMessage(idWisudawan string) ([]entity.Message, error) {
 	var results []entity.Message
 	if err := repo.db.Find(&results, "receiver_id = ?", idWisudawan).Error; err != nil {
-		fmt.Println(results)
 		return make([]entity.Message, 0), err
 	}
-	fmt.Println(results)
 	return results, nil
 }
