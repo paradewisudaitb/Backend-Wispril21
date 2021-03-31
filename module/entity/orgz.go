@@ -9,12 +9,13 @@ import (
 type Orgz struct {
 	domain.EntityBase
 	Name             string `gorm:"type:VARCHAR(255);not null" json:"name"`
-	Slug             string `gorm:"type:VARCHAR(128);not null" json:"slug"`
+	Slug             string `gorm:"type:VARCHAR(128);not null;unique" json:"slug"`
 	Category         string `gorm:"type:VARCHAR(64);not null" json:"category"`
 	Logo             string `gorm:"type:VARCHAR(255);not null" json:"logo"`
 	ApresiasiPoster  string `gorm:"type:VARCHAR(255);" json:"apresiasi_poster"`
 	ApresiasiTulisan string `gorm:"type:text;" json:"apresiasi_tulisan"`
 	ApresiasiVideo   string `gorm:"type:VARCHAR(255);" json:"apresiasi_video"`
+	FakultasShort    string `gorm:"type:VARCHAR(5)" json:"fakultas_short"`
 }
 
 func (Orgz) TableName() string {
@@ -29,6 +30,7 @@ type CreateOrgzSerializer struct {
 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
 	ApresiasiTulisan string `json:"apresiasi_tulisan"`
 	ApresiasiVideo   string `json:"apresiasi_video" binding:"lte=255"`
+	FakultasShort    string `json:"fakultas_short" binding:"lte=5"`
 }
 
 type UpdateOrgzSerializer struct {
@@ -40,6 +42,7 @@ type UpdateOrgzSerializer struct {
 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
 	ApresiasiTulisan string `json:"apresiasi_tulisan"`
 	ApresiasiVideo   string `json:"apresiasi_video" binding:"lte=255"`
+	FakultasShort    string `json:"fakultas_short" binding:"lte=5"`
 }
 
 type OrgzController interface {
@@ -62,8 +65,8 @@ type OrgzUseCase interface {
 
 type OrgzRepository interface {
 	GetOne(idOrgz string) (Orgz, error)
-	AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
-	UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
+	AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video, fakultas_short string) error
+	UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video, fakultas_short string) error
 	DeleteOne(idOrgz string) error
 	GetAll() ([]Orgz, error)
 	GetBySlug(slug string) (Orgz, error)

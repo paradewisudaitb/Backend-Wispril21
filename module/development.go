@@ -53,12 +53,13 @@ func InsertDummy(db *gorm.DB) {
 	JurusanId[1] = JurusanDummy[1].ID
 	JurusanId[2] = JurusanDummy[2].ID
 
-	var OrganizationDummy [2]entity.Orgz
+	var OrganizationDummy [3]entity.Orgz
 	OrganizationDummy[0] = entity.Orgz{
-		Name:     "Himpunan Mahasiwswa Teknik Informatika",
-		Slug:     "HMIF",
-		Category: "HMJ",
-		Logo:     "/path/to/logo",
+		Name:          "Himpunan Mahasiwswa Teknik Informatika",
+		Slug:          "HMIF",
+		Category:      "HMJ",
+		Logo:          "/path/to/logo",
+		FakultasShort: "STEI",
 	}
 	OrganizationDummy[1] = entity.Orgz{
 		Name:     "Kabinet",
@@ -66,12 +67,20 @@ func InsertDummy(db *gorm.DB) {
 		Category: "Kabinet_KM_ITB",
 		Logo:     "/path/to/logo",
 	}
+	OrganizationDummy[2] = entity.Orgz{
+		Name:          "Himpunan Mahasiswa Elektro",
+		Slug:          "HME",
+		Category:      "HMJ",
+		Logo:          "/path/to/logo",
+		FakultasShort: "STEI",
+	}
 
 	db.Create(&OrganizationDummy)
 
-	var OrganizationId [2]string
+	var OrganizationId [3]string
 	OrganizationId[0] = OrganizationDummy[0].ID
 	OrganizationId[1] = OrganizationDummy[1].ID
+	OrganizationId[2] = OrganizationDummy[2].ID
 
 	var WisudawanDummy [3]entity.Wisudawan
 	WisudawanDummy[0] = entity.Wisudawan{
@@ -137,21 +146,19 @@ func InsertDummy(db *gorm.DB) {
 	var ContentDummy [5]entity.Content
 
 	ContentDummy[0] = entity.Content{
-		WisudawanID:    idW[0],
-		OrganizationID: OrganizationId[1],
-		Type:           "PRESTASI",
-		Headings:       "Imba aku cuk",
+		WisudawanID: idW[0],
+		Type:        "PRESTASI",
+		Headings:    "Imba aku cuk",
 	}
 	ContentDummy[1] = entity.Content{
-		WisudawanID:    idW[0],
-		OrganizationID: OrganizationId[1],
-		Type:           "TIPS_SUKSES",
-		Headings:       "Swimming aja",
-		Details:        "Berenang menyehatkan badan",
+		WisudawanID: idW[0],
+		Type:        "TIPS_SUKSES",
+		Headings:    "Swimming aja",
+		Details:     "Berenang menyehatkan badan",
 	}
 	ContentDummy[2] = entity.Content{
-		WisudawanID:    idW[1],
-		OrganizationID: OrganizationId[0],
+		WisudawanID:    idW[0],
+		OrganizationID: OrganizationId[1],
 		Type:           "KONTRIBUSI",
 		Headings:       "Swimming aja",
 	}

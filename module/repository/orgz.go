@@ -21,7 +21,7 @@ func (repo OrgzRepository) GetOne(idOrgz string) (entity.Orgz, error) {
 	return result, nil
 }
 
-func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video, fakultas_short string) error {
 	create := entity.Orgz{
 		Name:             name,
 		Slug:             slug,
@@ -30,6 +30,7 @@ func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, 
 		ApresiasiPoster:  apresiasi_poster,
 		ApresiasiTulisan: apresiasi_tulisan,
 		ApresiasiVideo:   apresiasi_video,
+		FakultasShort:    fakultas_short,
 	}
 	if err := repo.db.Create(&create).Error; err != nil {
 		return err
@@ -37,7 +38,7 @@ func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, 
 	return nil
 }
 
-func (repo OrgzRepository) UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
+func (repo OrgzRepository) UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video, fakultas_short string) error {
 	var target entity.Orgz
 	update := map[string]interface{}{}
 	if idOrgz != "" {
@@ -63,6 +64,9 @@ func (repo OrgzRepository) UpdateOne(idOrgz, name, slug, category, logo, apresia
 	}
 	if apresiasi_video != "" {
 		update["apresiasi_video"] = apresiasi_video
+	}
+	if fakultas_short != "" {
+		update["fakultas_short"] = fakultas_short
 	}
 	if err := repo.db.First(&entity.Orgz{}, "id = ?", idOrgz).Error; err != nil {
 		return err

@@ -22,6 +22,7 @@ func NewWisudawanModule(db *gorm.DB, g *gin.Engine) WisudawanModule {
 
 	if db != nil {
 		db.AutoMigrate(&entity.Wisudawan{})
+		db.Migrator().CreateConstraint(&entity.Wisudawan{}, "Jurusan")
 	}
 	return WisudawanModule{
 		controller: wisudawanController,

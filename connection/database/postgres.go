@@ -22,9 +22,13 @@ func PostgresConnect(debug bool) *gorm.DB {
 		psqlLoginInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 			"password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta",
 			host, port, user, password, dbname)
-		config := &gorm.Config{Logger: logger.Default.LogMode(logger.Info)}
+		config := &gorm.Config{Logger: logger.Default.LogMode(logger.Info),
+			DisableForeignKeyConstraintWhenMigrating: true,
+		}
 		if !debug {
-			config = &gorm.Config{}
+			config = &gorm.Config{
+				DisableForeignKeyConstraintWhenMigrating: true,
+			}
 		}
 		dTemp, err := gorm.Open(postgres.Open(psqlLoginInfo), config)
 		dbConnection = dTemp

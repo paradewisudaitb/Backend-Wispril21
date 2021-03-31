@@ -23,7 +23,9 @@ func (uc OrgzUseCase) CreateOrgz(item entity.CreateOrgzSerializer) error {
 		item.Logo,
 		item.ApresiasiPoster,
 		item.ApresiasiTulisan,
-		item.ApresiasiVideo); err != nil {
+		item.ApresiasiVideo,
+		item.FakultasShort,
+	); err != nil {
 		return err
 	}
 	return nil
@@ -47,6 +49,7 @@ func (uc OrgzUseCase) UpdateOrgz(item entity.UpdateOrgzSerializer) error {
 		item.ApresiasiPoster,
 		item.ApresiasiTulisan,
 		item.ApresiasiVideo,
+		item.FakultasShort,
 	)
 	if err != nil {
 		return err

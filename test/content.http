@@ -15,3 +15,6 @@ Authorization: iniadalahtoken
     "id_organization" : "2d1faf95-8def-4bd7-b7be-51a4b341c8c0",
     "content_type" : "PRESTASI"
 }
+
+###
+GET http://localhost/content/detail/772a2854-e535-4342-8018-47eefdeda762

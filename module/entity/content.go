@@ -10,12 +10,30 @@ type Content struct {
 	domain.EntityBase
 	WisudawanID    string    `json:"id_wisudawan" gorm:"type:VARCHAR(50);not null"`
 	Wisudawan      Wisudawan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
-	OrganizationID string    `json:"id_organization" gorm:"type:VARCHAR(50)"`
+	OrganizationID string    `json:"id_organization" gorm:"type:VARCHAR(50);null"`
 	Organization   Orgz      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 	Type           string    `gorm:"type:VARCHAR(16);not null" json:"content_type"`
 	Headings       string    `gorm:"type:VARCHAR(255);not null" json:"headings"`
 	Details        string    `gorm:"type:TEXT" json:"details"`
 	Image          string    `gorm:"type:VARCHAR(255)" json:"image"`
+}
+
+type GetContentSerializer struct {
+	ContentType string `json:"content_type"`
+	Headings    string `json:"headings"`
+	Details     string `json:"details"`
+	Image       string `json:"image"`
+}
+
+type GetContentSerializer2 struct {
+	GetContentSerializer
+	OrganizationName string `json:"organization_name"`
+	OrganizationLogo string `json:"organization_logo"`
+}
+
+type GetContentsSerializer struct {
+	OrganizationalContents []GetContentSerializer2 `json:"org_data"`
+	SelfContents           []GetContentSerializer  `json:"self_data"`
 }
 
 func (Content) TableName() string {

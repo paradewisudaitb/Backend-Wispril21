@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/paradewisudaitb/Backend/module/entity"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ContentRepository struct {
@@ -22,8 +23,10 @@ func (repo ContentRepository) GetOne(id string) (entity.Content, error) {
 
 func (repo ContentRepository) GetByWisudawan(idWisudawan string) ([]entity.Content, error) {
 	var result []entity.Content
-	if err := repo.db.Model(&entity.Content{}).Where("id = ?", idWisudawan).Find(&result).Error; err != nil {
-		return make([]entity.Content, 0), err
+	if err := repo.db.Preload(clause.Associations).
+		Where("wisudawan_id = ?", idWisudawan).
+		Find(&result).Error; err != nil {
+		return nil, err
 	}
 	return result, nil
 }

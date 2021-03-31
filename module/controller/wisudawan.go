@@ -26,7 +26,7 @@ func NewWisudawanController(router *gin.Engine, wu entity.WisudawanUsecase) enti
 		wisudawanGroup.PUT("/", middleware.Auth, cont.UpdateWisudawan)
 		wisudawanGroup.DELETE("/:id", middleware.Auth, cont.DeleteWisudawan)
 		wisudawanGroup.GET("/id/:id", cont.GetWisudawan)
-		wisudawanGroup.GET("/slug/:slug", cont.FilterWisudawanByOrgzSlug)
+		wisudawanGroup.GET("/org/:slug", cont.FilterWisudawanByOrgzSlug)
 	}
 	return cont
 }
