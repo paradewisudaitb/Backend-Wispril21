@@ -10,8 +10,9 @@ const (
 	UnknownUUID
 	NotFound
 	NoAccess
+	UnknownType
 )
 
 func (s StatusCode) String() string {
-	return [...]string{"unknown_error", "uncompatible_json", "ok", "empty_param", "unknown_uuid", "not_found", "no_access"}[s]
+	return [...]string{"unknown_error", "uncompatible_json", "ok", "empty_param", "unknown_uuid", "not_found", "no_access", "unkn"}[s]
 }

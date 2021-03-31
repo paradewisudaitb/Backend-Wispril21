@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/paradewisudaitb/Backend/common/constant/orgztype"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
@@ -23,9 +24,9 @@ func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzCon
 	{
 		orgzGroup.POST("/", middleware.Auth, cont.CreateOrgz)
 		orgzGroup.PUT("/", middleware.Auth, cont.UpdateOrgz)
-		orgzGroup.DELETE("/id/:id", middleware.Auth, cont.DeleteOrgz)
+		orgzGroup.DELETE("/:id", middleware.Auth, cont.DeleteOrgz)
 		orgzGroup.GET("/id/:id", cont.GetByID)
-		orgzGroup.GET("/:slug", cont.GetBySlug)
+		orgzGroup.GET("/slug/:slug", cont.GetBySlug)
 	}
 	return cont
 }
@@ -40,7 +41,12 @@ func (o OrgzController) CreateOrgz(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 		return
 	}
-
+	enum, enumErr := orgztype.GetEnum(j.Category)
+	if enumErr != nil {
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownType.String())
+		return
+	}
+	j.Category = enum
 	if err := o.usecase.CreateOrgz(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
@@ -87,7 +93,14 @@ func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 		return
 	}
-
+	if j.Category != "" {
+		enum, enumErr := orgztype.GetEnum(j.Category)
+		if enumErr != nil {
+			ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownType.String())
+			return
+		}
+		j.Category = enum
+	}
 	if err := o.usecase.UpdateOrgz(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())

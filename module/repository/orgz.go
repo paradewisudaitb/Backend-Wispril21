@@ -38,7 +38,7 @@ func (repo OrgzRepository) AddOne(name, slug, category, logo, apresiasi_poster, 
 }
 
 func (repo OrgzRepository) UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error {
-	var target entity.Jurusan
+	var target entity.Orgz
 	update := map[string]interface{}{}
 	if idOrgz != "" {
 		update["id"] = idOrgz
