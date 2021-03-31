@@ -9,6 +9,7 @@ import (
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"github.com/paradewisudaitb/Backend/module/usecase"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
@@ -24,7 +25,8 @@ func NewWisudawanController(router *gin.Engine, wu entity.WisudawanUsecase) enti
 		wisudawanGroup.POST("/", middleware.Auth, cont.CreateWisudawan)
 		wisudawanGroup.PUT("/", middleware.Auth, cont.UpdateWisudawan)
 		wisudawanGroup.DELETE("/:id", middleware.Auth, cont.DeleteWisudawan)
-		wisudawanGroup.GET("/:id", cont.GetWisudawan)
+		wisudawanGroup.GET("/id/:id", cont.GetWisudawan)
+		wisudawanGroup.GET("/slug/:slug", cont.FilterWisudawanByOrgzSlug)
 	}
 	return cont
 }
@@ -126,5 +128,37 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
 		Data:         result})
+	return
+}
+
+func (a WisudawanController) FilterWisudawanByOrgzSlug(ctx *gin.Context) {
+	slug := ctx.Param("slug")
+	if slug == "" {
+		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
+	}
+
+	result, err := a.usecase.FilterWisudawanByOrgzSlug(slug)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+	var parsedResult []entity.GetSimpleWisudawanSerializer
+	if len(result) == 0 {
+		parsedResult = make([]entity.GetSimpleWisudawanSerializer, 0)
+	} else {
+		parsedResult = make([]entity.GetSimpleWisudawanSerializer, len(result))
+		for i, x := range result {
+			parsedResult[i] = usecase.ConvertEntityWisudawanToSimpleSerializer(x)
+		}
+	}
+
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         parsedResult})
 	return
 }

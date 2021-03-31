@@ -1,0 +1,38 @@
+
+# type UpdateOrgzSerializer struct {
+# 	IdOrgz           string `json:"id_organization" wispril:"required"`
+# 	Slug             string `json:"slug" binding:"lte=255"`
+# 	Name             string `json:"name" binding:"lte=255"`
+# 	Category         string `json:"category" binding:"lte=64"`
+# 	Logo             string `json:"logo" binding:"lte=255"`
+# 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
+# 	ApresiasiTulisan string `json:"apresiasi_tulisan"`
+# 	ApresiasiVideo   string `json:"apresiasi_video" binding:"lte=255"`
+# }
+POST http://localhost/orgz/ 
+Content-Type: "application/json"
+Authorization: iniadalahtoken
+
+{
+    "name": "Himpunan Mahasiswa Teknik Informatika",
+    "slug" : "HMIF",
+    "category": "Kongres KM ITB",
+    "logo": "/path/to/logo",
+    "apresiasi_poster" : "/path/to/poster",
+    "apresiasi_tulisan" : "/path/to/tulisan",
+    "apresiasi_video" : "/path/to/video"
+}
+
+###
+PUT http://localhost/orgz/ 
+Content-Type: "application/json"
+Authorization: iniadalahtoken
+
+{
+    "id_organization" : "a658176a-0828-4b1f-9415-dddc2fcf0ad6",
+    "name": "Himpunan Mahasiswaaaa Teknik Informatika",
+    "slug" : "HMIFFF"
+}
+###
+DELETE http://localhost/orgz/65a28faf-0e7b-4663-9106-eb96d1ac661e
+Authorization: iniadalahtoken

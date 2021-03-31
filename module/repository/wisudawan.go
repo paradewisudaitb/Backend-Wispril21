@@ -114,11 +114,23 @@ func (repo WisudawanRepository) DeleteOne(wisudawanID string) error {
 	return nil
 }
 
-func (repo WisudawanRepository) Filter(organizationSlug string) []entity.Wisudawan {
+func (repo WisudawanRepository) FilterByOrgzSlug(organizationSlug string) ([]entity.Wisudawan, error) {
 	var result []entity.Wisudawan
-	// harus join
-	// if err := repo.db.Where("slug = ?", organizationSlug).Find(&result).Error; err != nil {
-	// 	return nil
-	// }
-	return result
+
+	resultWisudawanID := repo.db.Table("wisudawan").
+		Joins("INNER JOIN content ON content.wisudawan_id = wisudawan.id").
+		Joins("INNER JOIN organization ON organization.id = content.organization_id").
+		Where("slug = ?", organizationSlug).
+		Distinct("wisudawan.id")
+
+	if err := resultWisudawanID.Error; err != nil {
+		return nil, err
+	}
+
+	if err := repo.db.Preload(clause.Associations).
+		Find(&result, "id IN (?)", resultWisudawanID).
+		Error; err != nil {
+		return nil, err
+	}
+	return result, nil
 }

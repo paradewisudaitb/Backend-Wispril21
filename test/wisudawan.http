@@ -8,12 +8,12 @@ Authorization: iniadalahtoken
     "nama_panggilan": "Saaapapun",
     "judul_ta": "Howsss.?",
     "angkatan": 2,
-    "id_jurusan": "1c8b18f7-0a10-428d-ae0a-90806ec01451",
+    "id_jurusan": "1f6e7ec1-d84d-4c48-917b-2a1a60445c78",
     "instagram": "c",
     "linkedin": "b",
     "twitter": "a",
     "tempat_lahir": "11111",
-    "tanggal_lahir": "1234",
+    "tanggal_lahir": "12-02-2001",
     "photo": "123aa"
 }
 ###
@@ -22,23 +22,15 @@ DELETE http://localhost/wisudawan/318839c4-11eb-4d45-8204-5f25b91ac55c
 Authorization: iniadalahtoken
 
 ###
-GET http://localhost/wisudawan/b6e8966f-5fe9-4c4a-90d3-c642a403a363
+GET http://localhost/wisudawan/400aee33-24d8-4f79-820d-60aab85f7ab3
 ###
 PUT http://localhost/wisudawan/
 Authorization: iniadalahtoken
 
 {
-    "id_wisudawan" : "2cad3ea7-69c3-453d-b316-0c1c3d675b5a",
-    "nim": 13519222,
-    "nama": "Siapa kek",
-    "nama_panggilan": "Siapapun",
-    "judul_ta": "Saya belum Ta",
-    "angkatan": 15,
-    "id_jurusan": "1c8b18f7-0a10-428d-ae0a-90806ec01451",
-    "instagram": "",
-    "linkedin": "",
-    "twitter": "",
-    "tempat_lahir": "",
-    "tanggal_lahir": "",
-    "photo": ""
+    "id_wisudawan" : "656cd8af-2838-45b5-b9e2-78a73a6427e7",
+    "tanggal_lahir": "12-02-2011"
 }
+###
+GET http://localhost/wisudawan/slug/HMIF
+###

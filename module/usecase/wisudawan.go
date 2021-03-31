@@ -121,19 +121,10 @@ func (a WisudawanUseCase) GetAllWisudawan() ([]entity.Wisudawan, error) {
 	}
 	return result, nil
 }
-func (a WisudawanUseCase) FilterWisudawan(jurusan string) ([]entity.Wisudawan, error) {
-	var temp []entity.Wisudawan
-
-	return temp, nil
+func (a WisudawanUseCase) FilterWisudawanByOrgzSlug(organizationSlug string) ([]entity.Wisudawan, error) {
+	result, err := a.wisudawanrepo.FilterByOrgzSlug(organizationSlug)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
 }
-
-// func (a *WisudawanUseCase) CreateWisudawan(item entity.CreateWisudawanSerializer) error
-// func (a *WisudawanUseCase) DeleteWisudawan(item entity.DeleteWisudawanSerializer) error
-// func (a *WisudawanUseCase) UpdateWisudawan(item entity.UpdateWisudawanSerializer) error
-// func (a *WisudawanUseCase) GetWisudawan(idWisudawan string) error
-// func (a *WisudawanUseCase) GetAllWisudawan(Wisudawan string) error //
-// func (a *WisudawanUseCase) FilterWisudawan(jurusan string) ([]entity.Wisudawan, error) {
-// 	wisudawan := a.wisudawanrepo.Filter(jurusan)
-// 	return wisudawan, nil
-// 	// ini juga gak tau errornya buat apa
-// }

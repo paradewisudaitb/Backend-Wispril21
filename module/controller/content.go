@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/paradewisudaitb/Backend/common/constant/contenttype"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
 	"github.com/paradewisudaitb/Backend/common/serializer"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
@@ -24,17 +25,11 @@ func NewContentController(router *gin.Engine, cu entity.ContentUseCase) entity.C
 		contentGroup.POST("/", middleware.Auth, cont.CreateContent)
 		contentGroup.PUT("/", middleware.Auth, cont.UpdateContent)
 		contentGroup.DELETE("/:id", middleware.Auth, cont.DeleteContent)
-		contentGroup.GET("/:id", cont.GetContent)
+		contentGroup.GET("/id/:id", cont.GetContent)
 		contentGroup.GET("/detail/:id", cont.GetContentByWisudawan)
 	}
 	return cont
 }
-
-// CreateContent(ctx *gin.Context)
-// 	UpdateContent(ctx *gin.Context)
-// 	DeleteContent(ctx *gin.Context)
-// 	GetContent(ctx *gin.Context)
-// 	GetContentByWisudawan(ctx * gin.Context)
 
 func (a ContentController) CreateContent(ctx *gin.Context) {
 	var j entity.CreateContentSerializer
@@ -46,6 +41,12 @@ func (a ContentController) CreateContent(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 		return
 	}
+	enum, enumErr := contenttype.GetEnum(j.ContentType)
+	if enumErr != nil {
+		ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownType.String())
+		return
+	}
+	j.ContentType = enum
 
 	if err := a.usecase.CreateContent(j); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -64,6 +65,15 @@ func (a ContentController) UpdateContent(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&j); err != nil {
 		ForceResponse(ctx, http.StatusBadRequest, statuscode.UncompatibleJSON.String())
 		return
+	}
+
+	if j.ContentType != "" {
+		enum, enumErr := contenttype.GetEnum(j.ContentType)
+		if enumErr != nil {
+			ForceResponse(ctx, http.StatusBadRequest, statuscode.UnknownType.String())
+			return
+		}
+		j.ContentType = enum
 	}
 
 	if err := a.usecase.UpdateContent(j); err != nil {

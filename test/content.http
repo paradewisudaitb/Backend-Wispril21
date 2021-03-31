@@ -1,0 +1,17 @@
+# type CreateContentSerializer struct {
+# 	Wisudawan    string `json:"id_wisudawan" wispril:"required"`
+# 	Organization string `json:"id_organization"`
+# 	ContentType  string `json:"content_type" wispril:"required" binding:"lte=16"`
+# 	Headings     string `json:"headings" wispril:"required" binding:"lte=255"`
+# 	Details      string `json:"details"`
+# 	Image        string `json:"image" binding:"lte=255"`
+# }
+
+POST http://localhost/content/
+Authorization: iniadalahtoken
+
+{
+    "id_wisudawan" : "0b3145ff-b612-444f-84d3-342dbcbeb6a9",
+    "id_organization" : "2d1faf95-8def-4bd7-b7be-51a4b341c8c0",
+    "content_type" : "PRESTASI"
+}

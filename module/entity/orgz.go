@@ -9,7 +9,7 @@ import (
 type Orgz struct {
 	domain.EntityBase
 	Name             string `gorm:"type:VARCHAR(255);not null" json:"name"`
-	Slug             string `gorm:"type:VARCHAR(255);not null" json:"slug"`
+	Slug             string `gorm:"type:VARCHAR(128);not null" json:"slug"`
 	Category         string `gorm:"type:VARCHAR(64);not null" json:"category"`
 	Logo             string `gorm:"type:VARCHAR(255);not null" json:"logo"`
 	ApresiasiPoster  string `gorm:"type:VARCHAR(255);" json:"apresiasi_poster"`

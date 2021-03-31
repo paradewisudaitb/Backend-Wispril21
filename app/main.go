@@ -18,10 +18,13 @@ func main() {
 
 	fmt.Println("Starting server...")
 	r := gin.Default()
-	db := database.PostgresConnect(false)
+	db := database.PostgresConnect(true)
 
 	middleware.InitErrorHandler(r)
 	module.Init(db, r)
+
+	//Development Endpoint
+	module.Development(db, r)
 	r.Run()
 
 }

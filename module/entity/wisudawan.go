@@ -95,6 +95,7 @@ type WisudawanController interface {
 	UpdateWisudawan(ctx *gin.Context)
 	DeleteWisudawan(ctx *gin.Context)
 	GetWisudawan(ctx *gin.Context)
+	FilterWisudawanByOrgzSlug(ctx *gin.Context)
 }
 
 type WisudawanUsecase interface {
@@ -103,7 +104,7 @@ type WisudawanUsecase interface {
 	UpdateWisudawan(item UpdateWisudawanSerializer) error
 	GetWisudawan(idWisudawan uuid.UUID) (Wisudawan, error)
 	GetAllWisudawan() ([]Wisudawan, error)
-	FilterWisudawan(jurusan string) ([]Wisudawan, error)
+	FilterWisudawanByOrgzSlug(organizationSlug string) ([]Wisudawan, error)
 }
 
 type WisudawanRepository interface {
@@ -112,5 +113,5 @@ type WisudawanRepository interface {
 	AddOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusan, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
 	UpdateOne(WisudawanID string, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
 	DeleteOne(WisudawanID string) error
-	// Filter(jurusan string) ([]Wisudawan, error)
+	FilterByOrgzSlug(organizationSlug string) ([]Wisudawan, error)
 }

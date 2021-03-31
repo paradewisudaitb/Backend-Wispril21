@@ -19,7 +19,7 @@ type Content struct {
 }
 
 func (Content) TableName() string {
-	return "contents"
+	return "content"
 }
 
 type CreateContentSerializer struct {

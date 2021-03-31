@@ -6,8 +6,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type omit *struct{}
-
 type Jurusan struct {
 	domain.EntityBase
 	Jurusan       string `gorm:"type:VARCHAR(50);not null" json:"jurusan"`
