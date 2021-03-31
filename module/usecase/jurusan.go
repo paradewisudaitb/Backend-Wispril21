@@ -9,6 +9,16 @@ type JurusanUseCase struct {
 	jurusanrepo entity.JurusanRepository
 }
 
+func ConvertEntityJurusanToSerializer(j entity.Jurusan) entity.GetJurusanSerializer {
+	return entity.GetJurusanSerializer{
+		Id:            j.ID,
+		Jurusan:       j.Jurusan,
+		JurusanShort:  j.JurusanShort,
+		Fakultas:      j.Fakultas,
+		FakultasShort: j.FakultasShort,
+	}
+}
+
 func NewJurusanUsecase(j entity.JurusanRepository) entity.JurusanUseCase {
 	return JurusanUseCase{
 		jurusanrepo: j,

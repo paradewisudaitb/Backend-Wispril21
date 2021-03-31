@@ -61,3 +61,18 @@ func (uc OrgzUseCase) GetOrgz(idOrgz uuid.UUID) (entity.Orgz, error) {
 	}
 	return result, nil
 }
+
+func (uc OrgzUseCase) GetAll() ([]entity.Orgz, error) {
+	result, err := uc.orgzrepo.GetAll()
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}
+func (uc OrgzUseCase) GetBySlug(slug string) (entity.Orgz, error) {
+	result, err := uc.orgzrepo.GetBySlug(slug)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

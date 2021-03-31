@@ -9,6 +9,15 @@ type MessageUsecase struct {
 	messagerepo entity.MessageRepository
 }
 
+func ConvertEntityMessageToSerializer(x entity.Message) entity.GetMessageSerializer {
+	return entity.GetMessageSerializer{
+		ID:      x.ID,
+		Sent:    x.CreatedAt.Format("15:04:05 02-01-2006"),
+		Sender:  x.Sender,
+		Message: x.Message,
+	}
+}
+
 func NewMessageUsecase(j entity.MessageRepository) entity.MessageUsecase {
 	return MessageUsecase{
 		messagerepo: j,

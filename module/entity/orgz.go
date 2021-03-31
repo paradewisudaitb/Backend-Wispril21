@@ -46,7 +46,9 @@ type OrgzController interface {
 	CreateOrgz(ctx *gin.Context)
 	UpdateOrgz(ctx *gin.Context)
 	DeleteOrgz(ctx *gin.Context)
-	GetOrgz(ctx *gin.Context)
+	GetByID(ctx *gin.Context)
+	GetBySlug(ctx *gin.Context)
+	GetAll(ctx *gin.Context)
 }
 
 type OrgzUseCase interface {
@@ -54,6 +56,8 @@ type OrgzUseCase interface {
 	DeleteOrgz(idOrgz uuid.UUID) error
 	UpdateOrgz(item UpdateOrgzSerializer) error
 	GetOrgz(idOrgz uuid.UUID) (Orgz, error)
+	GetAll() ([]Orgz, error)
+	GetBySlug(slug string) (Orgz, error)
 }
 
 type OrgzRepository interface {
@@ -61,4 +65,6 @@ type OrgzRepository interface {
 	AddOne(name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
 	UpdateOne(idOrgz, name, slug, category, logo, apresiasi_poster, apresiasi_tulisan, apresiasi_video string) error
 	DeleteOne(idOrgz string) error
+	GetAll() ([]Orgz, error)
+	GetBySlug(slug string) (Orgz, error)
 }

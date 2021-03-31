@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
 	"github.com/paradewisudaitb/Backend/common/serializer"
+	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 	"github.com/paradewisudaitb/Backend/module/entity"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -20,10 +21,11 @@ func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzCon
 	cont := OrgzController{usecase: ou}
 	orgzGroup := router.Group("/orgz")
 	{
-		orgzGroup.POST("/", cont.CreateOrgz)
-		orgzGroup.PUT("/", cont.UpdateOrgz)
-		orgzGroup.DELETE("/:id", cont.DeleteOrgz)
-		orgzGroup.GET("/:id", cont.GetOrgz)
+		orgzGroup.POST("/", middleware.Auth, cont.CreateOrgz)
+		orgzGroup.PUT("/", middleware.Auth, cont.UpdateOrgz)
+		orgzGroup.DELETE("/id/:id", middleware.Auth, cont.DeleteOrgz)
+		orgzGroup.GET("/id/:id", cont.GetByID)
+		orgzGroup.GET("/:slug", cont.GetBySlug)
 	}
 	return cont
 }
@@ -99,7 +101,7 @@ func (o OrgzController) UpdateOrgz(ctx *gin.Context) {
 
 }
 
-func (o OrgzController) GetOrgz(ctx *gin.Context) {
+func (o OrgzController) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
@@ -122,6 +124,50 @@ func (o OrgzController) GetOrgz(ctx *gin.Context) {
 		return
 	}
 
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         result})
+	return
+}
+
+// GetBySlug(ctx *gin.Context)
+// GetAll(ctx *gin.Context)
+func (o OrgzController) GetBySlug(ctx *gin.Context) {
+	slug := ctx.Param("slug")
+	if slug == "" {
+		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+		return
+	}
+
+	result, err := o.usecase.GetBySlug(slug)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         result})
+	return
+}
+func (o OrgzController) GetAll(ctx *gin.Context) {
+
+	result, err := o.usecase.GetAll()
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())
+			return
+		}
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+	if len(result) == 0 {
+		result = make([]entity.Orgz, 0)
+	}
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
 		Data:         result})

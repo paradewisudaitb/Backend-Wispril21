@@ -82,3 +82,18 @@ func (repo OrgzRepository) DeleteOne(idOrgz string) error {
 	}
 	return nil
 }
+
+func (repo OrgzRepository) GetAll() ([]entity.Orgz, error) {
+	var results []entity.Orgz
+	if err := repo.db.Find(&results).Error; err != nil {
+		return make([]entity.Orgz, 0), err
+	}
+	return results, nil
+}
+func (repo OrgzRepository) GetBySlug(slug string) (entity.Orgz, error) {
+	var result entity.Orgz
+	if err := repo.db.First(&result, "slug = ?", slug).Error; err != nil {
+		return entity.Orgz{}, err
+	}
+	return result, nil
+}
