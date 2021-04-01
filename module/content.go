@@ -22,7 +22,9 @@ func NewContentModule(db *gorm.DB, g *gin.Engine) ContentModule {
 
 	if db != nil {
 		db.AutoMigrate(&entity.Content{})
-		db.Migrator().CreateConstraint(&entity.Content{}, "Wisudawan")
+		if (!db.Migrator().HasConstraint(&entity.Content{}, "Wisudawan")) {
+			db.Migrator().CreateConstraint(&entity.Content{}, "Wisudawan")
+		}
 	}
 
 	return ContentModule{

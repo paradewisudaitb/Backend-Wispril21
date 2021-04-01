@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -17,8 +19,15 @@ func main() {
 	}
 
 	fmt.Println("Starting server...")
+
+	development := true
+	if strings.EqualFold(os.Getenv("GIN_MODE"), "release") {
+		development = false
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.Default()
-	db := database.PostgresConnect(true)
+	db := database.PostgresConnect(development)
 
 	middleware.InitErrorHandler(r)
 	module.Init(db, r)

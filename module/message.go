@@ -21,7 +21,9 @@ func NewMessageModule(db *gorm.DB, g *gin.Engine) MessageModule {
 	messageController := controller.NewMessageController(g, messageUsecase)
 	if db != nil {
 		db.AutoMigrate(&entity.Message{})
-		db.Migrator().CreateConstraint(&entity.Message{}, "Receiver")
+		if (!db.Migrator().HasConstraint(&entity.Message{}, "Receiver")) {
+			db.Migrator().CreateConstraint(&entity.Message{}, "Receiver")
+		}
 	}
 
 	return MessageModule{
