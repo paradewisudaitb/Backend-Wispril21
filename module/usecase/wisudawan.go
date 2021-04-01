@@ -41,6 +41,7 @@ func ConvertEntityWisudawanToSimpleSerializer(x entity.Wisudawan) entity.GetSimp
 		JurusanShort:  x.Jurusan.JurusanShort,
 		Fakultas:      x.Jurusan.Fakultas,
 		FakultasShort: x.Jurusan.FakultasShort,
+		Photo:         x.Photo,
 	}
 }
 
