@@ -23,6 +23,9 @@ func Development(db *gorm.DB, g *gin.Engine) {
 		db.Preload(clause.Associations).Find(&results, "id IN (?)", ids)
 		c.JSON(http.StatusOK, results)
 	})
+	g.GET("/testworking", func (c * gin.Context) {
+			c.JSON(http.StatusOK, "Okay")
+	})
 }
 
 func InsertDummy(db *gorm.DB) {
