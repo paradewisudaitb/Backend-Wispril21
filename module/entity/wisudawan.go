@@ -57,6 +57,7 @@ type GetSimpleWisudawanSerializer struct {
 	JurusanShort  string `json:"jurusan_short"`
 	Fakultas      string `json:"fakultas"`
 	FakultasShort string `json:"fakultas_short"`
+	Photo         string `json:"photo"`
 }
 
 type CreateWisudawanSerializer struct {

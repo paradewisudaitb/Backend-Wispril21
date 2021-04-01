@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost/message/656cd8af-2838-45b5-b9e2-78a73a6427e7
+GET http://localhost/message/wisudawan/eecacc01-6748-46f7-8d48-642d2e8fe584
 
 ###
 DELETE http://localhost/message/400aee33-24d8-4f79-820d-60aab85f7ab3

@@ -25,8 +25,9 @@ func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzCon
 		orgzGroup.POST("/", middleware.Auth, cont.CreateOrgz)
 		orgzGroup.PUT("/", middleware.Auth, cont.UpdateOrgz)
 		orgzGroup.DELETE("/:id", middleware.Auth, cont.DeleteOrgz)
-		orgzGroup.GET("/id/:id", cont.GetByID)
+		orgzGroup.GET("/id/:id", cont.GetByID) //TODO ganti jadi 
 		orgzGroup.GET("/slug/:slug", cont.GetBySlug)
+		orgzGroup.GET("/all", cont.GetAll)
 	}
 	return cont
 }

@@ -14,7 +14,7 @@ func Init(db *gorm.DB, g *gin.Engine) {
 	NewMessageModule(db, g)
 	NewOrgzModule(db, g)
 	NewContentModule(db, g)
-	g.GET("/reset", middleware.Auth, func(c *gin.Context) {
+	g.GET("/reset", middleware.ResetAuth, func(c *gin.Context) {
 		Reset(db, g)
 	})
 }

@@ -22,7 +22,7 @@ DELETE http://localhost/wisudawan/318839c4-11eb-4d45-8204-5f25b91ac55c
 Authorization: iniadalahtoken
 
 ###
-GET http://localhost/wisudawan/400aee33-24d8-4f79-820d-60aab85f7ab3
+GET http://localhost/wisudawan/id/eecacc01-6748-46f7-8d48-642d2e8fe584
 ###
 PUT http://localhost/wisudawan/
 Authorization: iniadalahtoken
@@ -32,5 +32,5 @@ Authorization: iniadalahtoken
     "tanggal_lahir": "12-02-2011"
 }
 ###
-GET http://localhost/wisudawan/slug/HMIF
+GET http://localhost/wisudawan/org/HMIF
 ###

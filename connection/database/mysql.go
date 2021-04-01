@@ -11,7 +11,7 @@ import (
 
 func MysqlConnect() *gorm.DB {
 	if dbConnection == nil {
-		godotenv.Load("mysql.env")
+		godotenv.Load()
 		host := os.Getenv("MYSQL_HOST")
 		port := os.Getenv("MYSQL_PORT")
 		dbname := os.Getenv("MYSQL_DATABASE")

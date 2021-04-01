@@ -124,10 +124,11 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+	parsedResult := usecase.ConvertEntityWisudawanToSerializer(result)
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
-		Data:         result})
+		Data:         parsedResult})
 	return
 }
 

@@ -27,7 +27,7 @@ func NewContentController(router *gin.Engine, cu entity.ContentUseCase) entity.C
 		contentGroup.PUT("/", middleware.Auth, cont.UpdateContent)
 		contentGroup.DELETE("/:id", middleware.Auth, cont.DeleteContent)
 		contentGroup.GET("/id/:id", cont.GetContent)
-		contentGroup.GET("/detail/:id", cont.GetContentByWisudawan)
+		contentGroup.GET("/wisudawan/:id", cont.GetContentByWisudawan)
 	}
 	return cont
 }

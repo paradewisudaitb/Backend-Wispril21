@@ -36,3 +36,9 @@ Authorization: iniadalahtoken
 ###
 DELETE http://localhost/orgz/65a28faf-0e7b-4663-9106-eb96d1ac661e
 Authorization: iniadalahtoken
+
+###
+GET http://localhost/orgz/all
+
+###
+GET http://localhost/orgz/slug/HMIF
