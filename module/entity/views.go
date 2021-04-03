@@ -32,7 +32,7 @@ type ViewsController interface {
 }
 
 type ViewsUseCase interface {
-	AddViews(IP string) error
+	AddViews(IP string) (Views, error)
 }
 
 type ViewsRepository interface {
