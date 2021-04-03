@@ -10,6 +10,7 @@ import (
 	"github.com/paradewisudaitb/Backend/connection/database"
 	"github.com/paradewisudaitb/Backend/module"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -27,7 +28,12 @@ func main() {
 	}
 
 	r := gin.Default()
-	db := database.PostgresConnect(development)
+	var db *gorm.DB
+	if (strings.EqualFold(os.Getenv("DBMS"), "postgres")){
+		db = database.MysqlConnect(development)
+	} else {
+		db = database.PostgresConnect(development)
+	}
 
 	middleware.InitErrorHandler(r)
 	module.Init(db, r)
