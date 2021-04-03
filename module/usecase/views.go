@@ -9,21 +9,21 @@
 
 package usecase
 
-import (
-	"github.com/paradewisudaitb/Backend/module/entity"
-)
+// import (
+// 	"github.com/paradewisudaitb/Backend/module/entity"
+// )
 
-type ViewsUseCase struct {
-	viewsrepo entity.ViewsRepository
-}
+// type ViewsUseCase struct {
+// 	viewsrepo entity.ViewsRepository
+// }
 
-func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
-	return ViewsUseCase{
-		viewsrepo: v,
-	}
-}
+// func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
+// 	return ViewsUseCase{
+// 		viewsrepo: v,
+// 	}
+// }
 
-// func (uc ViewsUseCase) AddViews(item entity.ViewsRepository) error {
+// func (uc ViewsUseCase) AddViews(item entity.ViewsSerializer) error {
 // 	if err := uc.viewsrepo.AddOne(
 // 		item.IdWisudawan,
 // 		item.IP,
