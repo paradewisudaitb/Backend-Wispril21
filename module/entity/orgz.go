@@ -26,7 +26,7 @@ type CreateOrgzSerializer struct {
 	Name             string `json:"name" wispril:"required" binding:"lte=255"`
 	Slug             string `json:"slug" wispril:"required" binding:"lte=255"`
 	Category         string `json:"category" wispril:"required" binding:"lte=64"`
-	Logo             string `json:"logo" wispril:"required" binding:"lte=255"`
+	Logo             string `json:"logo" binding:"lte=255"`
 	ApresiasiPoster  string `json:"apresiasi_poster" binding:"lte=255"`
 	ApresiasiTulisan string `json:"apresiasi_tulisan"`
 	ApresiasiVideo   string `json:"apresiasi_video" binding:"lte=255"`
