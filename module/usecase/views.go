@@ -9,13 +9,13 @@
 
 package usecase
 
-// import (
-// 	"github.com/paradewisudaitb/Backend/module/entity"
-// )
+import (
+	"github.com/paradewisudaitb/Backend/module/entity"
+)
 
-// type ViewsUseCase struct {
-// 	viewsrepo entity.ViewsRepository
-// }
+type ViewsUseCase struct {
+	viewsrepo entity.ViewsRepository
+}
 
 // func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
 // 	return ViewsUseCase{
