@@ -6,7 +6,7 @@
 // Repository AddViews
 
 // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
-// package entity
+package entity
 
 // import (
 // 	"time"
