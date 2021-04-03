@@ -13,14 +13,15 @@ const (
 	Karya
 	Tips
 	Keanggotaan
+	Funfact
 )
 
 func (s ContentType) String() string {
-	return [...]string{"KONTRIBUSI", "PRESTASI", "KARYA", "TIPS_SUKSES", "KEANGGOTAAN"}[s]
+	return [...]string{"KONTRIBUSI", "PRESTASI", "KARYA", "TIPS_SUKSES", "KEANGGOTAAN", "FUNFACT"}[s]
 }
 
 func GetEnum(any string) (string, error) {
-	TYPES := [...]string{"KONTRIBUSI", "PRESTASI", "KARYA", "TIPS_SUKSES", "KEANGGOTAAN"}
+	TYPES := [...]string{"KONTRIBUSI", "PRESTASI", "KARYA", "TIPS_SUKSES", "KEANGGOTAAN", "FUNFACT"}
 
 	anyConverted := strings.ReplaceAll(any, " ", "_")
 	for i, x := range TYPES {

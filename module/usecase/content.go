@@ -24,6 +24,7 @@ func ConvertEntityContentsToSerializer(data []entity.Content) entity.GetContents
 	for _, x := range data {
 		if strings.EqualFold(x.Type, contenttype.Karya.String()) ||
 			strings.EqualFold(x.Type, contenttype.Prestasi.String()) ||
+			strings.EqualFold(x.Type, contenttype.Funfact.String()) ||
 			strings.EqualFold(x.Type, contenttype.Tips.String()) {
 			selfData = append(selfData, entity.GetContentSerializer{
 				ContentType: x.Type,
