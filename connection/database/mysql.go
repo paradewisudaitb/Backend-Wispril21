@@ -7,9 +7,10 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func MysqlConnect() *gorm.DB {
+func MysqlConnect(debug bool) *gorm.DB {
 	if dbConnection == nil {
 		godotenv.Load()
 		host := os.Getenv("MYSQL_HOST")
@@ -18,8 +19,15 @@ func MysqlConnect() *gorm.DB {
 		user := os.Getenv("MYSQL_USERNAME")
 		password := os.Getenv("MYSQL_PASSWORD")
 		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, dbname)
-		fmt.Println(dsn)
-		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		config := &gorm.Config{Logger: logger.Default.LogMode(logger.Info),
+			DisableForeignKeyConstraintWhenMigrating: true,
+		}
+		if !debug {
+			config = &gorm.Config{
+				DisableForeignKeyConstraintWhenMigrating: true,
+			}
+		}
+		db, err := gorm.Open(mysql.Open(dsn), config)
 
 		if err != nil {
 			panic(err)
