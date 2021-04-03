@@ -46,6 +46,7 @@ type JurusanController interface {
 	UpdateJurusan(ctx *gin.Context)
 	DeleteJurusan(ctx *gin.Context)
 	GetJurusan(ctx *gin.Context)
+	GetAllJurusan(ctx *gin.Context)
 }
 
 type JurusanUseCase interface {
@@ -53,6 +54,7 @@ type JurusanUseCase interface {
 	DeleteJurusan(IdJurusan uuid.UUID) error
 	UpdateJurusan(item UpdateJurusanSerializer) error
 	GetJurusan(IdJurusan uuid.UUID) (Jurusan, error)
+	GetAllJurusan() ([]Jurusan, error)
 }
 
 type JurusanRepository interface {
@@ -60,4 +62,5 @@ type JurusanRepository interface {
 	AddOne(jurusan, fakultas, fakultas_short, jurusan_short string) error
 	UpdateOne(id uuid.UUID, jurusan, fakultas, fakultas_short, jurusan_short string) error
 	DeleteOne(id uuid.UUID) error
+	GetAll() ([]Jurusan, error)
 }
