@@ -26,7 +26,7 @@ func main() {
 
 	r := gin.Default()
 	var db *gorm.DB
-	if (strings.EqualFold(os.Getenv("DBMS"), "mysql")){
+	if strings.EqualFold(os.Getenv("DBMS"), "mysql") {
 		db = database.MysqlConnect(development)
 	} else {
 		db = database.PostgresConnect(development)
