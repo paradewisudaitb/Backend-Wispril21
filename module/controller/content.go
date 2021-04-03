@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/constant/contenttype"
@@ -151,14 +152,13 @@ func (a ContentController) GetContentByWisudawan(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
 		return
 	}
-
-	idToUuid := uuid.FromStringOrNil(id)
-	if uuid.Equal(idToUuid, uuid.Nil) {
-		ForceResponse(ctx, http.StatusNotFound, statuscode.EmptyParam.String())
+	u, convertErr := strconv.ParseUint(id, 10, 32)
+	if convertErr != nil {
+		ForceResponse(ctx, http.StatusBadRequest, convertErr.Error())
 		return
 	}
 
-	result, err := a.usecase.GetByWisudawan(idToUuid)
+	result, err := a.usecase.GetByWisudawan(uint32(u))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ForceResponse(ctx, http.StatusNotFound, statuscode.NotFound.String())

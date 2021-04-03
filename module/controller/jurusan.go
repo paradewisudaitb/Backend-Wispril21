@@ -19,7 +19,7 @@ type JurusanController struct {
 	usecase entity.JurusanUseCase
 }
 
-func NewJurusanController(router *gin.Engine, ju entity.JurusanUseCase) JurusanController {
+func NewJurusanController(router *gin.Engine, ju entity.JurusanUseCase) entity.JurusanController {
 	cont := JurusanController{usecase: ju}
 	jurusanGroup := router.Group("/jurusan")
 	{
@@ -27,6 +27,7 @@ func NewJurusanController(router *gin.Engine, ju entity.JurusanUseCase) JurusanC
 		jurusanGroup.PUT("/", middleware.Auth, cont.UpdateJurusan)
 		jurusanGroup.DELETE("/:id", middleware.Auth, cont.DeleteJurusan)
 		jurusanGroup.GET("/:id", cont.GetJurusan)
+		jurusanGroup.GET("/", cont.GetAllJurusan)
 	}
 	return cont
 }
@@ -121,6 +122,29 @@ func (a JurusanController) GetJurusan(ctx *gin.Context) {
 		return
 	}
 	parsedResult := usecase.ConvertEntityJurusanToSerializer(result)
+	ctx.JSON(http.StatusOK,
+		serializer.ResponseData{
+			ResponseBase: serializer.RESPONSE_OK,
+			Data:         parsedResult,
+		},
+	)
+}
+
+func (a JurusanController) GetAllJurusan(ctx *gin.Context) {
+	result, err := a.usecase.GetAllJurusan()
+	if err != nil {
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+	var parsedResult []entity.GetJurusanSerializer
+	if (len(result) == 0){
+		parsedResult = make([]entity.GetJurusanSerializer, 0)
+	} else {
+		parsedResult = make([]entity.GetJurusanSerializer, len(result))
+		for i, x := range result {
+			parsedResult[i] = usecase.ConvertEntityJurusanToSerializer(x)
+		}
+	}
 	ctx.JSON(http.StatusOK,
 		serializer.ResponseData{
 			ResponseBase: serializer.RESPONSE_OK,

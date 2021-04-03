@@ -33,6 +33,9 @@ Authorization: iniadalahtoken
 ###
 
 GET http://localhost/jurusan/507a7bba-c96f-4d89-86a1-18f03695b402
+###
+
+GET http://localhost/jurusan
 	
 ###
 DELETE http://localhost/jurusan/e2c8d5d7-03eb-4dfa-af57-cb7b9b73704c
