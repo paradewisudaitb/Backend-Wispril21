@@ -41,7 +41,7 @@ func (Content) TableName() string {
 }
 
 type CreateContentSerializer struct {
-	Wisudawan    string `json:"id_wisudawan" wispril:"required"`
+	Nim          uint32 `json:"nim" wispril:"required"`
 	Organization string `json:"id_organization"`
 	ContentType  string `json:"content_type" wispril:"required" binding:"lte=16"`
 	Headings     string `json:"headings" wispril:"required" binding:"lte=255"`
@@ -51,7 +51,7 @@ type CreateContentSerializer struct {
 
 type UpdateContentSerializer struct {
 	Content      string `json:"id_content" wispril:"required"`
-	Wisudawan    string `json:"id_wisudawan"`
+	Nim          uint32 `json:"nim"`
 	Organization string `json:"id_organization"`
 	ContentType  string `json:"content_type" binding:"lte=16"`
 	Headings     string `json:"headings" binding:"lte=255"`
@@ -72,13 +72,13 @@ type ContentUseCase interface {
 	DeleteContent(IdContent uuid.UUID) error
 	UpdateContent(item UpdateContentSerializer) error
 	GetContent(IdContent uuid.UUID) (Content, error)
-	GetByWisudawan(IdWisudawan uuid.UUID) ([]Content, error)
+	GetByWisudawan(NimWisudawan uint32) ([]Content, error)
 }
 
 type ContentRepository interface {
 	GetOne(id string) (Content, error)
-	GetByWisudawan(idWisudawan string) ([]Content, error)
-	AddOne(idWisudawan, idOrgz, contenttype, headings, details, image string) error
-	UpdateOne(idContent string, idWisudawan, idOrgz, contenttype, headings, details, image string) error
+	GetByWisudawan(nimWisudawan uint32) ([]Content, error)
+	AddOne(nimWisudawan uint32, idOrgz, contenttype, headings, details, image string) error
+	UpdateOne(idContent string, nimWisudawan uint32, idOrgz, contenttype, headings, details, image string) error
 	DeleteOne(idContent string) error
 }

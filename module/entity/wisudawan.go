@@ -10,7 +10,7 @@ import (
 
 type Wisudawan struct {
 	domain.EntityBase
-	Nim          uint32    `json:"nim"`
+	Nim          uint32    `json:"nim" gorm:"unique"`
 	Nama         string    `json:"nama" gorm:"type:VARCHAR(255);not null"`
 	Panggilan    string    `json:"nama_panggilan" gorm:"type:VARCHAR(255);not null"`
 	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(1024);not null"`
