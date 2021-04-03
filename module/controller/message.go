@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/common/constant/statuscode"
@@ -11,6 +12,8 @@ import (
 	"github.com/paradewisudaitb/Backend/module/entity"
 	"github.com/paradewisudaitb/Backend/module/usecase"
 	uuid "github.com/satori/go.uuid"
+	limit "github.com/yangxikun/gin-limit-by-key"
+	"golang.org/x/time/rate"
 	"gorm.io/gorm"
 )
 
@@ -22,7 +25,13 @@ func NewMessageController(router *gin.Engine, mu entity.MessageUsecase) MessageC
 	cont := MessageController{usecase: mu}
 	messageGroup := router.Group("/message")
 	{
-		messageGroup.POST("/", cont.CreateMessage)
+		messageGroup.POST("/", limit.NewRateLimiter(func(c *gin.Context) string {
+			return c.ClientIP() // limit rate by client ip
+		}, func(c *gin.Context) (*rate.Limiter, time.Duration) {
+			return rate.NewLimiter(rate.Every(5*time.Minute), 3), time.Hour * 12
+		}, func(c *gin.Context) {
+			ForceResponse(c, http.StatusTooManyRequests, "too_many_requests")
+		}), cont.CreateMessage)
 		messageGroup.DELETE("/:id", middleware.Auth, cont.DeleteMessage)
 		messageGroup.GET("/wisudawan/:id", cont.GetMessage)
 	}

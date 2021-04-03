@@ -7,7 +7,7 @@ POST http://localhost/message/
 Content-Type: application/json
 
 {
-    "id_wisudawan" : "656cd8af-2838-45b5-b9e2-78a73a6427e7",
+    "id_wisudawan" : "69e9572e-c2f8-40a9-843f-00f592eb9e28",
     "message" : "Message1113",
     "sender" : "Anonymous11113"
 }
