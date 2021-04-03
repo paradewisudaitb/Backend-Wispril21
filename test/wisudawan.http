@@ -1,0 +1,36 @@
+POST http://localhost/wisudawan/ 
+Content-Type: "application/json"
+Authorization: iniadalahtoken
+
+{
+    "nim": 13519000,
+    "nama": "Ssk",
+    "nama_panggilan": "Saaapapun",
+    "judul_ta": "Howsss.?",
+    "angkatan": 2,
+    "id_jurusan": "1f6e7ec1-d84d-4c48-917b-2a1a60445c78",
+    "instagram": "c",
+    "linkedin": "b",
+    "twitter": "a",
+    "tempat_lahir": "11111",
+    "tanggal_lahir": "12-02-2001",
+    "photo": "123aa"
+}
+###
+
+DELETE http://localhost/wisudawan/318839c4-11eb-4d45-8204-5f25b91ac55c
+Authorization: iniadalahtoken
+
+###
+GET http://localhost/wisudawan/id/eecacc01-6748-46f7-8d48-642d2e8fe584
+###
+PUT http://localhost/wisudawan/
+Authorization: iniadalahtoken
+
+{
+    "id_wisudawan" : "656cd8af-2838-45b5-b9e2-78a73a6427e7",
+    "tanggal_lahir": "12-02-2011"
+}
+###
+GET http://localhost/wisudawan/org/HMIF
+###

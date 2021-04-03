@@ -1,2 +1,4 @@
 .env
+mysql.env
 *.exe
+vendor
