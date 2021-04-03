@@ -1,5 +1,3 @@
-
-
 // entity
 // entitybase, id_wisudawan, ip, time
 
@@ -8,5 +6,5 @@
 // Repository AddViews
 
 // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
-
+package entity
 

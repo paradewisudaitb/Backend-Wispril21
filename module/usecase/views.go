@@ -7,7 +7,7 @@
 
 // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
 
-// package usecase
+package usecase
 
 // import (
 // 	"fmt"
@@ -30,7 +30,7 @@
 // 	w.WriteHeader(200)
 //     w.Write([]byte(ip))
 // 	//bingung kalo gaada serializer
-	
+
 // }
 
 // func getIP(r *http.Request) (string, error) {
