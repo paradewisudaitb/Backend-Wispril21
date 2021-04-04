@@ -21,19 +21,29 @@ func (repo ContentRepository) GetOne(id string) (entity.Content, error) {
 	return result, nil
 }
 
-func (repo ContentRepository) GetByWisudawan(idWisudawan string) ([]entity.Content, error) {
+func (repo ContentRepository) GetByWisudawan(nimWisudawan uint32) ([]entity.Content, error) {
+	var wisudawan entity.Wisudawan
+	if err := repo.db.Model(&entity.Wisudawan{}).Find(&wisudawan, "nim = ?", nimWisudawan).Error; err != nil {
+		return nil, err
+	}
+
 	var result []entity.Content
 	if err := repo.db.Preload(clause.Associations).
-		Where("wisudawan_id = ?", idWisudawan).
+		Where("wisudawan_id = ?", wisudawan.ID).
 		Find(&result).Error; err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-func (repo ContentRepository) AddOne(idWisudawan, idOrgz, contenttype, headings, details, image string) error {
+func (repo ContentRepository) AddOne(nimWisudawan uint32, idOrgz, contenttype, headings, details, image string) error {
+	var wisudawan entity.Wisudawan
+	if err := repo.db.Model(&entity.Wisudawan{}).Where("nim = ?", nimWisudawan).First(&wisudawan).Error; err != nil {
+		return err
+	}
+
 	contentEntity := entity.Content{
-		WisudawanID:    idWisudawan,
+		WisudawanID:    wisudawan.ID,
 		OrganizationID: idOrgz,
 		Type:           contenttype,
 		Headings:       headings,
@@ -46,11 +56,15 @@ func (repo ContentRepository) AddOne(idWisudawan, idOrgz, contenttype, headings,
 	return nil
 }
 
-func (repo ContentRepository) UpdateOne(idContent string, idWisudawan, idOrgz, contenttype, headings, details, image string) error {
+func (repo ContentRepository) UpdateOne(idContent string, nimWisudawan uint32, idOrgz, contenttype, headings, details, image string) error {
 	var content entity.Content
 	content_update := map[string]interface{}{}
-	if idWisudawan != "" {
-		content_update["wisudawan_id"] = idWisudawan
+	if nimWisudawan != 0 {
+		var wisudawan entity.Wisudawan
+		if err := repo.db.Model(&entity.Wisudawan{}).Find(&wisudawan, "nim = ?", nimWisudawan).Error; err != nil {
+			return err
+		}
+		content_update["wisudawan_id"] = wisudawan.ID
 	}
 
 	if idOrgz != "" {
@@ -70,9 +84,6 @@ func (repo ContentRepository) UpdateOne(idContent string, idWisudawan, idOrgz, c
 		content_update["image"] = image
 	}
 
-	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", idContent).Error; err != nil {
-		return err
-	}
 	if err := repo.db.Model(&content).Where("id = ?", idContent).Updates(content_update).Error; err != nil {
 		return err
 	}

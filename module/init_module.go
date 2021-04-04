@@ -8,7 +8,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func Init(db *gorm.DB, g *gin.Engine) {
+func Init(db *gorm.DB, g *gin.Engine, devmode bool) {
+	NewCORSModule(g, devmode)
+	NewLimiterModule(g)
 	NewJurusanModule(db, g)
 	NewWisudawanModule(db, g)
 	NewMessageModule(db, g)

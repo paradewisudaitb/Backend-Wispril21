@@ -16,7 +16,6 @@ func Auth(c *gin.Context) {
 			c.Next()
 			return
 		}
-		c.AbortWithStatusJSON(http.StatusForbidden, serializer.RESPONSE_FORBIDDEN)
 
 	}
 
@@ -31,7 +30,6 @@ func ResetAuth(c *gin.Context) {
 			c.Next()
 			return
 		}
-		c.AbortWithStatusJSON(http.StatusForbidden, serializer.RESPONSE_FORBIDDEN)
 
 	}
 

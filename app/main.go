@@ -14,10 +14,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	godotenv.Load()
 
 	fmt.Println("Starting server...")
 
@@ -29,14 +26,14 @@ func main() {
 
 	r := gin.Default()
 	var db *gorm.DB
-	if (strings.EqualFold(os.Getenv("DBMS"), "postgres")){
+	if strings.EqualFold(os.Getenv("DBMS"), "mysql") {
 		db = database.MysqlConnect(development)
 	} else {
 		db = database.PostgresConnect(development)
 	}
 
 	middleware.InitErrorHandler(r)
-	module.Init(db, r)
+	module.Init(db, r, development)
 
 	//Development Endpoint
 	module.Development(db, r)

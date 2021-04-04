@@ -7,57 +7,29 @@
 
 // // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
 
-// package usecase
+package usecase
 
 // import (
-// 	"fmt"
-// 	"net"
-// 	"net/http"
-// 	"strings"
-
 // 	"github.com/paradewisudaitb/Backend/module/entity"
 // )
 
-// type ViewsUsecase struct {
+// type ViewsUseCase struct {
 // 	viewsrepo entity.ViewsRepository
 // }
 
-// func AddViewsUsecase(uc ViewsUsecase, r *http.Request) entity.ViewsUsecase {
-// 	ip, err := getIP(r)
-// 	if err != nil {
-// 		w.WriteHeader(400)
-// 		w.Write([]byte("No valid ip"))
+// func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
+// 	return ViewsUseCase{
+// 		viewsrepo: v,
 // 	}
-// 	w.WriteHeader(200)
-// 	w.Write([]byte(ip))
-// 	//bingung kalo gaada serializer
-
 // }
 
-// func getIP(r *http.Request) (string, error) {
-// 	ip := r.Header.Get("X-REAL-IP")
-// 	netIP := net.ParseIP(ip)
-// 	if netIP != nil {
-// 		return ip, nil
+// func (uc ViewsUseCase) AddViews(item entity.ViewsSerializer) error {
+// 	if err := uc.viewsrepo.AddOne(
+// 		item.IdWisudawan,
+// 		item.IP,
+// 		item.Time,
+// 	); err != nil {
+// 		return err
 // 	}
-
-// 	ips := r.Header.Get("X-FORWARDED-FOR")
-// 	splitIps := strings.Split(ips, ",")
-// 	for _, ip := range splitIps {
-// 		netIP := net.ParseIP(ip)
-// 		if netIP != nil {
-// 			return ip, nil
-// 		}
-// 	}
-
-// 	//Get IP from RemoteAddr
-// 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	netIP = net.ParseIP(ip)
-// 	if netIP != nil {
-// 		return ip, nil
-// 	}
-// 	return "", fmt.Errorf("No valid ip found")
+// 	return nil
 // }

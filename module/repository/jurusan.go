@@ -64,3 +64,11 @@ func (repo *JurusanRepository) DeleteOne(id uuid.UUID) error {
 	}
 	return nil
 }
+
+func (repo *JurusanRepository) GetAll() ([]entity.Jurusan, error) {
+	var result []entity.Jurusan
+	if err := repo.db.Model(&entity.Jurusan{}).Find(&result).Error; err != nil {
+		return nil, err
+	}
+	return result, nil
+}

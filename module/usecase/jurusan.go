@@ -54,3 +54,11 @@ func (j JurusanUseCase) GetJurusan(IdJurusan uuid.UUID) (entity.Jurusan, error) 
 	}
 	return result, nil
 }
+
+func (j JurusanUseCase) GetAllJurusan() ([]entity.Jurusan, error) {
+	result, err := j.jurusanrepo.GetAll()
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

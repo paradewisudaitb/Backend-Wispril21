@@ -10,10 +10,10 @@ import (
 
 type Wisudawan struct {
 	domain.EntityBase
-	Nim          uint32    `json:"nim"`
+	Nim          uint32    `json:"nim" gorm:"unique"`
 	Nama         string    `json:"nama" gorm:"type:VARCHAR(255);not null"`
 	Panggilan    string    `json:"nama_panggilan" gorm:"type:VARCHAR(255);not null"`
-	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(255);not null"`
+	JudulTA      string    `json:"judul_ta" gorm:"type:VARCHAR(1024);not null"`
 	Angkatan     uint16    `json:"angkatan" gorm:"type:SMALLINT;not null"`
 	JurusanID    string    `json:"id_jurusan" gorm:"type:VARCHAR(50);not null"`
 	Jurusan      Jurusan   `json:"jurusan" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
@@ -64,7 +64,7 @@ type CreateWisudawanSerializer struct {
 	Nim          uint32 `json:"nim" wispril:"required"`
 	Nama         string `json:"nama" wispril:"required" binding:"lte=255"`
 	Panggilan    string `json:"nama_panggilan" wispril:"required" binding:"lte=255"`
-	JudulTA      string `json:"judul_ta" wispril:"required" binding:"lte=255"`
+	JudulTA      string `json:"judul_ta" wispril:"required" binding:"lte=1024"`
 	Angkatan     uint16 `json:"angkatan" wispril:"required" binding:"lte=25"`
 	Jurusan      string `json:"id_jurusan" wispril:"required"`
 	Instagram    string `json:"instagram" binding:"lte=255"`
@@ -80,7 +80,7 @@ type UpdateWisudawanSerializer struct {
 	NIM          uint32    `json:"nim" wispril:"required"`
 	Nama         string    `json:"nama" binding:"lte=255"`
 	Panggilan    string    `json:"nama_panggilan" binding:"lte=255"`
-	JudulTA      string    `json:"judul_ta" binding:"lte=255"`
+	JudulTA      string    `json:"judul_ta" binding:"lte=1024"`
 	Angkatan     uint16    `json:"angkatan" binding:"lte=25"`
 	Jurusan      string    `json:"id_jurusan"`
 	Instagram    string    `json:"instagram" binding:"lte=255"`

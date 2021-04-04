@@ -24,6 +24,7 @@ func ConvertEntityContentsToSerializer(data []entity.Content) entity.GetContents
 	for _, x := range data {
 		if strings.EqualFold(x.Type, contenttype.Karya.String()) ||
 			strings.EqualFold(x.Type, contenttype.Prestasi.String()) ||
+			strings.EqualFold(x.Type, contenttype.Funfact.String()) ||
 			strings.EqualFold(x.Type, contenttype.Tips.String()) {
 			selfData = append(selfData, entity.GetContentSerializer{
 				ContentType: x.Type,
@@ -60,7 +61,7 @@ func ConvertEntityContentsToSerializer(data []entity.Content) entity.GetContents
 
 func (uc ContentUsecase) CreateContent(item entity.CreateContentSerializer) error {
 	if err := uc.contentrepo.AddOne(
-		item.Wisudawan,
+		item.Nim,
 		item.Organization,
 		item.ContentType,
 		item.Headings,
@@ -82,7 +83,7 @@ func (uc ContentUsecase) DeleteContent(IdContent uuid.UUID) error {
 func (uc ContentUsecase) UpdateContent(item entity.UpdateContentSerializer) error {
 	err := uc.contentrepo.UpdateOne(
 		item.Content,
-		item.Wisudawan,
+		item.Nim,
 		item.Organization,
 		item.ContentType,
 		item.Headings,
@@ -104,8 +105,8 @@ func (uc ContentUsecase) GetContent(IdContent uuid.UUID) (entity.Content, error)
 	return result, nil
 }
 
-func (uc ContentUsecase) GetByWisudawan(IdWisudawan uuid.UUID) ([]entity.Content, error) {
-	result, err := uc.contentrepo.GetByWisudawan(IdWisudawan.String())
+func (uc ContentUsecase) GetByWisudawan(NimWisudawan uint32) ([]entity.Content, error) {
+	result, err := uc.contentrepo.GetByWisudawan(NimWisudawan)
 	if err != nil {
 		return nil, err
 	}
