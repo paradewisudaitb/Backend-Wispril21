@@ -33,7 +33,7 @@ func main() {
 	}
 
 	middleware.InitErrorHandler(r)
-	module.Init(db, r)
+	module.Init(db, r, development)
 
 	//Development Endpoint
 	module.Development(db, r)

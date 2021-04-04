@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/denisenkom/go-mssqldb v0.9.0 // indirect
 	github.com/ekyoung/gin-nice-recovery v0.0.0-20160510022553-1654dca486db
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
