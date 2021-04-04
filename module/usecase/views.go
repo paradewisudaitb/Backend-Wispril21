@@ -1,9 +1,9 @@
 // // entity
 // // entitybase, id_wisudawan, ip, time
 
-// // Usecase AddViews
+// // Usecase AddView
 
-// // Repository AddViews
+// // Repository AddView
 
 // // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
 
@@ -13,18 +13,18 @@ import (
 	"github.com/paradewisudaitb/Backend/module/entity"
 )
 
-type ViewsUseCase struct {
-	viewsrepo entity.ViewsRepository
+type ViewUseCase struct {
+	Viewrepo entity.ViewRepository
 }
 
-// func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
-// 	return ViewsUseCase{
-// 		viewsrepo: v,
+// func NewViewUsecase(v entity.ViewRepository) entity.ViewUseCase {
+// 	return ViewUseCase{
+// 		Viewrepo: v,
 // 	}
 // }
 
-// func (uc ViewsUseCase) AddViews(item entity.ViewsSerializer) error {
-// 	if err := uc.viewsrepo.AddOne(
+// func (uc ViewUseCase) AddView(item entity.ViewSerializer) error {
+// 	if err := uc.Viewrepo.AddOne(
 // 		item.IdWisudawan,
 // 		item.IP,
 // 		item.Time,

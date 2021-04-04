@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/module/controller"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
+	"github.com/paradewisudaitb/Backend/module/entity"
 	limit "github.com/yangxikun/gin-limit-by-key"
 	"golang.org/x/time/rate"
 	"gorm.io/gorm"
@@ -34,6 +35,7 @@ func Init(db *gorm.DB, g *gin.Engine) {
 	NewMessageModule(db, g)
 	NewOrgzModule(db, g)
 	NewContentModule(db, g)
+	db.AutoMigrate(&entity.View{})
 	g.GET("/reset", middleware.ResetAuth, func(c *gin.Context) {
 		Reset(db, g)
 	})
