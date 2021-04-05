@@ -12,6 +12,9 @@ type WisudawanUseCase struct {
 }
 
 func ConvertEntityWisudawanToSerializer(x entity.Wisudawan) entity.GetWisudawanSerializer {
+	if x.Photo == "" {
+		x.Photo = "PasFoto/default-wisudawan.png"
+	}
 	return entity.GetWisudawanSerializer{
 		ID:            x.ID,
 		Nim:           x.Nim,
@@ -32,6 +35,9 @@ func ConvertEntityWisudawanToSerializer(x entity.Wisudawan) entity.GetWisudawanS
 	}
 }
 func ConvertEntityWisudawanToSimpleSerializer(x entity.Wisudawan) entity.GetSimpleWisudawanSerializer {
+	if x.Photo == "" {
+		x.Photo = "PasFoto/default-wisudawan.png"
+	}
 	return entity.GetSimpleWisudawanSerializer{
 		ID:            x.ID,
 		Nim:           x.Nim,

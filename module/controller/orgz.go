@@ -25,7 +25,7 @@ func NewOrgzController(router *gin.Engine, ou entity.OrgzUseCase) entity.OrgzCon
 		orgzGroup.POST("/", middleware.Auth, cont.CreateOrgz)
 		orgzGroup.PUT("/", middleware.Auth, cont.UpdateOrgz)
 		orgzGroup.DELETE("/:id", middleware.Auth, cont.DeleteOrgz)
-		orgzGroup.GET("/id/:id", cont.GetByID) //TODO ganti jadi 
+		orgzGroup.GET("/id/:id", cont.GetByID) //TODO ganti jadi
 		orgzGroup.GET("/slug/:slug", cont.GetBySlug)
 		orgzGroup.GET("/all", cont.GetAll)
 	}
@@ -137,6 +137,9 @@ func (o OrgzController) GetByID(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+	if result.Logo == "" {
+		result.Logo = "Logo/default-orgz.png"
+	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
@@ -162,6 +165,9 @@ func (o OrgzController) GetBySlug(ctx *gin.Context) {
 		ForceResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+	if result.Logo == "" {
+		result.Logo = "Logo/default-orgz.png"
+	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
@@ -181,6 +187,12 @@ func (o OrgzController) GetAll(ctx *gin.Context) {
 	}
 	if len(result) == 0 {
 		result = make([]entity.Orgz, 0)
+	} else {
+		for i := range result {
+			if result[i].Logo == "" {
+				result[i].Logo = "Logo/default-orgz.png"
+			}
+		}
 	}
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
