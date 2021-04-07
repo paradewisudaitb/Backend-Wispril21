@@ -24,7 +24,7 @@ func Development(db *gorm.DB, g *gin.Engine) {
 		// db.Preload(clause.Associations).Find(&results, "id IN (?)", ids)
 		// c.JSON(http.StatusOK, results)
 		// db.Find(&results).Order("nim desc").Limit(2).Find(&results)
-		result, _ := repo.GetTop5()
+		result, _ := repo.GetLast("a", "1")
 		c.JSON(http.StatusOK, result)
 
 	})

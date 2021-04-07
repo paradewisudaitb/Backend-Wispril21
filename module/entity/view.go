@@ -43,7 +43,7 @@ type ViewController interface {
 }
 
 type ViewUseCase interface {
-	AddView(IdWisudawan, IP string) (View, error)
+	AddView(idWisudawan uuid.UUID, clientIP string) error
 }
 
 type ViewRepository interface {
