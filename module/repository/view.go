@@ -44,7 +44,7 @@ func (repo *ViewRepository) GetTop5() ([]entity.GetViewWisudawan, error) {
 	var result []entity.GetViewWisudawan
 	size := repo.db.Find(&[]entity.View{}).RowsAffected
 	if size > 5 {
-		if err := repo.db.Raw("SELECT wisudawan.*,count from (SELECT wisudawan_id as id, count(id) as count FROM \"view\" GROUP BY \"wisudawan_id\" LIMIT 5) T INNER JOIN wisudawan ON T.id = wisudawan.id INNER JOIN jurusan ON wisudawan.jurusan_id = jurusan.id ORDER BY count desc").Scan(&result).Error; err != nil {
+		if err := repo.db.Raw("SELECT wisudawan.id,count from (SELECT wisudawan_id as id, count(id) as count FROM \"view\" GROUP BY \"wisudawan_id\" LIMIT 5) T INNER JOIN wisudawan ON T.id = wisudawan.id INNER JOIN jurusan ON wisudawan.jurusan_id = jurusan.id ORDER BY count desc").Scan(&result).Error; err != nil {
 			return nil, err
 		}
 		for i := range result {
