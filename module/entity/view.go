@@ -24,6 +24,11 @@ type View struct {
 	AccessTime  time.Time `gorm:"type:DATE" json:"time"`
 }
 
+type GetViewWisudawan struct {
+	Wisudawan Wisudawan `gorm:"embedded" json:"wisudawan"`
+	Count     int64     `json:"count"`
+}
+
 func (e *View) BeforeCreate(scope *gorm.DB) error {
 	e.ID = uuid.NewV4().String()
 	return nil
@@ -44,8 +49,5 @@ type ViewUseCase interface {
 type ViewRepository interface {
 	AddOne(IdWisudawan string, IP string, Time time.Time) error
 	GetLast(IdWisudawan string, IP string) (View, error)
-	GetTop5() ([]struct {
-		Wisudawan
-		Count int64
-	}, error)
+	GetTop5() ([]GetViewWisudawan, error)
 }
