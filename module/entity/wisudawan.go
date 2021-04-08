@@ -76,19 +76,18 @@ type CreateWisudawanSerializer struct {
 }
 
 type UpdateWisudawanSerializer struct {
-	IdWisudawan  uuid.UUID `json:"id_wisudawan"`
-	NIM          uint32    `json:"nim" wispril:"required"`
-	Nama         string    `json:"nama" binding:"lte=255"`
-	Panggilan    string    `json:"nama_panggilan" binding:"lte=255"`
-	JudulTA      string    `json:"judul_ta" binding:"lte=1024"`
-	Angkatan     uint16    `json:"angkatan" binding:"lte=25"`
-	Jurusan      string    `json:"id_jurusan"`
-	Instagram    string    `json:"instagram" binding:"lte=255"`
-	Linkedin     string    `json:"linkedin" binding:"lte=255"`
-	Twitter      string    `json:"twitter" binding:"lte=255"`
-	TempatLahir  string    `json:"tempat_lahir"  binding:"lte=255"`
-	TanggalLahir string    `json:"tanggal_lahir" binding:"lte=10"`
-	Photo        string    `json:"photo"  binding:"lte=255"`
+	NIM          uint32 `json:"nim" wispril:"required"`
+	Nama         string `json:"nama" binding:"lte=255"`
+	Panggilan    string `json:"nama_panggilan" binding:"lte=255"`
+	JudulTA      string `json:"judul_ta" binding:"lte=1024"`
+	Angkatan     uint16 `json:"angkatan" binding:"lte=25"`
+	Jurusan      string `json:"id_jurusan"`
+	Instagram    string `json:"instagram" binding:"lte=255"`
+	Linkedin     string `json:"linkedin" binding:"lte=255"`
+	Twitter      string `json:"twitter" binding:"lte=255"`
+	TempatLahir  string `json:"tempat_lahir"  binding:"lte=255"`
+	TanggalLahir string `json:"tanggal_lahir" binding:"lte=10"`
+	Photo        string `json:"photo"  binding:"lte=255"`
 }
 
 type WisudawanController interface {
@@ -112,7 +111,7 @@ type WisudawanRepository interface {
 	GetOne(wisudawanID string) (Wisudawan, error)
 	GetAll() ([]Wisudawan, error)
 	AddOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusan, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
-	UpdateOne(WisudawanID string, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
+	UpdateOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error
 	DeleteOne(WisudawanID string) error
 	FilterByOrgzSlug(organizationSlug string) ([]Wisudawan, error)
 }

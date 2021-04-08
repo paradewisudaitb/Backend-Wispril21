@@ -1,6 +1,7 @@
 package module
 
 import (
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,9 @@ func Init(db *gorm.DB, g *gin.Engine, devmode bool) {
 	NewContentModule(db, g)
 	g.GET("/reset", middleware.ResetAuth, func(c *gin.Context) {
 		Reset(db, g)
+	})
+	g.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, "Pong!")
 	})
 }
 

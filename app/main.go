@@ -36,7 +36,9 @@ func main() {
 	module.Init(db, r, development)
 
 	//Development Endpoint
-	module.Development(db, r)
+	if development {
+		module.Development(db, r)
+	}
 	r.Run()
 
 }
