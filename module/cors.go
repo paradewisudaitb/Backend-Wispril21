@@ -19,8 +19,7 @@ func NewCORSModule(g *gin.Engine, devmode bool) {
 	}
 
 	if devmode {
-		corsConfig.AllowAllOrigins = true
-		corsConfig.AllowOrigins = nil
+		corsConfig.AllowOrigins = append(corsConfig.AllowOrigins, "*")
 	}
 	g.Use(cors.New(corsConfig))
 }
