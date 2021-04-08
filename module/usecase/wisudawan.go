@@ -94,7 +94,6 @@ func (a WisudawanUseCase) UpdateWisudawan(item entity.UpdateWisudawanSerializer)
 		tglLahir = time.Time{}
 	}
 	if err := a.wisudawanrepo.UpdateOne(
-		item.IdWisudawan.String(),
 		item.NIM,
 		item.Angkatan,
 		item.Nama,

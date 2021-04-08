@@ -44,6 +44,7 @@ type ViewController interface {
 
 type ViewUseCase interface {
 	AddView(idWisudawan uuid.UUID, clientIP string) error
+	GetTop5() ([]GetViewWisudawan, error)
 }
 
 type ViewRepository interface {

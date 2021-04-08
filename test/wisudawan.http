@@ -22,13 +22,17 @@ DELETE http://localhost/wisudawan/318839c4-11eb-4d45-8204-5f25b91ac55c
 Authorization: iniadalahtoken
 
 ###
-GET http://localhost/wisudawan/id/eeb917bb-95b5-408f-a73f-bd52caa0a7f1
+GET http://localhost/wisudawan/id/48d84ceb-ca6d-4d9d-83da-747188e6c5a9
+
+###
+GET http://localhost/wisudawan/trending
+
 ###
 PUT http://localhost/wisudawan/
 Authorization: iniadalahtoken
 
 {
-    "id_wisudawan" : "656cd8af-2838-45b5-b9e2-78a73a6427e7",
+    "nim" : 13519001,
     "tanggal_lahir": "12-02-2011"
 }
 ###

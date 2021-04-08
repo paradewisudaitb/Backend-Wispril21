@@ -28,9 +28,6 @@ func Development(db *gorm.DB, g *gin.Engine) {
 		c.JSON(http.StatusOK, result)
 
 	})
-	g.GET("/testworking", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "Okay")
-	})
 }
 
 func InsertDummy(db *gorm.DB) {

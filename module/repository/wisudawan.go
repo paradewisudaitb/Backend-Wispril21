@@ -56,12 +56,9 @@ func (repo WisudawanRepository) AddOne(nim uint32, angkatan uint16, nama, panggi
 	return nil
 }
 
-func (repo WisudawanRepository) UpdateOne(WisudawanID string, nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
+func (repo WisudawanRepository) UpdateOne(nim uint32, angkatan uint16, nama, panggilan, judulTA, jurusanID, instagram, linkedin, twitter, tempatLahir, photo string, tanggalLahir time.Time) error {
 	var wisudawan entity.Wisudawan
 	wisudawan_update := map[string]interface{}{}
-	if nim != 0 {
-		wisudawan_update["nim"] = nim
-	}
 	if angkatan != 0 {
 		wisudawan_update["angkatan"] = angkatan
 	}
@@ -95,10 +92,10 @@ func (repo WisudawanRepository) UpdateOne(WisudawanID string, nim uint32, angkat
 	if jurusanID != "" {
 		wisudawan_update["jurusan_id"] = jurusanID
 	}
-	if err := repo.db.First(&entity.Wisudawan{}, "id = ?", WisudawanID).Error; err != nil {
+	if err := repo.db.First(&entity.Wisudawan{}, "nim = ?", nim).Error; err != nil {
 		return err
 	}
-	if err := repo.db.Model(&wisudawan).Where("id = ?", WisudawanID).Updates(wisudawan_update).Error; err != nil {
+	if err := repo.db.Model(&wisudawan).Where("nim = ?", nim).Updates(wisudawan_update).Error; err != nil {
 		return err
 	}
 	return nil
