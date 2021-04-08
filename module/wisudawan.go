@@ -18,10 +18,13 @@ type WisudawanModule struct {
 func NewWisudawanModule(db *gorm.DB, g *gin.Engine) WisudawanModule {
 	wisudawanRepository := repository.NewWisudawanRepository(db)
 	wisudawanUsecase := usecase.NewWisudawanUsecase(wisudawanRepository)
-	wisudawanController := controller.NewWisudawanController(g, wisudawanUsecase)
+	viewRepo := repository.NewViewRepository(db)
+	viewUsecase := usecase.NewViewUsecase(viewRepo)
+	wisudawanController := controller.NewWisudawanController(g, wisudawanUsecase, viewUsecase)
 
 	if db != nil {
 		db.AutoMigrate(&entity.Wisudawan{})
+		db.AutoMigrate(&entity.View{})
 		if (!db.Migrator().HasConstraint(&entity.Wisudawan{}, "Jurusan")) {
 			db.Migrator().CreateConstraint(&entity.Wisudawan{}, "Jurusan")
 		}
