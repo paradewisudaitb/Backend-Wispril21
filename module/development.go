@@ -7,21 +7,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/paradewisudaitb/Backend/module/controller/middleware"
 	"github.com/paradewisudaitb/Backend/module/entity"
+	"github.com/paradewisudaitb/Backend/module/repository"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 func Development(db *gorm.DB, g *gin.Engine) {
 	g.GET("/dummy", middleware.Auth, func(c *gin.Context) {
 		InsertDummy(db)
 	})
-	g.GET("/test/:id", func(c *gin.Context) {
+	g.GET("/test", func(c *gin.Context) {
+		repo := repository.NewViewRepository(db)
 		//results := []map[string]interface{}{}
-		var results []entity.Wisudawan
-		oid := c.Param("id")
-		ids := db.Table("wisudawan").Joins("INNER JOIN content ON content.wisudawan_id = wisudawan.id").Joins("INNER JOIN organization ON organization.id = content.organization_id").Where("organization_id = ?", oid).Distinct("wisudawan.id")
-		db.Preload(clause.Associations).Find(&results, "id IN (?)", ids)
-		c.JSON(http.StatusOK, results)
+		//var results []entity.Wisudawan
+		// oid := c.Param("id")
+		// ids := db.Table("wisudawan").Joins("INNER JOIN content ON content.wisudawan_id = wisudawan.id").Joins("INNER JOIN organization ON organization.id = content.organization_id").Where("organization_id = ?", oid).Distinct("wisudawan.id")
+		// db.Preload(clause.Associations).Find(&results, "id IN (?)", ids)
+		// c.JSON(http.StatusOK, results)
+		// db.Find(&results).Order("nim desc").Limit(2).Find(&results)
+		result, _ := repo.GetLast("a", "1")
+		c.JSON(http.StatusOK, result)
+
 	})
 }
 

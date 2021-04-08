@@ -2,7 +2,7 @@ GET http://localhost/reset/
 Authorization: iniadalahtoken
 
 ###
-GET http://localhost/test/872aa549-b732-4b3b-8722-317a31fea057
+GET http://localhost/test
 
 ###
 GET http://localhost/dummy

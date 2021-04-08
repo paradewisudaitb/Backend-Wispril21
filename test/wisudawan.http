@@ -22,7 +22,7 @@ DELETE http://localhost/wisudawan/318839c4-11eb-4d45-8204-5f25b91ac55c
 Authorization: iniadalahtoken
 
 ###
-GET http://localhost/wisudawan/id/c894747c-3e27-4531-aac9-22d31e6b6637
+GET http://localhost/wisudawan/id/eeb917bb-95b5-408f-a73f-bd52caa0a7f1
 ###
 PUT http://localhost/wisudawan/
 Authorization: iniadalahtoken

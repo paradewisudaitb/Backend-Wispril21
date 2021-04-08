@@ -1,35 +1,54 @@
 // // entity
 // // entitybase, id_wisudawan, ip, time
 
-// // Usecase AddViews
+// // Usecase AddView
 
-// // Repository AddViews
+// // Repository AddView
 
 // // request masuk -> ambil ip address sama id_wisudawan -> dicek apakah record sudah ada di tabel -> tambah record
 
 package usecase
 
-// import (
-// 	"github.com/paradewisudaitb/Backend/module/entity"
-// )
+import (
+	"errors"
+	"fmt"
+	"time"
 
-// type ViewsUseCase struct {
-// 	viewsrepo entity.ViewsRepository
-// }
+	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
+)
 
-// func NewViewsUsecase(v entity.ViewsRepository) entity.ViewsUseCase {
-// 	return ViewsUseCase{
-// 		viewsrepo: v,
-// 	}
-// }
+type ViewUseCase struct {
+	Viewrepo entity.ViewRepository
+}
 
-// func (uc ViewsUseCase) AddViews(item entity.ViewsSerializer) error {
-// 	if err := uc.viewsrepo.AddOne(
-// 		item.IdWisudawan,
-// 		item.IP,
-// 		item.Time,
-// 	); err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
+func NewViewUsecase(v entity.ViewRepository) entity.ViewUseCase {
+	return ViewUseCase{
+		Viewrepo: v,
+	}
+}
+
+func (uc ViewUseCase) AddView(idWisudawan uuid.UUID, clientIP string) error {
+	lastRecord, lastErr := uc.Viewrepo.GetLast(idWisudawan.String(), clientIP)
+	if lastErr != nil {
+		if !errors.Is(lastErr, gorm.ErrRecordNotFound) {
+			return lastErr
+		}
+	} else {
+		diff := time.Now().Sub(lastRecord.AccessTime).Minutes()
+		if diff < 10 {
+			fmt.Println(diff)
+			return nil
+		}
+	}
+
+	if err := uc.Viewrepo.AddOne(
+		idWisudawan.String(),
+		clientIP,
+		time.Now(),
+	); err != nil {
+		return err
+	}
+	return nil
+}
