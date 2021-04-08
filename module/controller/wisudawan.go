@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,11 +16,12 @@ import (
 )
 
 type WisudawanController struct {
-	usecase entity.WisudawanUsecase
+	usecase     entity.WisudawanUsecase
+	viewUsecase entity.ViewUseCase
 }
 
-func NewWisudawanController(router *gin.Engine, wu entity.WisudawanUsecase) entity.WisudawanController {
-	cont := WisudawanController{usecase: wu}
+func NewWisudawanController(router *gin.Engine, wu entity.WisudawanUsecase, vu entity.ViewUseCase) entity.WisudawanController {
+	cont := WisudawanController{usecase: wu, viewUsecase: vu}
 	wisudawanGroup := router.Group("/wisudawan")
 	{
 		wisudawanGroup.POST("/", middleware.Auth, cont.CreateWisudawan)
@@ -125,6 +127,10 @@ func (a WisudawanController) GetWisudawan(ctx *gin.Context) {
 		return
 	}
 	parsedResult := usecase.ConvertEntityWisudawanToSerializer(result)
+	viewErr := a.viewUsecase.AddView(idToUuid, ctx.ClientIP())
+	if viewErr != nil {
+		fmt.Println(viewErr.Error())
+	}
 
 	ctx.JSON(http.StatusOK, serializer.ResponseData{
 		ResponseBase: serializer.RESPONSE_OK,
