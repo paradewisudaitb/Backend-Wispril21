@@ -37,8 +37,8 @@ func (uc ViewUseCase) AddView(idWisudawan uuid.UUID, clientIP string) error {
 		}
 	} else {
 		diff := time.Now().Sub(lastRecord.AccessTime).Minutes()
+		fmt.Println(diff)
 		if diff < 10 {
-			fmt.Println(diff)
 			return nil
 		}
 	}
@@ -51,4 +51,12 @@ func (uc ViewUseCase) AddView(idWisudawan uuid.UUID, clientIP string) error {
 		return err
 	}
 	return nil
+}
+
+func (uc ViewUseCase) GetTop5() ([]entity.GetViewWisudawan, error) {
+	result, err := uc.Viewrepo.GetTop5()
+	if err != nil {
+		return result, err
+	}
+	return result, nil
 }

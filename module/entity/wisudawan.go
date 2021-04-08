@@ -96,6 +96,7 @@ type WisudawanController interface {
 	DeleteWisudawan(ctx *gin.Context)
 	GetWisudawan(ctx *gin.Context)
 	FilterWisudawanByOrgzSlug(ctx *gin.Context)
+	Trending(ctx *gin.Context)
 }
 
 type WisudawanUsecase interface {

@@ -31,7 +31,7 @@ func (repo *ViewRepository) AddOne(idWisudawan, ip string, time time.Time) error
 func (repo *ViewRepository) GetLast(idWisudawan, ip string) (entity.View, error) {
 	var view entity.View
 	if err := repo.db.
-		Order("access_time").
+		Order("access_time DESC").
 		Where("wisudawan_id = ?", idWisudawan).
 		Where("ip = ?", ip).
 		Last(&view).Error; err != nil {

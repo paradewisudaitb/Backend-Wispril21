@@ -29,8 +29,45 @@ func NewWisudawanController(router *gin.Engine, wu entity.WisudawanUsecase, vu e
 		wisudawanGroup.DELETE("/:id", middleware.Auth, cont.DeleteWisudawan)
 		wisudawanGroup.GET("/id/:id", cont.GetWisudawan)
 		wisudawanGroup.GET("/org/:slug", cont.FilterWisudawanByOrgzSlug)
+		wisudawanGroup.GET("/trending", cont.Trending)
 	}
 	return cont
+}
+
+func (a WisudawanController) Trending(ctx *gin.Context) {
+	result, err := a.viewUsecase.GetTop5()
+	if err != nil {
+		ForceResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var parsedResult []struct {
+		Wisudawan entity.GetSimpleWisudawanSerializer
+		Count     int64
+	}
+	if len(result) != 0 {
+		parsedResult = make([]struct {
+			Wisudawan entity.GetSimpleWisudawanSerializer
+			Count     int64
+		}, len(result))
+		for i := range result {
+			parsedResult[i] = struct {
+				Wisudawan entity.GetSimpleWisudawanSerializer
+				Count     int64
+			}{Count: result[i].Count,
+				Wisudawan: usecase.ConvertEntityWisudawanToSimpleSerializer(result[i].Wisudawan)}
+		}
+	} else {
+		parsedResult = make([]struct {
+			Wisudawan entity.GetSimpleWisudawanSerializer
+			Count     int64
+		}, 0)
+	}
+
+	ctx.JSON(http.StatusOK, serializer.ResponseData{
+		ResponseBase: serializer.RESPONSE_OK,
+		Data:         parsedResult})
+	return
 }
 
 func (a WisudawanController) CreateWisudawan(ctx *gin.Context) {
