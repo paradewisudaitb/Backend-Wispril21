@@ -21,7 +21,7 @@ type View struct {
 	ID          string    `gorm:"primaryKey;type:VARCHAR(50)" json:"id"`
 	WisudawanID string    `gorm:"type:VARCHAR(50);not null" json:"id_wisudawan"`
 	IP          string    `gorm:"type:VARCHAR(255);not null" json:"ip"`
-	AccessTime  time.Time `gorm:"type:DATE" json:"time"`
+	AccessTime  time.Time `json:"time"`
 }
 
 type GetViewWisudawan struct {

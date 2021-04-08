@@ -10,26 +10,45 @@
 package usecase
 
 import (
+	"errors"
+	"fmt"
+	"time"
+
 	"github.com/paradewisudaitb/Backend/module/entity"
+	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type ViewUseCase struct {
 	Viewrepo entity.ViewRepository
 }
 
-// func NewViewUsecase(v entity.ViewRepository) entity.ViewUseCase {
-// 	return ViewUseCase{
-// 		Viewrepo: v,
-// 	}
-// }
+func NewViewUsecase(v entity.ViewRepository) entity.ViewUseCase {
+	return ViewUseCase{
+		Viewrepo: v,
+	}
+}
 
-// func (uc ViewUseCase) AddView(item entity.ViewSerializer) error {
-// 	if err := uc.Viewrepo.AddOne(
-// 		item.IdWisudawan,
-// 		item.IP,
-// 		item.Time,
-// 	); err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
+func (uc ViewUseCase) AddView(idWisudawan uuid.UUID, clientIP string) error {
+	lastRecord, lastErr := uc.Viewrepo.GetLast(idWisudawan.String(), clientIP)
+	if lastErr != nil {
+		if !errors.Is(lastErr, gorm.ErrRecordNotFound) {
+			return lastErr
+		}
+	} else {
+		diff := time.Now().Sub(lastRecord.AccessTime).Minutes()
+		if diff < 10 {
+			fmt.Println(diff)
+			return nil
+		}
+	}
+
+	if err := uc.Viewrepo.AddOne(
+		idWisudawan.String(),
+		clientIP,
+		time.Now(),
+	); err != nil {
+		return err
+	}
+	return nil
+}
